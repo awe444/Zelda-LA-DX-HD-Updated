@@ -10,15 +10,16 @@ namespace LADXHD_Patcher
     {
         private static bool patchFromBackup;
         private static Dictionary<string, object> resources = ResourceHelper.GetAllResources();
-        private static string[] languageFiles  = new[] { "esp", "fre", "ita", "por", "rus" };
-        private static string[] languageDialog = new[] { "dialog_esp", "dialog_fre", "dialog_ita", "dialog_por", "dialog_rus" };
 
-        public static string CalculateHash(string FilePath, string HashType)
+        private static string CalculateHash(string FilePath, string HashType)
         {
             HashAlgorithm Algorithm = HashAlgorithm.Create(HashType);
             byte[] ByteArray = File.ReadAllBytes(FilePath);
             return BitConverter.ToString(Algorithm.ComputeHash(ByteArray)).Replace("-", "");
         }
+
+        private static string[] languageFiles  = new[] {        "esp",        "fre",        "ita",        "por",        "rus" };
+        private static string[] languageDialog = new[] { "dialog_esp", "dialog_fre", "dialog_ita", "dialog_por", "dialog_rus" };
 
         private static void LanguagePatches(FileItem fileItem)
         {
@@ -33,26 +34,37 @@ namespace LADXHD_Patcher
 
             foreach (string lang in target)
             {
-                // Create the xdelta patch file.
+                // Create the patched language file.
                 string langFile = lang + ".lng";
                 string xdelta3File = Path.Combine((Config.tempFolder + "\\patches").CreatePath(), langFile + ".xdelta");
-                File.WriteAllBytes(xdelta3File, (byte[])resources[langFile]);
-
-                // Patch the english file to get the new language file.
                 string patchedFile = Path.Combine((Config.tempFolder + "\\patchedFiles").CreatePath(), langFile);
-                XDelta3.Args = XDelta3.GetApplyArguments(fileItem.FullName, xdelta3File, patchedFile);
-                XDelta3.Start();
+                string targetPath  = Path.Combine(fileItem.DirectoryName, langFile);
+                XDelta3.Patch(fileItem.FullName, langFile, xdelta3File, patchedFile, targetPath);
+            }
+        }
 
-                // Move the newly created language file to where the english file was found.
-                string TargetPath = Path.Combine(fileItem.DirectoryName, langFile);
-                patchedFile.MovePath(TargetPath, true);
+        private static string[] specialFile   = new[] {    "menuBackground" };
+        private static string[] specialTarget = new[] { "menuBackgroundAlt" };
+
+        private static void HandleSpecialCases(FileItem fileItem)
+        {
+            // The "specialFile" array contains files that have alternate variations.
+            if (specialFile.Contains(fileItem.BaseName))
+            {
+                // Use the index of the file in the "specialFile" array to pull the target out of "specialTarget" array.
+                int index = Array.IndexOf(specialFile, fileItem.BaseName);
+                string sFile = specialTarget[index] + fileItem.Extension;
+
+                // Create the patched file.
+                string xdelta3File = Path.Combine((Config.tempFolder + "\\patches").CreatePath(), sFile + ".xdelta");
+                string patchedFile = Path.Combine((Config.tempFolder + "\\patchedFiles").CreatePath(), sFile);
+                string targetPath  = Path.Combine(fileItem.DirectoryName, sFile);
+                XDelta3.Patch(fileItem.FullName, sFile, xdelta3File, patchedFile, targetPath);
             }
         }
 
         private static void PatchGameFiles()
         {
-            File.WriteAllBytes(XDelta3.Exe, (byte[])resources["xdelta3.exe"]);
-
             foreach (string file in Config.baseFolder.GetFiles("*", true))
             {
                 // My "fileItem" class is great for grabbing specific file/folder information.
@@ -76,15 +88,13 @@ namespace LADXHD_Patcher
                 if (fileItem.Name == "eng.lng" || fileItem.Name == "dialog_eng.lng")
                     LanguagePatches(fileItem);
 
-                // Create the xdelta patch file.
-                string xdelta3File = Path.Combine((Config.tempFolder + "\\patches").CreatePath(), fileItem.Name + ".xdelta");
-                File.WriteAllBytes(xdelta3File, (byte[])resources[fileItem.Name]);
+                // If we have a file that is required to create an alternate version of the file.
+                HandleSpecialCases(fileItem);
 
-                // Patch the file and overwrite the original file with it.
+                // Create the patched file.
+                string xdelta3File = Path.Combine((Config.tempFolder + "\\patches").CreatePath(), fileItem.Name + ".xdelta");
                 string patchedFile = Path.Combine((Config.tempFolder + "\\patchedFiles").CreatePath(), fileItem.Name);
-                XDelta3.Args = XDelta3.GetApplyArguments(fileItem.FullName, xdelta3File, patchedFile);
-                XDelta3.Start();
-                patchedFile.MovePath(fileItem.FullName, true);
+                XDelta3.Patch(fileItem.FullName, fileItem.Name, xdelta3File, patchedFile, fileItem.FullName);
             }
             string message = patchFromBackup 
                 ? "Patching the game from v1.0.0 backup files was successful. The game was updated to v"+ Config.version + "." 
@@ -92,26 +102,22 @@ namespace LADXHD_Patcher
             Forms.okayDialog.Display("Patching Complete", 260, 40, 34, 16, 10, message);
         }
 
-        public static bool ValidateStart()
+        private static bool ValidateStart()
         {
-            // Check for the game executable existence.
+            string md5Hash = Functions.CalculateHash(Config.zeldaEXE, "MD5");
+
             if (!Config.zeldaEXE.TestPath())
             {
                 Forms.okayDialog.Display("Game Executable Not Found", 250, 40, 27, 10, 15, 
                     "Could not find \"Link's Awakening DX HD.exe\" to patch. Copy this patcher executable to the folder of the original release of v1.0.0 and run it from there.");
                 return false;
             }
-            // Get the MD5 hash of the executable.
-            string md5Hash = Functions.CalculateHash(Config.zeldaEXE, "MD5");
-
-            // Game has already been patched.
             if (md5Hash == Config.newHash)
             {
                 Forms.okayDialog.Display("Already Patched", 260, 40, 30, 16, 10, 
                     "The game is already at v" + Config.version + " so no patching is needed. Close this patcher and launch the game!");
                 return false;
             }
-            // Check for a backup folder. If executable is there, get hash of that instead.
             if (!Config.backupPath.IsPathEmpty())
             {
                 string backupExe = Path.Combine(Config.backupPath,"Link's Awakening DX HD.exe");
@@ -121,18 +127,15 @@ namespace LADXHD_Patcher
                     patchFromBackup = true;
                 }
             }
-            // Unknown version of the game.
             if (md5Hash != Config.oldHash && md5Hash != Config.newHash)
             {
                 Forms.okayDialog.Display("Uknown Version", 260, 40, 26, 24, 10, 
                     "The version you are attempting to patch is unknown!");
                 return false;
             }
-            // If the executable is v1.0.0 then start patching.
             if (md5Hash == Config.oldHash)
                 return true;
 
-            // Something unexpected has gone wrong.
             Forms.okayDialog.Display("Unknown Error", 260, 40, 30, 16, 10, 
                 "Something unexpected went wrong. Make sure the game is actually the original v1.0.0 release.");
             return false;
@@ -140,7 +143,7 @@ namespace LADXHD_Patcher
 
         private static bool ValidateInput()
         {
-            return Forms.yesNoDialog.Display("Patch v1.0.0 to " + Config.version, 260, 20, 28, 24, true, 
+            return Forms.yesNoDialog.Display("Patch to " + Config.version, 260, 20, 28, 24, true, 
                 "Are you sure you wish to patch the game to v" + Config.version + "?");
         }
 
@@ -152,9 +155,10 @@ namespace LADXHD_Patcher
             Forms.mainDialog.ToggleDialog(false);
             Config.tempFolder.CreatePath(true);
 
+            XDelta3.Create();
             PatchGameFiles();
 
-            Config.tempFolder.RemovePath();
+           // Config.tempFolder.RemovePath();
             Forms.mainDialog.ToggleDialog(true);
         }
     }

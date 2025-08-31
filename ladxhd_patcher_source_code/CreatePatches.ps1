@@ -39,7 +39,7 @@
 
 $OldGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\original"
 $NewGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated"
-$GameVersion = "1.1.6"
+$GameVersion = "1.1.7"
 
 #========================================================================================================================================
 # SETUP XDELTA & OUTPUTS
@@ -93,28 +93,39 @@ if (!(Test-Path $PatchFolder)) {
 $LanguageFiles  = @("esp","fre","ita","por","rus");
 $LanguageDialog = @("dialog_esp","dialog_fre","dialog_ita","dialog_por","dialog_rus");
 
-function CheckCreateLanguageFiles([object]$file)
+function CheckCreateLanguageFiles([object]$File)
 {
-    if (($file.Extension -eq ".lng") -and ($file.Name -notlike "*eng.lng"))
+    if (($File.Extension -eq ".lng") -and ($File.Name -notlike "*eng.lng"))
     {
-        $RelativePath = $file.DirectoryName.Substring($OldGamePath.Length).TrimStart('\')
+        $RelativePath = $File.DirectoryName.Substring($OldGamePath.Length).TrimStart('\')
 
-        if ($LanguageFiles.Contains($file.BaseName))
+        if ($LanguageFiles.Contains($File.BaseName))
         {
             $EngPath = Join-Path $OldGamePath ($RelativePath + "\eng.lng")
         }
-        elseif ($LanguageDialog.Contains($file.BaseName))
+        elseif ($LanguageDialog.Contains($File.BaseName))
         {
             $EngPath = Join-Path $OldGamePath ($RelativePath + "\dialog_eng.lng")
         }
-        $PatchFile = Join-Path $PatchFolder ($file.Name + ".xdelta")
+        $PatchFile = Join-Path $PatchFolder ($File.Name + ".xdelta")
 
-        Write-Host ("Generating patch for: " + $file.Name)
-        & $XDelta3 -f -e -s $EngPath $file.FullName $PatchFile
+        Write-Host ("Generating patch for: " + $File.Name)
+        & $XDelta3 -f -e -s $EngPath $File.FullName $PatchFile
         
         return $true
     }
     return $false
+}
+#========================================================================================================================================
+# SPECIAL CASES
+#========================================================================================================================================
+function GetOldFilePath([object]$File, [string]$RelativePath)
+{
+	if ($File.BaseName -eq "menuBackgroundAlt")
+	{
+		return Join-Path $OldGamePath ($File.DirectoryName.Substring($OldGamePath.Length).TrimStart('\') + "\menuBackground.xnb")
+	}
+	return Join-Path $OldGamePath $RelativePath
 }
 
 #========================================================================================================================================
@@ -127,11 +138,11 @@ Write-Host ""
 foreach ($file in Get-ChildItem -LiteralPath $NewGamePath -Recurse -File) 
 {
     $RelativePath = $file.FullName.Substring($NewGamePath.Length).TrimStart('\')
-    $OldFilePath  = Join-Path $OldGamePath $RelativePath
+    $OldFilePath  = GetOldFilePath -File $file -RelativePath $RelativePath
     $NewFilePath  = $file.FullName
 
-    if (CheckCreateLanguageFiles($file)) { continue };
-    if (!(Test-Path $OldFilePath)) { continue }
+    if (CheckCreateLanguageFiles -File $file) { continue };
+    if (!(Test-Path -LiteralPath $OldFilePath)) { continue }
 
     $OldMD5 = (Get-FileHash -Path $OldFilePath -Algorithm MD5).Hash
     $NewMD5 = (Get-FileHash -Path $NewFilePath -Algorithm MD5).Hash

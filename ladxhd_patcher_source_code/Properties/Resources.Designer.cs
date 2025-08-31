@@ -563,6 +563,26 @@ namespace LADXHD_Patcher.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] menuBackground_xnb {
+            get {
+                object obj = ResourceManager.GetObject("menuBackground.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] menuBackgroundAlt_xnb {
+            get {
+                object obj = ResourceManager.GetObject("menuBackgroundAlt.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] musicOverworld_data {
             get {
                 object obj = ResourceManager.GetObject("musicOverworld.data", resourceCulture);
@@ -676,6 +696,16 @@ namespace LADXHD_Patcher.Properties {
         internal static byte[] smallFont_xnb {
             get {
                 object obj = ResourceManager.GetObject("smallFont.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] sword_ani {
+            get {
+                object obj = ResourceManager.GetObject("sword.ani", resourceCulture);
                 return ((byte[])(obj));
             }
         }
