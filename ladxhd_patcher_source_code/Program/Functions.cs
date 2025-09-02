@@ -158,7 +158,7 @@ namespace LADXHD_Patcher
             XDelta3.Create();
             PatchGameFiles();
 
-           // Config.tempFolder.RemovePath();
+            Config.tempFolder.RemovePath();
             Forms.mainDialog.ToggleDialog(true);
         }
     }

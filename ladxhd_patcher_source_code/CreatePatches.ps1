@@ -3,7 +3,7 @@
 #========================================================================================================================================
 <#
   Info & Purpose:
-  - Generate xdelta patches to update v1.0.0 to the latest build.
+  - Generate xdelta patches to update v1.0.0 or v1.1.4+ to the latest build.
   - XDelta3 patches must share a name with the file they are patching + ".xdelta" extension.
   - For example, the file "musicOverworld.data" the patch should be "musicOverworld.data.xdelta"
 
@@ -39,7 +39,7 @@
 
 $OldGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\original"
 $NewGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated"
-$GameVersion = "1.1.7"
+$GameVersion = "1.1.8"
 
 #========================================================================================================================================
 # SETUP XDELTA & OUTPUTS

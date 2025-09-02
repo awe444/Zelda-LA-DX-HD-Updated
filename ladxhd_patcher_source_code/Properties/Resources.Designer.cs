@@ -61,6 +61,26 @@ namespace LADXHD_Patcher.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap la {
+            get {
+                object obj = ResourceManager.GetObject("la", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] xdelta3_exe {
+            get {
+                object obj = ResourceManager.GetObject("xdelta3.exe", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] BBlurH_xnb {
@@ -521,16 +541,6 @@ namespace LADXHD_Patcher.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap la {
-            get {
-                object obj = ResourceManager.GetObject("la", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] LightFadeShader_xnb {
@@ -606,6 +616,16 @@ namespace LADXHD_Patcher.Properties {
         internal static byte[] overworld_map {
             get {
                 object obj = ResourceManager.GetObject("overworld.map", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] overworld_map_data {
+            get {
+                object obj = ResourceManager.GetObject("overworld.map.data", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -756,16 +776,6 @@ namespace LADXHD_Patcher.Properties {
         internal static byte[] WobbleShader_xnb {
             get {
                 object obj = ResourceManager.GetObject("WobbleShader.xnb", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] xdelta3_exe {
-            get {
-                object obj = ResourceManager.GetObject("xdelta3.exe", resourceCulture);
                 return ((byte[])(obj));
             }
         }
