@@ -61,26 +61,6 @@ namespace LADXHD_Patcher.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap la {
-            get {
-                object obj = ResourceManager.GetObject("la", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] xdelta3_exe {
-            get {
-                object obj = ResourceManager.GetObject("xdelta3.exe", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] BBlurH_xnb {
@@ -116,6 +96,36 @@ namespace LADXHD_Patcher.Properties {
         internal static byte[] BlurV_xnb {
             get {
                 object obj = ResourceManager.GetObject("BlurV.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] castle1_map {
+            get {
+                object obj = ResourceManager.GetObject("castle1.map", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] castle2_map {
+            get {
+                object obj = ResourceManager.GetObject("castle2.map", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] cave7_map {
+            get {
+                object obj = ResourceManager.GetObject("cave7.map", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -513,6 +523,26 @@ namespace LADXHD_Patcher.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] house9_map {
+            get {
+                object obj = ResourceManager.GetObject("house9.map", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Icon {
+            get {
+                object obj = ResourceManager.GetObject("Icon", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] intro_atlas {
             get {
                 object obj = ResourceManager.GetObject("intro.atlas", resourceCulture);
@@ -537,6 +567,16 @@ namespace LADXHD_Patcher.Properties {
             get {
                 object obj = ResourceManager.GetObject("ita.lng", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap la {
+            get {
+                object obj = ResourceManager.GetObject("la", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -776,6 +816,16 @@ namespace LADXHD_Patcher.Properties {
         internal static byte[] WobbleShader_xnb {
             get {
                 object obj = ResourceManager.GetObject("WobbleShader.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] xdelta3_exe {
+            get {
+                object obj = ResourceManager.GetObject("xdelta3.exe", resourceCulture);
                 return ((byte[])(obj));
             }
         }
