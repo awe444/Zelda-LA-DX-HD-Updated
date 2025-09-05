@@ -43,8 +43,8 @@ namespace LADXHD_Patcher
             }
         }
 
-        private static string[] specialFile   = new[] {    "menuBackground" };
-        private static string[] specialTarget = new[] { "menuBackgroundAlt" };
+        private static string[] specialFile   = new[] {    "menuBackground",     "smallFont",       "npcs",       "items" };
+        private static string[] specialTarget = new[] { "menuBackgroundAlt", "smallFont_vwf", "npcs_redux", "items_redux" };
 
         private static void HandleSpecialCases(FileItem fileItem)
         {
