@@ -20,7 +20,6 @@ namespace LADXHD_Patcher
 
         private static string[] languageFiles  = new[] {        "esp",        "fre",        "ita",        "por",        "rus" };
         private static string[] languageDialog = new[] { "dialog_esp", "dialog_fre", "dialog_ita", "dialog_por", "dialog_rus" };
-
         private static void LanguagePatches(FileItem fileItem)
         {
             // Get the kind of patch file we want to create.
@@ -35,7 +34,7 @@ namespace LADXHD_Patcher
             foreach (string lang in target)
             {
                 // Create the patched language file.
-                string langFile = lang + ".lng";
+                string langFile = lang + fileItem.Extension;
                 string xdelta3File = Path.Combine((Config.tempFolder + "\\patches").CreatePath(), langFile + ".xdelta");
                 string patchedFile = Path.Combine((Config.tempFolder + "\\patchedFiles").CreatePath(), langFile);
                 string targetPath  = Path.Combine(fileItem.DirectoryName, langFile);
@@ -43,9 +42,26 @@ namespace LADXHD_Patcher
             }
         }
 
-        private static string[] specialFile   = new[] {    "menuBackground",     "smallFont",       "npcs",       "items" };
-        private static string[] specialTarget = new[] { "menuBackgroundAlt", "smallFont_vwf", "npcs_redux", "items_redux" };
+        private static string[] smallFonts = new[] { "smallFont_redux", "smallFont_vwf", "smallFont_vwf_redux" };
+        private static void HandleSmallFonts(FileItem fileItem)
+        {
+            // The "smallFonts" array contains the alternate variations.
+            if (fileItem.BaseName == "smallFont")
+            {
+                foreach (string sfont in smallFonts)
+                {
+                    // Create the patched language file.
+                    string sfontFile = sfont + fileItem.Extension;
+                    string xdelta3File = Path.Combine((Config.tempFolder + "\\patches").CreatePath(), sfontFile + ".xdelta");
+                    string patchedFile = Path.Combine((Config.tempFolder + "\\patchedFiles").CreatePath(), sfontFile);
+                    string targetPath  = Path.Combine(fileItem.DirectoryName, sfontFile);
+                    XDelta3.Patch(fileItem.FullName, sfontFile, xdelta3File, patchedFile, targetPath);
+                }
+            }
+        }
 
+        private static string[] specialFile   = new[] {    "menuBackground",       "npcs",       "items" };
+        private static string[] specialTarget = new[] { "menuBackgroundAlt", "npcs_redux", "items_redux" };
         private static void HandleSpecialCases(FileItem fileItem)
         {
             // The "specialFile" array contains files that have alternate variations.
@@ -87,6 +103,9 @@ namespace LADXHD_Patcher
                 // When we find english files, run a sub-routine to create other language files.
                 if (fileItem.Name == "eng.lng" || fileItem.Name == "dialog_eng.lng")
                     LanguagePatches(fileItem);
+
+                // There are multiple variations of the small font to create.
+                HandleSmallFonts(fileItem);
 
                 // If we have a file that is required to create an alternate version of the file.
                 HandleSpecialCases(fileItem);

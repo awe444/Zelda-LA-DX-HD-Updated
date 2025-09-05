@@ -125,15 +125,23 @@ function GetOldFilePath([object]$File, [string]$RelativePath)
 	{
 		return Join-Path $OldGamePath ($File.DirectoryName.Substring($OldGamePath.Length).TrimStart('\') + "\menuBackground.xnb")
 	}	
-    if ($File.BaseName -eq "items_redux")
+  if ($File.BaseName -eq "items_redux")
 	{
-		return Join-Path $OldGamePath ($File.DirectoryName.Substring($OldGamePath.Length).TrimStart('\') + "\items.xnb")
+  return Join-Path $OldGamePath ($File.DirectoryName.Substring($OldGamePath.Length).TrimStart('\') + "\items.xnb")
 	}
-    if ($File.BaseName -eq "npcs_redux")
+  if ($File.BaseName -eq "npcs_redux")
 	{
 		return Join-Path $OldGamePath ($File.DirectoryName.Substring($OldGamePath.Length).TrimStart('\') + "\npcs.xnb")
 	}
-    if ($File.BaseName -eq "smallFont_vwf")
+  if ($File.BaseName -eq "smallFont_redux")
+	{
+		return Join-Path $OldGamePath ($File.DirectoryName.Substring($OldGamePath.Length).TrimStart('\') + "\smallFont.xnb")
+	}
+  if ($File.BaseName -eq "smallFont_vwf")
+	{
+		return Join-Path $OldGamePath ($File.DirectoryName.Substring($OldGamePath.Length).TrimStart('\') + "\smallFont.xnb")
+	}
+  if ($File.BaseName -eq "smallFont_vwf_redux")
 	{
 		return Join-Path $OldGamePath ($File.DirectoryName.Substring($OldGamePath.Length).TrimStart('\') + "\smallFont.xnb")
 	}
