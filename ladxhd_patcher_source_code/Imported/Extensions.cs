@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace LADXHD_Patcher
@@ -290,6 +291,13 @@ namespace LADXHD_Patcher
             }
             // Return the string where all '\n' were replaced with '{0}'.
             return NewString;
+        }
+
+        public static string CalculateHash(this string FilePath, string HashType)
+        {
+            HashAlgorithm Algorithm = HashAlgorithm.Create(HashType);
+            byte[] ByteArray = File.ReadAllBytes(FilePath);
+            return BitConverter.ToString(Algorithm.ComputeHash(ByteArray)).Replace("-", "");
         }
 
         public static List<string> EnumToList(this IEnumerable<string> EnumArray)

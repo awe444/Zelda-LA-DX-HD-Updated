@@ -11,13 +11,6 @@ namespace LADXHD_Patcher
         private static bool patchFromBackup;
         private static Dictionary<string, object> resources = ResourceHelper.GetAllResources();
 
-        private static string CalculateHash(string FilePath, string HashType)
-        {
-            HashAlgorithm Algorithm = HashAlgorithm.Create(HashType);
-            byte[] ByteArray = File.ReadAllBytes(FilePath);
-            return BitConverter.ToString(Algorithm.ComputeHash(ByteArray)).Replace("-", "");
-        }
-
         private static string[] languageFiles  = new[] {        "esp",        "fre",        "ita",        "por",        "rus" };
         private static string[] languageDialog = new[] { "dialog_esp", "dialog_fre", "dialog_ita", "dialog_por", "dialog_rus" };
         private static void LanguagePatches(FileItem fileItem)
@@ -123,7 +116,7 @@ namespace LADXHD_Patcher
 
         private static bool ValidateStart()
         {
-            string md5Hash = Functions.CalculateHash(Config.zeldaEXE, "MD5");
+            string md5Hash = Config.zeldaEXE.CalculateHash("MD5");
 
             if (!Config.zeldaEXE.TestPath())
             {
@@ -142,7 +135,7 @@ namespace LADXHD_Patcher
                 string backupExe = Path.Combine(Config.backupPath,"Link's Awakening DX HD.exe");
                 if (backupExe.TestPath())
                 {
-                    md5Hash = Functions.CalculateHash(backupExe, "MD5");
+                    md5Hash = backupExe.CalculateHash("MD5");
                     patchFromBackup = true;
                 }
             }
