@@ -119,261 +119,294 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="BBlurH.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\BBlurH.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\BBlurH.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="BBlurV.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\BBlurV.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\BBlurV.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="BlurH.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\BlurH.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\BlurH.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="BlurV.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\BlurV.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\BlurV.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="castle1.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\castle1.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\castle1.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="castle2.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\castle2.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\castle2.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="castle2.map.data" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\castle2.map.data.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\castle2.map.data.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="cave7.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\cave7.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\cave7.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cave9.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\v1.2.2 Patches\cave9.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cave10.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\v1.2.2 Patches\cave10.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cave14.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\v1.2.2 Patches\cave14.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cave21.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\v1.2.2 Patches\cave21.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cave22.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\v1.2.2 Patches\cave22.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cave23.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\v1.2.2 Patches\cave23.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cave30.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\v1.2.2 Patches\cave30.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="CircleShader.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\CircleShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\CircleShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ColorCloud.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\ColorCloud.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\ColorCloud.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ColorShader.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\ColorShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\ColorShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="credits font.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\credits font.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\credits font.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="credits header font.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\credits header font.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\credits header font.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="DamageShader.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\DamageShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\DamageShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dialog_eng.lng" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dialog_eng.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dialog_eng.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dialog_esp.lng" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dialog_esp.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dialog_esp.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dialog_fre.lng" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dialog_fre.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dialog_fre.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dialog_ita.lng" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dialog_ita.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dialog_ita.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dialog_por.lng" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dialog_por.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dialog_por.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dialog_rus.lng" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dialog_rus.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dialog_rus.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dreamShrine01.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dreamShrine01.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dreamShrine01.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon1.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon1.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon1.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="dungeon2.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\v1.2.2 Patches\dungeon2.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon2_2d_2.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon2_2d_2.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon2_2d_2.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="dungeon3_4.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\v1.2.2 Patches\dungeon3_4.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon5_2d_1.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon5_2d_1.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon5_2d_1.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon5_2d_2.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon5_2d_2.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon5_2d_2.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon5_2d_3.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon5_2d_3.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon5_2d_3.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon5_2d_4.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon5_2d_4.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon5_2d_4.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon6.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon6.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon6.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon6_2d_1.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon6_2d_1.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon6_2d_1.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon6_2d_2.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon6_2d_2.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon6_2d_2.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="dungeon7_4.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\v1.2.2 Patches\dungeon7_4.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon8.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon8.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon8.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon8_2d_1.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon8_2d_1.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon8_2d_1.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon8_2d_2.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon8_2d_2.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon8_2d_2.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon8_2d_3.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon8_2d_3.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon8_2d_3.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon8_2d_4.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon8_2d_4.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon8_2d_4.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon8_2d_5.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon8_2d_5.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon8_2d_5.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="dungeon8_2d_6.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\dungeon8_2d_6.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\dungeon8_2d_6.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="editor font.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\editor font.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\editor font.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="editor mono font.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\editor mono font.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\editor mono font.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="editor small mono font.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\editor small mono font.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\editor small mono font.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="EffectBlur.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\EffectBlur.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\EffectBlur.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="egg_lower_floor.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\egg_lower_floor.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\egg_lower_floor.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="eng.lng" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\eng.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\eng.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="esp.lng" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\esp.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\esp.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="fre.lng" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\fre.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\fre.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="FullShadowEffect.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\FullShadowEffect.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\FullShadowEffect.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="headerFont.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\headerFont.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\headerFont.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="house9.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\house9.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\house9.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icon.ico;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     <comment>Icon</comment>
   </data>
   <data name="intro.atlas" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\intro.atlas.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\intro.atlas.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="intro.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\intro.png.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\intro.png.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ita.lng" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\ita.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\ita.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="items_redux.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\items_redux.png.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\items_redux.png.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="la" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\la.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>PNG Image</comment>
   </data>
   <data name="LightFadeShader.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\LightFadeShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\LightFadeShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="LightShader.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\LightShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\LightShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Link's Awakening DX HD.exe" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\Link's Awakening DX HD.exe.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\Link's Awakening DX HD.exe.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="menuBackground.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\menuBackground.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\menuBackground.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="menuBackgroundAlt.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\menuBackgroundAlt.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="menuBackgroundB.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\v1.2.2 Patches\menuBackgroundB.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="menuBackgroundC.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\v1.2.2 Patches\menuBackgroundC.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="musicOverworld.data" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\musicOverworld.data.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\musicOverworld.data.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="newHeaderFont.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\newHeaderFont.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\newHeaderFont.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="npcs.atlas" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\npcs.atlas.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\npcs.atlas.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="npcs.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\npcs.png.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\npcs.png.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="npcs_redux.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\npcs_redux.png.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\npcs_redux.png.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="npc_hippo.ani" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\npc_hippo.ani.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\npc_hippo.ani.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="overworld.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\overworld.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\overworld.map.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="overworld.map.data" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\overworld.map.data.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\overworld.map.data.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="photos.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\photos.png.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\photos.png.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="por.lng" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\por.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\por.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="RoundedCorner.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\RoundedCorner.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\RoundedCorner.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="RoundedCornerEffectBlur.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\RoundedCornerEffectBlur.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\RoundedCornerEffectBlur.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="rus.lng" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\rus.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\rus.lng.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="SaturationFilter.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\SaturationFilter.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\SaturationFilter.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="scripts.zScript" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\scripts.zScript.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\scripts.zScript.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ShockEffect.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\ShockEffect.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\ShockEffect.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="smallFont.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\smallFont.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\smallFont.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="smallFont_redux.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\smallFont_redux.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\smallFont_redux.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="smallFont_vwf.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\smallFont_vwf.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\smallFont_vwf.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="smallFont_vwf_redux.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\smallFont_vwf_redux.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\smallFont_vwf_redux.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="sword.ani" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\sword.ani.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\sword.ani.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ThanosShader.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\ThanosShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\ThanosShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ui.atlas" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\ui.atlas.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\ui.atlas.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ui.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\ui.png.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\ui.png.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="WaleShader.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\WaleShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\WaleShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="WobbleShader.xnb" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\v1.2.1 Patches\WobbleShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\v1.2.2 Patches\WobbleShader.xnb.xdelta;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="xdelta3.exe" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\xdelta3.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

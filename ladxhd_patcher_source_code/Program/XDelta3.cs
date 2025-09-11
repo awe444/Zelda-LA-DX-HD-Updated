@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System;
 
 namespace LADXHD_Patcher
 {
@@ -11,12 +12,31 @@ namespace LADXHD_Patcher
 
         private static Dictionary<string, object> resources = ResourceHelper.GetAllResources();
 
+        public enum Operation { Create, Apply }
+
         public static void Initialize()
         {
             XDelta3.Exe = Path.Combine(Config.tempFolder, "xdelta3.exe");
         }
 
-        private static string GetApplyArguments(string OldFile, string PatchFile, string NewFile)
+        public static string GetCreateArguments(string OldFile, string NewFile, string PatchFile)
+        {
+		    string args = string.Empty;
+		    args = string.Concat(new string[]
+		    {
+			    args,
+			    " -f -s \"",
+			    OldFile,
+			    "\" \"",
+			    NewFile,
+			    "\" \"",
+			    PatchFile,
+			    "\""
+		    });
+            return args;
+        }
+
+        public static string GetApplyArguments(string OldFile, string PatchFile, string NewFile)
         {
 		    string args = string.Empty;
 		    args = string.Concat(new string[]
@@ -51,17 +71,26 @@ namespace LADXHD_Patcher
             xDelta.WaitForExit();
         }
 
-        public static void Patch(string filePath, string resourceName, string deltaPatch, string patchedFile, string targetPath)
+        public static void Execute(Operation action, string input, string diff, string output, string target = "")
         {
-            File.WriteAllBytes(deltaPatch, (byte[])resources[resourceName]);
-            XDelta3.Args = XDelta3.GetApplyArguments(filePath, deltaPatch, patchedFile);
+            if (action == Operation.Apply)
+                XDelta3.Args = XDelta3.GetApplyArguments(input, diff, output);
+            else if (action == Operation.Create)
+                XDelta3.Args = XDelta3.GetCreateArguments(input, diff, output);
             XDelta3.Start();
-            patchedFile.MovePath(targetPath, true);
+
+            if (!string.IsNullOrEmpty(target))
+                output.MovePath(target, true);
         }
 
         public static void Create()
         {
             File.WriteAllBytes(XDelta3.Exe, (byte[])resources["xdelta3.exe"]);
+        }
+
+        public static void Remove()
+        {
+            XDelta3.Exe.RemovePath();
         }
     }
 }

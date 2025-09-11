@@ -39,7 +39,7 @@
 
 $OldGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\original"
 $NewGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated"
-$GameVersion = "1.2.1"
+$GameVersion = "1.2.2"
 
 #========================================================================================================================================
 # SETUP XDELTA & OUTPUTS
@@ -121,7 +121,11 @@ function CheckCreateLanguageFiles([object]$File)
 #========================================================================================================================================
 function GetOldFilePath([object]$File, [string]$RelativePath)
 {
-	if ($File.Name -eq "menuBackgroundAlt.xnb")
+	if ($File.Name -eq "menuBackgroundB.xnb")
+	{
+		return Join-Path $OldGamePath ($File.DirectoryName.Substring($OldGamePath.Length).TrimStart('\') + "\menuBackground.xnb")
+	}	
+	if ($File.Name -eq "menuBackgroundC.xnb")
 	{
 		return Join-Path $OldGamePath ($File.DirectoryName.Substring($OldGamePath.Length).TrimStart('\') + "\menuBackground.xnb")
 	}	
