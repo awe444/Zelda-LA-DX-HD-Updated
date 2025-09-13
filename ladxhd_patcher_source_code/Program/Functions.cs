@@ -27,7 +27,12 @@ namespace LADXHD_Patcher
         private static string[] smallFonts = new[] { "smallFont_redux.xnb", "smallFont_vwf.xnb", "smallFont_vwf_redux.xnb" };
         private static string[] backGround = new[] { "menuBackgroundB.xnb", "menuBackgroundC.xnb" };
         private static string[] npcImages  = new[] { "npcs_redux.png" };
-        private static string[] itemImages = new[] { "items_redux.png" };
+        private static string[] itemImages = new[] { "items_esp.png", "items_redux.png", "items_redux_esp.png" };
+        private static string[] introImage = new[] { "intro_esp.png" };
+        private static string[] miniMapImg = new[] { "minimap_esp.png" };
+        private static string[] objectsImg = new[] { "objects_esp.png" };
+        private static string[] photograph = new[] { "photos_esp.png", "photos_redux.png", "photos_redux_esp.png" };
+        private static string[] uiImages   = new[] { "ui_esp.png"};
 
         // THE "KEY" IS THE MASTER FILE THAT CREATES OTHER FILES FROM IT. THE "VALUE" IS THE STRING ARRAY THAT HOLDS THOSE FILES
 
@@ -38,9 +43,13 @@ namespace LADXHD_Patcher
             { "smallFont.xnb",      smallFonts },
             { "menuBackground.xnb", backGround },
             { "npcs.png",            npcImages },
-            { "items.png",          itemImages }
+            { "items.png",          itemImages },
+            { "intro.png",          introImage },
+            { "minimap.png",        miniMapImg },
+            { "objects.png",        objectsImg },
+            { "photos.png",         photograph },
+            { "ui.png",               uiImages }
         };
-
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -55,7 +55,7 @@
 
 $OldGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\original"
 $NewGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated"
-$GameVersion = "1.2.3"
+$GameVersion = "1.2.4"
 
 #========================================================================================================================================
 # SETUP XDELTA & OUTPUTS
@@ -106,20 +106,30 @@ if (!(Test-Path $PatchFolder)) {
 # SPECIAL CASES
 #========================================================================================================================================
 
-$LangFiles  = @("esp.lng", "fre.lng", "ita.lng", "por.lng", "rus.lng")
-$LangDialog = @("dialog_esp.lng", "dialog_fre.lng", "dialog_ita.lng", "dialog_por.lng", "dialog_rus.lng")
-$SmallFonts = @("smallFont_redux.xnb", "smallFont_vwf.xnb", "smallFont_vwf_redux.xnb")
-$BackGround = @("menuBackgroundB.xnb", "menuBackgroundC.xnb")
-$NpcImages  = @("npcs_redux.png")
-$ItemImages = @("items_redux.png")
+$langFiles  = @("esp.lng", "fre.lng", "ita.lng", "por.lng", "rus.lng")
+$langDialog = @("dialog_esp.lng", "dialog_fre.lng", "dialog_ita.lng", "dialog_por.lng", "dialog_rus.lng")
+$smallFonts = @("smallFont_redux.xnb", "smallFont_vwf.xnb", "smallFont_vwf_redux.xnb")
+$backGround = @("menuBackgroundB.xnb", "menuBackgroundC.xnb")
+$npcImages  = @("npcs_redux.png")
+$itemImages = @("items_esp.png", "items_redux.png", "items_redux_esp.png")
+$introImage = @("intro_esp.png")
+$miniMapImg = @("minimap_esp.png")
+$objectsImg = @("objects_esp.png")
+$photograph = @("photos_esp.png", "photos_redux.png", "photos_redux_esp.png")
+$uiImages   = @("ui_esp.png")
 
 $FileTargets = @{
-    "eng.lng"             = $LangFiles
-    "dialog_eng.lng"      = $LangDialog
-    "smallFont.xnb"       = $SmallFonts
-    "menuBackground.xnb"  = $BackGround
-    "npcs.png"            = $NpcImages
-    "items.png"           = $ItemImages
+    "eng.lng"             = $langFiles
+    "dialog_eng.lng"      = $langDialog
+    "smallFont.xnb"       = $smallFonts
+    "menuBackground.xnb"  = $backGround
+    "npcs.png"            = $npcImages
+    "items.png"           = $itemImages
+    "intro.png"           = $introImage
+    "minimap.png"         = $miniMapImg
+    "objects.png"         = $objectsImg
+    "photos.png"          = $photograph
+    "ui.png"              = $uiImages
 }
 
 function Build-ReverseMap($Targets)

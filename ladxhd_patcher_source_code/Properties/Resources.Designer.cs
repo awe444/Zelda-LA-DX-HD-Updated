@@ -663,6 +663,16 @@ namespace LADXHD_Patcher.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] intro_esp_png {
+            get {
+                object obj = ResourceManager.GetObject("intro_esp.png", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] intro_png {
             get {
                 object obj = ResourceManager.GetObject("intro.png", resourceCulture);
@@ -676,6 +686,26 @@ namespace LADXHD_Patcher.Properties {
         internal static byte[] ita_lng {
             get {
                 object obj = ResourceManager.GetObject("ita.lng", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] items_esp_png {
+            get {
+                object obj = ResourceManager.GetObject("items_esp.png", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] items_redux_esp_png {
+            get {
+                object obj = ResourceManager.GetObject("items_redux_esp.png", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -763,6 +793,16 @@ namespace LADXHD_Patcher.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] minimap_esp_png {
+            get {
+                object obj = ResourceManager.GetObject("minimap_esp.png", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] musicOverworld_data {
             get {
                 object obj = ResourceManager.GetObject("musicOverworld.data", resourceCulture);
@@ -823,6 +863,16 @@ namespace LADXHD_Patcher.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] objects_esp_png {
+            get {
+                object obj = ResourceManager.GetObject("objects_esp.png", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] overworld_map {
             get {
                 object obj = ResourceManager.GetObject("overworld.map", resourceCulture);
@@ -843,9 +893,39 @@ namespace LADXHD_Patcher.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] photos_esp_png {
+            get {
+                object obj = ResourceManager.GetObject("photos_esp.png", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] photos_png {
             get {
                 object obj = ResourceManager.GetObject("photos.png", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] photos_redux_esp_png {
+            get {
+                object obj = ResourceManager.GetObject("photos_redux_esp.png", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] photos_redux_png {
+            get {
+                object obj = ResourceManager.GetObject("photos_redux.png", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -986,6 +1066,16 @@ namespace LADXHD_Patcher.Properties {
         internal static byte[] ui_atlas {
             get {
                 object obj = ResourceManager.GetObject("ui.atlas", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] ui_esp_png {
+            get {
+                object obj = ResourceManager.GetObject("ui_esp.png", resourceCulture);
                 return ((byte[])(obj));
             }
         }
