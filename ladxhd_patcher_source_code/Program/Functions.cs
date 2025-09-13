@@ -59,23 +59,27 @@ namespace LADXHD_Patcher
 
         public static bool InBackup(FileItem fileItem)
         {
+            // A quick check to know if we are currently in the backup directory.
             return (fileItem.DirectoryName.IndexOf("Data\\Backup", StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         private static void HandleMultiFilePatches(FileItem fileItem)
         {
+            // Use the file name to get the files that it creates.
             if (!fileTargets.TryGetValue(fileItem.Name, out var targets))
                 return;
 
+            // Loop through the target file names.
             foreach (string newFile in targets)
             {
+                // Make sure a patch exists in the resources.resx file.
                 if (!resources.ContainsKey(newFile))
                     continue;
 
+                // If all has gone well, then patch the file to create a new file with a different name.
                 string xdelta3File = Path.Combine((Config.tempFolder + "\\patches").CreatePath(), newFile + ".xdelta");
                 string patchedFile = Path.Combine((Config.tempFolder + "\\patchedFiles").CreatePath(), newFile);
                 string newFilePath  = Path.Combine(fileItem.DirectoryName, newFile);
-
                 File.WriteAllBytes(xdelta3File, (byte[])resources[newFile]);
                 XDelta3.Execute(Operation.Apply, fileItem.FullName, xdelta3File, patchedFile, newFilePath);
             }
@@ -87,21 +91,31 @@ namespace LADXHD_Patcher
             {
                 FileItem fileItem = new FileItem(file);
 
-                HandleMultiFilePatches(fileItem);
-
-                if (fileItem.Name == "xdelta3.exe" || !resources.ContainsKey(fileItem.Name) || InBackup(fileItem))
+                // Do not try to patch the patcher or files directly in the backup folder.
+                if (fileItem.Name == "xdelta3.exe" || InBackup(fileItem))
                     continue;
 
-                string backupFile = Path.Combine(Config.backupPath, fileItem.Name);
+                // Get the backup path to test for existing backups and create new ones to it.
+                string backupPath = Path.Combine(Config.backupPath, fileItem.Name);
 
-                if (backupFile.TestPath())
-                    backupFile.CopyPath(fileItem.FullName,true);
-                else
-                    fileItem.FullName.CopyPath(backupFile, true);
+                // Backup file if it has patch and a backup doesn't exist or restore from backup if one does exist.
+                if (resources.ContainsKey(fileItem.Name))
+                    if (!backupPath.TestPath())
+                        fileItem.FullName.CopyPath(backupPath, true);
+                    else
+                        backupPath.CopyPath(fileItem.FullName, true);
 
+                // If this file creates other files do so now.
+                if (fileTargets.ContainsKey(fileItem.Name))
+                    HandleMultiFilePatches(fileItem);
+
+                // If this file is not patched directly then move on to the next.
+                if (!resources.ContainsKey(fileItem.Name))
+                    continue;
+
+                // Patch the file.
                 string xdelta3File = Path.Combine((Config.tempFolder + "\\patches").CreatePath(), fileItem.Name + ".xdelta");
                 string patchedFile = Path.Combine((Config.tempFolder + "\\patchedFiles").CreatePath(), fileItem.Name);
-
                 File.WriteAllBytes(xdelta3File, (byte[])resources[fileItem.Name]);
                 XDelta3.Execute(Operation.Apply, fileItem.FullName, xdelta3File, patchedFile, fileItem.FullName);
             }
