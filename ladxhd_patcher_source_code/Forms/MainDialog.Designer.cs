@@ -70,9 +70,9 @@
             // picturebox_Main
             // 
             this.picturebox_Main.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.picturebox_Main.ErrorImage = global::LADXHD_Patcher.Properties.Resources.la;
-            this.picturebox_Main.Image = global::LADXHD_Patcher.Properties.Resources.la;
-            this.picturebox_Main.InitialImage = global::LADXHD_Patcher.Properties.Resources.la;
+            this.picturebox_Main.ErrorImage = global::LADXHD_Patcher.Resources.la;
+            this.picturebox_Main.Image = global::LADXHD_Patcher.Resources.la;
+            this.picturebox_Main.InitialImage = global::LADXHD_Patcher.Resources.la;
             this.picturebox_Main.Location = new System.Drawing.Point(9, 0);
             this.picturebox_Main.Name = "picturebox_Main";
             this.picturebox_Main.Size = new System.Drawing.Size(316, 241);

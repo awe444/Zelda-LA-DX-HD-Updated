@@ -12,7 +12,7 @@ namespace LADXHD_Patcher
         {
             Dictionary<string, object> resources = new Dictionary<string, object>();
 
-            ResourceSet resourceSet = Properties.Resources.ResourceManager.GetResourceSet
+            ResourceSet resourceSet = Resources.ResourceManager.GetResourceSet
             (
                 CultureInfo.CurrentUICulture,
                 true,
@@ -27,7 +27,7 @@ namespace LADXHD_Patcher
 
         public static T GetResource<T>(string name)
         {
-            object resource = Properties.Resources.ResourceManager.GetObject(name);
+            object resource = Resources.ResourceManager.GetObject(name);
             if (resource is T typed)
             {
                 return typed;

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LADXHD_Patcher.Properties {
+namespace LADXHD_Patcher {
     using System;
     
     
