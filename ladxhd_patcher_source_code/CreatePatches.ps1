@@ -55,7 +55,7 @@
 
 $OldGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\original"
 $NewGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated"
-$GameVersion = "1.2.7"
+$GameVersion = "1.2.8"
 
 #========================================================================================================================================
 # SETUP XDELTA & OUTPUTS
