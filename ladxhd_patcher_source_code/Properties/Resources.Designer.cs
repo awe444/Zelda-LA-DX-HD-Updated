@@ -83,6 +83,16 @@ namespace LADXHD_Patcher {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] beach_water_ani {
+            get {
+                object obj = ResourceManager.GetObject("beach_water.ani", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] BlurH_xnb {
             get {
                 object obj = ResourceManager.GetObject("BlurH.xnb", resourceCulture);
@@ -633,9 +643,39 @@ namespace LADXHD_Patcher {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] game_sequences_atlas {
+            get {
+                object obj = ResourceManager.GetObject("game sequences.atlas", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] game_sequences_png {
+            get {
+                object obj = ResourceManager.GetObject("game sequences.png", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] headerFont_xnb {
             get {
                 object obj = ResourceManager.GetObject("headerFont.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] house11_map {
+            get {
+                object obj = ResourceManager.GetObject("house11.map", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -773,6 +813,16 @@ namespace LADXHD_Patcher {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] link0_ani {
+            get {
+                object obj = ResourceManager.GetObject("link0.ani", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] menuBackground_xnb {
             get {
                 object obj = ResourceManager.GetObject("menuBackground.xnb", resourceCulture);
@@ -873,9 +923,29 @@ namespace LADXHD_Patcher {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] objects_atlas {
+            get {
+                object obj = ResourceManager.GetObject("objects.atlas", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] objects_esp_png {
             get {
                 object obj = ResourceManager.GetObject("objects_esp.png", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] objects_png {
+            get {
+                object obj = ResourceManager.GetObject("objects.png", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -996,6 +1066,26 @@ namespace LADXHD_Patcher {
         internal static byte[] scripts_zScript {
             get {
                 object obj = ResourceManager.GetObject("scripts.zScript", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] seagull_ani {
+            get {
+                object obj = ResourceManager.GetObject("seagull.ani", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] seagull_small_ani {
+            get {
+                object obj = ResourceManager.GetObject("seagull small.ani", resourceCulture);
                 return ((byte[])(obj));
             }
         }
