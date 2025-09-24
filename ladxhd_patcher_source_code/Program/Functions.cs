@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using static LADXHD_Patcher.XDelta3;
 
 namespace LADXHD_Patcher
@@ -63,6 +64,20 @@ namespace LADXHD_Patcher
             return (fileItem.DirectoryName.IndexOf("Data\\Backup", StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
+        private static void RemoveBackupLangFiles()
+        {
+            string[] rem = new[] { "esp.lng", "fre.lng", "ita.lng", "por.lng", "rus.lng", 
+                "dialog_esp.lng", "dialog_fre.lng", "dialog_ita.lng", "dialog_por.lng", "dialog_rus.lng" };
+
+            foreach (string file in Config.backupPath.GetFiles("*", true))
+            {
+                FileItem fileItem = new FileItem(file);
+
+                if (rem.Contains(fileItem.Name))
+                    fileItem.FullName.RemovePath();
+            }
+        }
+
         private static void HandleMultiFilePatches(FileItem fileItem)
         {
             // Use the file name to get the files that it creates.
@@ -87,6 +102,9 @@ namespace LADXHD_Patcher
 
         private static void PatchGameFiles()
         {
+            // Remove any garbage language files that will just mess up the patcher.
+            RemoveBackupLangFiles();
+
             foreach (string file in Config.baseFolder.GetFiles("*", true))
             {
                 FileItem fileItem = new FileItem(file);
@@ -119,6 +137,9 @@ namespace LADXHD_Patcher
                 File.WriteAllBytes(xdelta3File, (byte[])resources[fileItem.Name]);
                 XDelta3.Execute(Operation.Apply, fileItem.FullName, xdelta3File, patchedFile, fileItem.FullName);
             }
+            // They will probably be there again so remove them one more time.
+            RemoveBackupLangFiles();
+
             string message = patchFromBackup 
                 ? "Patching the game from v1.0.0 backup files was successful. The game was updated to v"+ Config.version + "." 
                 : "Patching Link's Awakening DX HD v1.0.0 was successful. The game was updated to v"+ Config.version + ".";
