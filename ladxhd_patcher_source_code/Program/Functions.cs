@@ -23,17 +23,19 @@ namespace LADXHD_Patcher
 
         private static Dictionary<string, object> resources = ResourceHelper.GetAllResources();
 
-        private static string[] langFiles  = new[] { "esp.lng", "fre.lng", "ita.lng", "por.lng", "rus.lng" };
-        private static string[] langDialog = new[] { "dialog_esp.lng", "dialog_fre.lng", "dialog_ita.lng", "dialog_por.lng", "dialog_rus.lng" };
+        private static string[] langFiles  = new[] { "deu.lng", "esp.lng", "fre.lng", "ita.lng", "por.lng", "rus.lng" };
+        private static string[] langDialog = new[] { "dialog_deu.lng", "dialog_esp.lng", "dialog_fre.lng", "dialog_ita.lng", "dialog_por.lng", "dialog_rus.lng" };
         private static string[] smallFonts = new[] { "smallFont_redux.xnb", "smallFont_vwf.xnb", "smallFont_vwf_redux.xnb" };
         private static string[] backGround = new[] { "menuBackgroundB.xnb", "menuBackgroundC.xnb" };
         private static string[] npcImages  = new[] { "npcs_redux.png" };
-        private static string[] itemImages = new[] { "items_esp.png", "items_redux.png", "items_redux_esp.png" };
-        private static string[] introImage = new[] { "intro_esp.png" };
-        private static string[] miniMapImg = new[] { "minimap_esp.png" };
-        private static string[] objectsImg = new[] { "objects_esp.png" };
-        private static string[] photograph = new[] { "photos_esp.png", "photos_redux.png", "photos_redux_esp.png" };
-        private static string[] uiImages   = new[] { "ui_esp.png"};
+        private static string[] itemImages = new[] { "items_deu.png", "items_esp.png", "items_fre.png", "items_ita.png", "items_por.png", "items_rus.png", "items_redux.png", 
+                                                     "items_redux_deu.png", "items_redux_esp.png", "items_redux_fre.png", "items_redux_ita.png", "items_redux_por.png", "items_redux_rus.png" };
+        private static string[] introImage = new[] { "intro_deu.png", "intro_esp.png", "intro_fre.png", "intro_ita.png", "intro_por.png", "intro_rus.png" };
+        private static string[] miniMapImg = new[] { "minimap_deu.png", "minimap_esp.png", "minimap_fre.png", "minimap_ita.png", "minimap_por.png", "minimap_rus.png" };
+        private static string[] objectsImg = new[] { "objects_deu.png", "objects_esp.png", "objects_fre.png", "objects_ita.png", "objects_por.png", "objects_rus.png" };
+        private static string[] photograph = new[] { "photos_deu.png", "photos_esp.png", "photos_fre.png",  "photos_ita.png", "photos_por.png", "photos_rus.png", "photos_redux.png", 
+                                                     "photos_redux_deu.png", "photos_redux_esp.png", "photos_redux_fre.png", "photos_redux_ita.png", "photos_redux_por.png", "photos_redux_rus.png" };
+        private static string[] uiImages   = new[] { "ui_deu.png", "ui_esp.png", "ui_fre.png", "ui_ita.png", "ui_por.png", "ui_rus.png" };
 
         // THE "KEY" IS THE MASTER FILE THAT CREATES OTHER FILES FROM IT. THE "VALUE" IS THE STRING ARRAY THAT HOLDS THOSE FILES
 
@@ -66,8 +68,8 @@ namespace LADXHD_Patcher
 
         private static void RemoveBackupLangFiles()
         {
-            string[] rem = new[] { "esp.lng", "fre.lng", "ita.lng", "por.lng", "rus.lng", 
-                "dialog_esp.lng", "dialog_fre.lng", "dialog_ita.lng", "dialog_por.lng", "dialog_rus.lng" };
+            string[] rem = new[] { "deu.lng", "esp.lng", "fre.lng", "ita.lng", "por.lng", "rus.lng", 
+                "dialog_deu.lng", "dialog_esp.lng", "dialog_fre.lng", "dialog_ita.lng", "dialog_por.lng", "dialog_rus.lng" };
 
             foreach (string file in Config.backupPath.GetFiles("*", true))
             {
