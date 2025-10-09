@@ -32,8 +32,8 @@
             this.button_Patch = new System.Windows.Forms.Button();
             this.button_Exit = new System.Windows.Forms.Button();
             this.button_ChangeLog = new System.Windows.Forms.Button();
-            this.picturebox_Main = new System.Windows.Forms.PictureBox();
             this.groupBox_Main = new System.Windows.Forms.GroupBox();
+            this.picturebox_Main = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_Main)).BeginInit();
             this.SuspendLayout();
             // 
@@ -41,7 +41,7 @@
             // 
             this.button_Patch.Location = new System.Drawing.Point(9, 384);
             this.button_Patch.Name = "button_Patch";
-            this.button_Patch.Size = new System.Drawing.Size(100, 30);
+            this.button_Patch.Size = new System.Drawing.Size(106, 30);
             this.button_Patch.TabIndex = 0;
             this.button_Patch.Text = "Patch";
             this.button_Patch.UseVisualStyleBackColor = true;
@@ -49,9 +49,9 @@
             // 
             // button_Exit
             // 
-            this.button_Exit.Location = new System.Drawing.Point(225, 384);
+            this.button_Exit.Location = new System.Drawing.Point(251, 384);
             this.button_Exit.Name = "button_Exit";
-            this.button_Exit.Size = new System.Drawing.Size(100, 30);
+            this.button_Exit.Size = new System.Drawing.Size(106, 30);
             this.button_Exit.TabIndex = 1;
             this.button_Exit.Text = "Exit";
             this.button_Exit.UseVisualStyleBackColor = true;
@@ -59,13 +59,21 @@
             // 
             // button_ChangeLog
             // 
-            this.button_ChangeLog.Location = new System.Drawing.Point(117, 384);
+            this.button_ChangeLog.Location = new System.Drawing.Point(130, 384);
             this.button_ChangeLog.Name = "button_ChangeLog";
-            this.button_ChangeLog.Size = new System.Drawing.Size(100, 30);
+            this.button_ChangeLog.Size = new System.Drawing.Size(106, 30);
             this.button_ChangeLog.TabIndex = 3;
             this.button_ChangeLog.Text = "Changelog";
             this.button_ChangeLog.UseVisualStyleBackColor = true;
             this.button_ChangeLog.Click += new System.EventHandler(this.button_ChangeLog_Click);
+            // 
+            // groupBox_Main
+            // 
+            this.groupBox_Main.Location = new System.Drawing.Point(9, 247);
+            this.groupBox_Main.Name = "groupBox_Main";
+            this.groupBox_Main.Size = new System.Drawing.Size(347, 130);
+            this.groupBox_Main.TabIndex = 5;
+            this.groupBox_Main.TabStop = false;
             // 
             // picturebox_Main
             // 
@@ -75,23 +83,15 @@
             this.picturebox_Main.InitialImage = global::LADXHD_Patcher.Resources.la;
             this.picturebox_Main.Location = new System.Drawing.Point(9, 0);
             this.picturebox_Main.Name = "picturebox_Main";
-            this.picturebox_Main.Size = new System.Drawing.Size(316, 241);
+            this.picturebox_Main.Size = new System.Drawing.Size(347, 241);
             this.picturebox_Main.TabIndex = 4;
             this.picturebox_Main.TabStop = false;
-            // 
-            // groupBox_Main
-            // 
-            this.groupBox_Main.Location = new System.Drawing.Point(9, 247);
-            this.groupBox_Main.Name = "groupBox_Main";
-            this.groupBox_Main.Size = new System.Drawing.Size(316, 130);
-            this.groupBox_Main.TabIndex = 5;
-            this.groupBox_Main.TabStop = false;
             // 
             // Form_MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(335, 423);
+            this.ClientSize = new System.Drawing.Size(368, 423);
             this.Controls.Add(this.groupBox_Main);
             this.Controls.Add(this.picturebox_Main);
             this.Controls.Add(this.button_ChangeLog);

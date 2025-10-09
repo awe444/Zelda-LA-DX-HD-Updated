@@ -25,7 +25,7 @@ namespace LADXHD_Patcher
             mainDialog.TextBox_NoClick = new TransparentLabel
             {
                 Text      = "",
-                Size      = new Size(296, 114),
+                Size      = new Size(326, 114),
                 Location  = new Point(10, 14),
                 TabIndex  = 16
             };
@@ -34,7 +34,7 @@ namespace LADXHD_Patcher
             // The Advanced RichTextBox allows for justified text.
             mainDialog.TextBox_Info = new AdvRichTextBox
             {
-                Size        = new Size(296, 114),
+                Size        = new Size(326, 114),
                 Location    = new Point(10, 14),
                 TabStop     = false,
                 BorderStyle = BorderStyle.None,
@@ -43,7 +43,7 @@ namespace LADXHD_Patcher
             };
 
             // Build text
-            string header = "The Legend of Zelda: Link's Awakening DX v" + Config.version;
+            string header = "The Legend of Zelda: Link's Awakening DX HD v" + Config.version;
             string body   =
                 "\n\nPatches v1.0.0 (or v1.1.4+) to v" + Config.version + " with the \"Patch\" button " +
                 "below. All patchers created since v1.1.4 back up the original " +
