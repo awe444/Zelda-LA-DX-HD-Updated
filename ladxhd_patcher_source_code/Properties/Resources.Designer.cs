@@ -273,6 +273,16 @@ namespace LADXHD_Patcher {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] D360_18_12_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-18-12.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] DamageShader_xnb {
             get {
                 object obj = ResourceManager.GetObject("DamageShader.xnb", resourceCulture);
