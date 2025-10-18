@@ -273,9 +273,769 @@ namespace LADXHD_Patcher {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] D360_01_01_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-01-01.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_03_03_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-03-03.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_05_05_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-05-05.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_10_0A_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-10-0A.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_17_11_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-17-11.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] D360_18_12_xnb {
             get {
                 object obj = ResourceManager.GetObject("D360-18-12.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_20_14_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-20-14.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_21_15_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-21-15.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_24_18_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-24-18.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_26_1A_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-26-1A.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_27_1B_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-27-1B.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_28_1C_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-28-1C.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_35_23_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-35-23.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_37_25_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-37-25.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_38_26_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-38-26.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_43_2B_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-43-2B.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_44_2C_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-44-2C.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_45_2D_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-45-2D.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_47_2F_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-47-2F.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_50_32_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-50-32.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_51_33_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-51-33.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_52_34_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-52-34.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_53_35_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-53-35.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_54_36_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-54-36.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_56_38_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-56-38.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_57_39_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-57-39.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_59_3B_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-59-3B.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_60_3C_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-60-3C.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_63_3F_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-63-3F.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D360_64_40_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D360-64-40.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_01_01_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-01-01.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_03_03_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-03-03.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_04_04_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-04-04.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_05_05_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-05-05.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_06_06_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-06-06.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_07_07_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-07-07.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_08_08_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-08-08.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_09_09_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-09-09.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_10_0A_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-10-0A.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_11_0B_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-11-0B.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_12_0C_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-12-0C.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_13_0D_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-13-0D.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_14_0E_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-14-0E.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_16_10_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-16-10.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_17_11_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-17-11.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_18_12_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-18-12.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_19_13_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-19-13.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_21_15_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-21-15.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_23_17_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-23-17.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_25_19_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-25-19.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_26_1A_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-26-1A.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_27_1B_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-27-1B.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_28_1C_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-28-1C.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_31_1F_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-31-1F.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_32_20_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-32-20.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_33_21_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-33-21.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_34_22_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-34-22.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D370_35_23_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D370-35-23.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_13_0D_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-13-0D.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_16_10_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-16-10.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_29_1D_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-29-1D.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_33_21_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-33-21.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_34_22_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-34-22.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_35_23_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-35-23.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_36_24_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-36-24.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_37_25_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-37-25.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_42_2A_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-42-2A.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_44_2C_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-44-2C.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_46_2E_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-46-2E.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_47_2F_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-47-2F.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_48_30_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-48-30.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_49_31_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-49-31.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_50_32_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-50-32.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_51_33_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-51-33.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_52_34_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-52-34.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_53_35_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-53-35.xnb", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] D378_55_37_xnb {
+            get {
+                object obj = ResourceManager.GetObject("D378-55-37.xnb", resourceCulture);
                 return ((byte[])(obj));
             }
         }
