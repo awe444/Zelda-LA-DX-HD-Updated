@@ -2473,9 +2473,79 @@ namespace LADXHD_Patcher {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] house_mountain_map {
+            get {
+                object obj = ResourceManager.GetObject("house mountain.map", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] house_raft_map {
+            get {
+                object obj = ResourceManager.GetObject("house raft.map", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] house1_map {
+            get {
+                object obj = ResourceManager.GetObject("house1.map", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] house10_map {
+            get {
+                object obj = ResourceManager.GetObject("house10.map", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] house11_map {
             get {
                 object obj = ResourceManager.GetObject("house11.map", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] house12_map {
+            get {
+                object obj = ResourceManager.GetObject("house12.map", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] house13_map {
+            get {
+                object obj = ResourceManager.GetObject("house13.map", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] house2_map {
+            get {
+                object obj = ResourceManager.GetObject("house2.map", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -2496,6 +2566,36 @@ namespace LADXHD_Patcher {
         internal static byte[] house3n_map_data {
             get {
                 object obj = ResourceManager.GetObject("house3n.map.data", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] house4_map {
+            get {
+                object obj = ResourceManager.GetObject("house4.map", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] house6_map {
+            get {
+                object obj = ResourceManager.GetObject("house6.map", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] house7_map {
+            get {
+                object obj = ResourceManager.GetObject("house7.map", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -2697,6 +2797,16 @@ namespace LADXHD_Patcher {
             get {
                 object obj = ResourceManager.GetObject("la", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] library_map {
+            get {
+                object obj = ResourceManager.GetObject("library.map", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
@@ -3146,6 +3256,16 @@ namespace LADXHD_Patcher {
         internal static byte[] shop1_map {
             get {
                 object obj = ResourceManager.GetObject("shop1.map", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] shop2_map {
+            get {
+                object obj = ResourceManager.GetObject("shop2.map", resourceCulture);
                 return ((byte[])(obj));
             }
         }
