@@ -6,10 +6,7 @@ namespace LADXHD_Patcher
     internal class Config
     {
         // The hash for "newHash" will need to be calculated for each new version.
-        public const string version = "1.4.7";
-
-        public const string oldHash = "F4ADFBA864B852908705EA6A18A48F18";
-        public const string newHash = "CBE82FBA15F02EEE24FB81B9A61F9856";
+        public const string version = "1.4.7.1";
 
         public static string appPath;
         public static string baseFolder;

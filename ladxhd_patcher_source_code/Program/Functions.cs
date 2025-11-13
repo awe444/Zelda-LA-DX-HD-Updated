@@ -177,27 +177,6 @@ namespace LADXHD_Patcher
             return true;
         }
 
-        private static bool ValidatePatch()
-        {
-            if (MD5Hash == Config.newHash)
-            {
-                Forms.okayDialog.Display("Already Patched", 260, 40, 30, 16, 10, 
-                    "The game is already at v" + Config.version + " so no patching is needed. Close this patcher and launch the game!");
-                return false;
-            }
-            return true;
-        }
-
-        private static bool ValidateKnown()
-        {
-            if (MD5Hash != Config.oldHash && MD5Hash != Config.newHash)
-            {
-                Forms.okayDialog.Display("Uknown Version", 260, 40, 26, 24, 10, 
-                    "The version you are attempting to patch is unknown!");
-                return false;
-            }
-            return true;
-        }
         private static bool ValidateStart()
         {
             return Forms.yesNoDialog.Display("Patch to " + Config.version, 260, 20, 28, 24, true, 
@@ -209,8 +188,6 @@ namespace LADXHD_Patcher
             SetSourceFiles();
 
             if (!ValidateExist()) return;
-            if (!ValidatePatch()) return;
-            if (!ValidateKnown()) return;
             if (!ValidateStart()) return;
 
             Forms.mainDialog.ToggleDialog(false);
