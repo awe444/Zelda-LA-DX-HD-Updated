@@ -93,8 +93,8 @@ namespace LADXHD_Patcher
 
         private static string[] obsoleteFiles = new[] 
         {  
-            "cave bird.map.data", "dungeon_end.map.data", "dungeon3_1.map", "dungeon3_1.map.data", "dungeon3_2.map", "dungeon3_2.map.data", "dungeon3_3.map", "dungeon3_3.map.data", "dungeon3_4.map", 
-            "dungeon3_4.map.data", "dungeon 7_2d.map.data", "three_1.txt", "three_2.txt", "three_3.txt" 
+            "cave bird.map.data", "dungeon_end.map.data", "dungeon3_1.map", "dungeon3_1.map.data", "dungeon3_2.map", "dungeon3_2.map.data", 
+            "dungeon3_3.map", "dungeon3_3.map.data", "dungeon3_4.map", "dungeon3_4.map.data", "dungeon 7_2d.map.data", "three_1.txt", "three_2.txt", "three_3.txt" 
         };
 
         private static void RemoveObsolete()
@@ -118,6 +118,20 @@ namespace LADXHD_Patcher
         PATCHING CODE : PATCH FILES USING XDELTA PATCHES FROM "Resources.resx" TO UPDATE TO THE LATEST VERSION.
        
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+        private static void Dungeon3PatchFix()
+        {
+            // I fucked up. After the dungeon name change the file "dungeon3_1.map" no longer exists.
+            string d3map = Path.Combine(Config.backupPath, "dungeon3_1.map");
+
+            // Look for the backup dungeon 3 file as it should still exist.
+            if (d3map.TestPath())
+            {
+                // Patch the file directly into the maps folder.
+                string xdelta3File = Path.Combine(Config.tempFolder + "\\patches\\dungeon3.map.xdelta");
+                string patchedFile = Path.Combine(Config.baseFolder + "\\Data\\Maps\\dungeon3.map");
+                XDelta3.Execute(Operation.Apply, d3map, xdelta3File, patchedFile);
+            }
+        }
 
         private static void HandleMultiFilePatches(FileItem fileItem)
         {
@@ -178,6 +192,9 @@ namespace LADXHD_Patcher
                 string patchedFile = Path.Combine(Config.tempFolder + "\\patchedFiles", fileItem.Name);
                 XDelta3.Execute(Operation.Apply, fileItem.FullName, xdelta3File, patchedFile, fileItem.FullName);
             }
+            // Because of a mistake I made not keeping "dungeon_3_1.map" around, it now needs a special fix.
+            Dungeon3PatchFix();
+
             // They will probably be there again so remove them one more time.
             RemoveBadBackupFiles();
 
