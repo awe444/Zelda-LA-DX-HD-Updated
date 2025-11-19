@@ -119,6 +119,7 @@ $objectsImg = @("objects_deu.png", "objects_esp.png", "objects_fre.png", "object
 $photograph = @("photos_deu.png", "photos_esp.png", "photos_fre.png", "photos_ind.png", "photos_ita.png", "photos_por.png", "photos_rus.png", "photos_redux.png", 
                 "photos_redux_deu.png", "photos_redux_esp.png", "photos_redux_fre.png", "photos_redux_ind.png", "photos_redux_ita.png", "photos_redux_por.png", "photos_redux_rus.png" )
 $uiImages   = @("ui_deu.png", "ui_esp.png", "ui_fre.png", "ui_ind.png", "ui_ita.png", "ui_por.png", "ui_rus.png")
+$musicTile  = @("musicOverworldClassic.data")
 $dungeon3M  = @("dungeon3.map")
 $dungeon3D  = @("dungeon3.map.data")
 
@@ -134,6 +135,7 @@ $FileTargets = @{
     "objects.png"         = $objectsImg
     "photos.png"          = $photograph
     "ui.png"              = $uiImages
+    "musicOverworld.data" = $musicTile
     "dungeon3_1.map"      = $dungeon3M
     "dungeon3_1.map.data" = $dungeon3D
 }

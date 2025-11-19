@@ -33,6 +33,7 @@ namespace LADXHD_Patcher
         private static string[] photograph = new[] { "photos_deu.png", "photos_esp.png", "photos_fre.png",  "photos_ind.png", "photos_ita.png", "photos_por.png", "photos_rus.png", "photos_redux.png", 
                                                      "photos_redux_deu.png", "photos_redux_esp.png", "photos_redux_fre.png", "photos_redux_ind.png", "photos_redux_ita.png", "photos_redux_por.png", "photos_redux_rus.png" };
         private static string[] uiImages   = new[] { "ui_deu.png", "ui_esp.png", "ui_fre.png", "ui_ind.png", "ui_ita.png", "ui_por.png", "ui_rus.png" };
+        private static string[] musicTile  = new[] { "musicOverworldClassic.data" };
         private static string[] dungeon3M  = new[] { "dungeon3.map" };
         private static string[] dungeon3D  = new[] { "dungeon3.map.data" };
 
@@ -51,6 +52,7 @@ namespace LADXHD_Patcher
             { "objects.png",        objectsImg },
             { "photos.png",         photograph },
             { "ui.png",               uiImages },
+            { "musicOverworld.data", musicTile },
             { "dungeon3_1.map",      dungeon3M },
             { "dungeon3_1.map.data", dungeon3D }
         };
@@ -70,8 +72,9 @@ namespace LADXHD_Patcher
         private static void RemoveBadBackupFiles()
         {
             // Because old versions of the patchers saved "new" files, we need to remove them or they will cause problems.
-            string[][] list = { langFiles, langDialog, smallFonts, backGround, npcImages, itemImages, 
-                                introImage, miniMapImg, objectsImg, photograph, uiImages, dungeon3M, dungeon3D };
+            string[][] list = { langFiles, langDialog, smallFonts, backGround, npcImages, itemImages, introImage, 
+                                miniMapImg, objectsImg, photograph, uiImages, musicTile, dungeon3M, dungeon3D };
+
             string[] remove = list.SelectMany(x => x).ToArray();
 
             // Loop through the files in the backup folder.
