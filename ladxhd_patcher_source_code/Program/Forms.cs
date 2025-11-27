@@ -43,7 +43,7 @@ namespace LADXHD_Patcher
             };
 
             // Build text
-            string header = "The Legend of Zelda: Link's Awakening DX HD v" + Config.version;
+            string header = "Legend of Zelda: Link's Awakening DX HD v" + Config.version;
             string body   =
                 "\n\nPatches v1.0.0 (or v1.1.4+) to v" + Config.version + " with the \"Patch\" button " +
                 "below. All patchers created since v1.1.4 back up the original " +
