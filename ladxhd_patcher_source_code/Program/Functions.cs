@@ -238,7 +238,7 @@ namespace LADXHD_Patcher
 
         private static bool ValidateStart()
         {
-            return Forms.yesNoDialog.Display("Patch to " + Config.version, 260, 20, 28, 24, true, 
+            return Forms.yesNoDialog.Display("Patch to " + Config.version, 270, 20, 25, 24, true, 
                 "Are you sure you wish to patch the game to v" + Config.version + "?");
         }
 
