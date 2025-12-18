@@ -107,6 +107,89 @@ If you experience the error **The command “dotnet tool restore” exited with 
 - To unblock all files in one go, run the included PowerShell script **"Unblock-All-Files.ps1"**.
 - To unblock a single file: Right click, go to Properties, check Unblock, and click OK.
 
+## Linux Build Instructions (Ubuntu)
+
+### Prerequisites
+
+Install the required dependencies on Ubuntu:
+
+```bash
+# Update package list
+sudo apt-get update
+
+# Install .NET 8 SDK
+sudo apt-get install -y dotnet-sdk-8.0
+
+# Install MonoGame DesktopGL dependencies
+sudo apt-get install -y \
+    libopenal-dev \
+    libsdl2-dev \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
+    mesa-common-dev
+```
+
+### Setting Up Assets on Linux
+
+The asset migration process works the same on Linux as on Windows, but since `LADXHD_Migrater.exe` is Windows-only, you'll need to run it with Wine or migrate assets on a Windows machine first.
+
+**Option 1: Use Wine (Recommended for Ubuntu)**
+```bash
+# Install Wine
+sudo apt-get install -y wine64
+
+# Run the migrator tool
+wine LADXHD_Migrater.exe
+```
+
+**Option 2: Manual Asset Migration**
+1. On a Windows machine, follow the "Updating Source Code Assets" section
+2. Copy the resulting `Content` and `Data` folders from `ladxhd_game_source_code` to your Linux machine
+3. Place them in the same `ladxhd_game_source_code` directory
+
+**Option 3: Pre-migrated Assets**
+If you already have a working Windows build, simply copy the `Content` and `Data` folders from it to `ladxhd_game_source_code` on Linux.
+
+### Building on Linux
+
+```bash
+cd ladxhd_game_source_code
+
+# Make the build script executable (first time only)
+chmod +x publish_linux.sh
+
+# Run the build script
+./publish_linux.sh
+
+# The executable will be in Publish/linux-arm64/ (or Publish/linux-x64/)
+```
+
+**Alternative: Manual Build Commands**
+
+For ARM64 (native on Ubuntu 25.04 aarch64):
+```bash
+dotnet publish -c Release -r linux-arm64 --self-contained true -p:PublishSingleFile=true
+```
+
+For x64 Linux systems:
+```bash
+dotnet publish -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true
+```
+
+### Running on Linux
+
+```bash
+cd Publish/linux-arm64  # or linux-x64
+./"Link's Awakening DX HD"
+```
+
+### Linux-Specific Notes
+
+- The editor mode uses Windows Forms dialogs which are not available on Linux. Editor features requiring file dialogs will be disabled on Linux builds.
+- All gameplay features work identically on Linux and Windows.
+- Save files are stored in `~/.local/share/Zelda_LA/SaveFiles/` (or in the game directory if `portable.txt` exists).
+- Settings are stored in `~/.local/share/Zelda_LA/settings` (or in the game directory if `portable.txt` exists).
+
 ## About This Fork
 
 I am a terrible programmer, but I have a love for this game. A ton of forks popped up, some with fixes, but nowhere were they all centralized. This fork attempted to find and implement all the various fixes and improvements spread across the other various forks. Once that was done, I started tackling the issues from the repository this was cloned from. And after that was done, I worked on anything else I could find that would make the game feel more like the original game.
