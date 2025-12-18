@@ -2,22 +2,16 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
-    <RuntimeIdentifiers>win-x64;linux-arm64;linux-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>linux-arm64;linux-x64</RuntimeIdentifiers>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'win-x64' OR '$(OS)' == 'Windows_NT'">
-    <UseWindowsForms>true</UseWindowsForms>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath></OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;LINUX</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'win-x64' OR '$(OS)' == 'Windows_NT'">
-    <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'linux-arm64' OR '$(RuntimeIdentifier)' == 'linux-x64'">
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
@@ -29,7 +23,21 @@
     <EmbeddedResource Remove="Fix\**" />
     <None Remove="Content\bin\**" />
     <None Remove="Content\obj\**" />
+    <None Remove="Content\obj\**" />
     <None Remove="Fix\**" />
+  </ItemGroup>
+  <!-- Exclude Windows-only GbsPlayer files -->
+  <ItemGroup>
+    <Compile Remove="GbsPlayer\ByteBufferPool.cs" />
+    <Compile Remove="GbsPlayer\CDynamicEffectInstance.cs" />
+    <Compile Remove="GbsPlayer\Cartridge.cs" />
+    <Compile Remove="GbsPlayer\GameBoyCPU.cs" />
+    <Compile Remove="GbsPlayer\GameBoyCPUInstructions.cs" />
+    <Compile Remove="GbsPlayer\GbsPlayer.cs" />
+    <Compile Remove="GbsPlayer\GeneralMemory.cs" />
+    <Compile Remove="GbsPlayer\OPCycle.cs" />
+    <Compile Remove="GbsPlayer\OpLength.cs" />
+    <Compile Remove="GbsPlayer\Sound.cs" />
   </ItemGroup>
     <ItemGroup>
     <None Remove=".gitignore" />
@@ -40,6 +48,7 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\**">
@@ -52,9 +61,6 @@
     <PublishSingleFile>true</PublishSingleFile>
     <ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
     <Version>1.5.0</Version>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'win-x64' OR '$(OS)' == 'Windows_NT'">
-    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

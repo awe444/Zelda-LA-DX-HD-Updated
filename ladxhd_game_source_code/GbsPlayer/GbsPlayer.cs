@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if WINDOWS
+using System;
 using System.IO;
 using System.Threading;
 
@@ -169,3 +170,4 @@ namespace GBSPlayer
         }
     }
 }
+#endif
