@@ -161,25 +161,20 @@ chmod +x publish_linux.sh
 # Run the build script
 ./publish_linux.sh
 
-# The executable will be in Publish/linux-arm64/ (or Publish/linux-x64/)
+# The executable will be in Publish/linux-arm64/
 ```
 
-**Alternative: Manual Build Commands**
+**Alternative: Manual Build Command**
 
-For ARM64 (native on Ubuntu 25.04 aarch64):
+For ARM64 (Ubuntu 25.04 aarch64):
 ```bash
 dotnet publish -c Release -r linux-arm64 --self-contained true -p:PublishSingleFile=true
-```
-
-For x64 Linux systems:
-```bash
-dotnet publish -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true
 ```
 
 ### Running on Linux
 
 ```bash
-cd Publish/linux-arm64  # or linux-x64
+cd Publish/linux-arm64
 ./"Link's Awakening DX HD"
 ```
 

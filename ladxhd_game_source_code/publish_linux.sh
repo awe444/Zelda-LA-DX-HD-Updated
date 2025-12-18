@@ -1,19 +1,15 @@
 #!/bin/bash
 set -e  # Exit on any command failure
 
-# Build script for Linux (Ubuntu)
+# Build script for Linux ARM64 (Ubuntu 25.04 aarch64)
 
-echo "Building Zelda LA DX HD for Linux..."
+echo "Building Zelda LA DX HD for Linux ARM64..."
 
 # Restore .NET tools
 dotnet tool restore
 
-# Build for Linux ARM64 (native)
+# Build for Linux ARM64
 echo "Building for Linux ARM64..."
 dotnet publish -c Release -r linux-arm64 --self-contained true -p:PublishSingleFile=true -o "./Publish/linux-arm64"
 
-# Optionally build for Linux x64 as well
-echo "Building for Linux x64..."
-dotnet publish -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o "./Publish/linux-x64"
-
-echo "Build complete! Binaries are in ./Publish/"
+echo "Build complete! Binary is in ./Publish/linux-arm64/"
