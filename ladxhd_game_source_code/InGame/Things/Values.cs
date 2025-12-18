@@ -100,7 +100,7 @@ namespace ProjectZ.InGame.Things
         public static int HandItemSlots = 6;
 
         // The original game field size was 160x128. The minimum resolution for this port is 320x240 to support
-        // lower resolution displays. This means the minimum real scale is at least 2x.
+        // lower resolution displays.
         public static int MinWidth = 320;
         public static int MinHeight = 240;
 
