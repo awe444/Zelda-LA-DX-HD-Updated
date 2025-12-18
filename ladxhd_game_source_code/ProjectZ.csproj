@@ -23,7 +23,6 @@
     <EmbeddedResource Remove="Fix\**" />
     <None Remove="Content\bin\**" />
     <None Remove="Content\obj\**" />
-    <None Remove="Content\obj\**" />
     <None Remove="Fix\**" />
   </ItemGroup>
   <!-- Exclude Windows-only GbsPlayer files -->

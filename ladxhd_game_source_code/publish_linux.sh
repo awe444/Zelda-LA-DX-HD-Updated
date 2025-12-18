@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e  # Exit on any command failure
+
 # Build script for Linux (Ubuntu)
 
 echo "Building Zelda LA DX HD for Linux..."
