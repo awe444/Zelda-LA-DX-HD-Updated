@@ -145,9 +145,11 @@ namespace ProjectZ
 
         protected override void Initialize()
         {
+#if !LINUX
             // Allow the user to resize the window.
-            // Note: Must be set before base.Initialize() for SDL2 compatibility
+            // Note: On Linux/SDL2, window resizing is controlled differently
             Window.AllowUserResizing = true;
+#endif
             
             // Initialize the editor.
             EditorManager = new EditorManager(this);
