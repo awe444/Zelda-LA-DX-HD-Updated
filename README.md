@@ -120,13 +120,18 @@ sudo apt-get update
 # Install .NET 8 SDK
 sudo apt-get install -y dotnet-sdk-8.0
 
-# Install MonoGame DesktopGL dependencies
+# Install MonoGame DesktopGL runtime dependencies
 sudo apt-get install -y \
     libopenal-dev \
     libsdl2-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
     mesa-common-dev
+
+# Install MonoGame Content Pipeline build dependencies
+sudo apt-get install -y \
+    libfreeimage3 \
+    libfreeimage-dev
 ```
 
 ### Setting Up Assets on Linux
