@@ -161,10 +161,10 @@ This build targets:
 - **Graphics Backend**: OpenGL (via MonoGame.Framework.DesktopGL)
 - **Runtime**: .NET 6.0
 - **Build Method**: Cross-compilation from Windows or native compilation on Linux
-- **Content Pipeline**: Uses Windows tools when building on Windows, DesktopGL when building on Linux
+- **Content Pipeline**: Always uses DesktopGL pipeline to compile shaders for OpenGL
 
 **Important Note on Content Pipeline:**
-The project uses conditional configuration for the MonoGame Content Pipeline. When building on Windows, it uses Windows-based content tools (including shader compilers) to process game assets. The compiled content is then included in the Linux ARM64 executable. This allows cross-compilation while ensuring all content (including shaders) can be properly built.
+The MonoGame Content Pipeline compiles shaders to the appropriate format for the target platform. With `MonoGamePlatform=DesktopGL`, shaders are compiled to GLSL (OpenGL Shading Language), not DirectX bytecode. The content pipeline runs on the build machine and requires native libraries (`libmojoshader_64.dll` on Windows) to perform shader translation. The project automatically copies these libraries from the NuGet packages during build to ensure shader compilation works correctly on Windows.
 
 Previous Windows/DirectX-specific features have been replaced with cross-platform alternatives:
 - DirectX → OpenGL
@@ -183,11 +183,15 @@ If you experience the error **The command “dotnet tool restore” exited with 
 ### Additional Troubleshooting for Linux ARM64
 
 **Error: "Unable to load DLL 'libmojoshader_64.dll'" when compiling shaders**
-- This occurs when the Content Pipeline tries to compile shaders on Windows for Linux target
-- The project is configured to automatically use Windows content tools when building on Windows
+- This occurs when the MonoGame Content Pipeline cannot find required native libraries for shader compilation
+- The project automatically copies these native libraries from NuGet packages during build on Windows
+- These libraries are needed to compile shaders to GLSL (OpenGL format), not DirectX
 - Ensure you have the Content folder with shader files properly set up from v1.0.0 assets
-- The MonoGamePlatform property automatically switches between Windows (for build tools) and DesktopGL (for runtime)
-- If you still encounter this error, ensure you're using Visual Studio 2022 or .NET 6.0 SDK on Windows
+- If the error persists:
+  1. Try running `dotnet restore` to ensure all packages are downloaded
+  2. Check that the MonoGame.Framework.Content.Pipeline package is correctly installed
+  3. Verify you're using .NET 6.0 SDK or higher
+- The shader compilation will produce OpenGL-compatible shaders regardless of the build platform
 
 **Error: "The target framework 'net6.0' is out of support"**
 - This is a warning, not an error. The build will still work

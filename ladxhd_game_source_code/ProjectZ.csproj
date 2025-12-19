@@ -5,9 +5,7 @@
     <RuntimeIdentifiers>linux-arm64</RuntimeIdentifiers>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
-    <!-- MonoGamePlatform for content pipeline - use Windows tools when building on Windows -->
-    <MonoGamePlatform Condition="'$(OS)' == 'Windows_NT'">Windows</MonoGamePlatform>
-    <MonoGamePlatform Condition="'$(OS)' != 'Windows_NT'">DesktopGL</MonoGamePlatform>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath></OutputPath>
@@ -49,6 +47,15 @@
     <Message Text="Restoring dotnet tools" Importance="High" />
     <Exec Command="dotnet tool restore" />
   </Target>
+  
+  <!-- Copy native libraries for MonoGame Content Pipeline on Windows when building DesktopGL -->
+  <Target Name="CopyContentPipelineNativeLibraries" BeforeTargets="Build" Condition="'$(OS)' == 'Windows_NT' AND '$(MonoGamePlatform)' == 'DesktopGL'">
+    <ItemGroup>
+      <ContentPipelineNativeLibs Include="$(NuGetPackageRoot)monogame.framework.content.pipeline\3.8.1.303\runtimes\win-x64\native\*.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ContentPipelineNativeLibs)" DestinationFolder="$(MSBuildProjectDirectory)" SkipUnchangedFiles="true" />
+  </Target>
+  
   <Target Name="CleanPublish" AfterTargets="Publish">
   </Target>
 </Project>

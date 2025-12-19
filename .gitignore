@@ -12,3 +12,6 @@ ladxhd_patcher_source_code/.vs/
 ladxhd_patcher_source_code/bin/
 ladxhd_patcher_source_code/obj/
 zelda_ladxhd_build/
+
+# MonoGame Content Pipeline native libraries (copied during build)
+ladxhd_game_source_code/*.dll
