@@ -1,1 +1,1 @@
-dotnet publish -c Release -p:"PublishProfile=FolderProfile"
+dotnet publish -c Release -r linux-arm64 --self-contained true

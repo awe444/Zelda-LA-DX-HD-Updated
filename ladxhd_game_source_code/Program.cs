@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Windows.Forms;
 using ProjectZ.InGame.Things;
 
 namespace ProjectZ
 {
     public static class Program
     {
-        [STAThread]
         static void Main(string[] args)
         {
             var editorMode = false;
@@ -44,7 +42,8 @@ namespace ProjectZ
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.StackTrace, exception.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.Error.WriteLine($"Error: {exception.Message}");
+                Console.Error.WriteLine(exception.StackTrace);
                 throw;
             }
         }
