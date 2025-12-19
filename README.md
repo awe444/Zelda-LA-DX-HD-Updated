@@ -134,54 +134,46 @@ sudo apt-get install -y \
     libfreeimage3 \
     libfreeimage-dev
 
-# Optional: Install Wine for shader compilation (if not using pre-compiled assets)
-# Only needed if you want to compile shaders directly on Linux
-sudo apt-get install -y wine64 winetricks
+# Optional: Install Wine for asset migration (LADXHD_Migrater.exe is Windows-only)
+# Wine is NOT needed for shader compilation - MonoGame's mgfxc tool handles that
+sudo apt-get install -y wine64
 ```
 
 ### Setting Up Assets on Linux
 
-The asset migration process works the same on Linux as on Windows, but since `LADXHD_Migrater.exe` is Windows-only, you'll need to run it with Wine or migrate assets on a Windows machine first.
+**IMPORTANT: Shader Compilation on Linux**
 
-**IMPORTANT:** MonoGame's Content Pipeline requires Wine to compile shaders (.fx files) on Linux. **Shaders must be compiled for the DesktopGL platform** - shaders from Windows DirectX builds will NOT work on Linux.
+Good news! **Wine is NOT required for shader compilation.** MonoGame includes a cross-platform shader compiler (`mgfxc`) that runs natively via .NET. The build process automatically compiles shaders for the DesktopGL (OpenGL) platform.
 
-**Option 1: Use Wine for Native Linux Compilation (Recommended)**
+**Wine is only needed to run `LADXHD_Migrater.exe`** (the asset migration tool). You have two options:
 
-This compiles shaders directly on Linux for the DesktopGL (OpenGL) platform:
+**Option 1: Migrate Assets with Wine on Linux (Simplest)**
 
 ```bash
-# Install Wine (64-bit)
-sudo apt-get install -y wine64 winetricks
+# Install Wine (64-bit) - only needed for the migrator tool
+sudo apt-get install -y wine64
 
 # Run the migrator tool (creates Content and Data folders)
 wine LADXHD_Migrater.exe
 # Click "Migrate Assets From v1.0.0" and wait for completion
 
-# Set up Wine for MonoGame shader compilation (see detailed steps below)
-# After Wine setup is complete, build normally with ./publish_linux.sh
+# That's it! Shaders will compile automatically during build via mgfxc
 ```
 
-**For detailed Wine shader compilation setup, see "Shader Compilation on Linux via Wine" below.**
+**Option 2: Migrate Assets on Windows, Copy to Linux**
 
-**Option 2: Pre-compile Shaders on Windows for DesktopGL (Advanced)**
+1. On Windows machine, follow the "Updating Source Code Assets" section
+2. After running `LADXHD_Migrater.exe`, copy these folders to Linux:
+   - `ladxhd_game_source_code/Content/` (source .fx files, images, fonts, etc.)
+   - `ladxhd_game_source_code/Data/` (game maps, sprites, sounds, etc.)
+3. Place both folders in `ladxhd_game_source_code` on Linux
+4. Shaders will compile automatically during build via mgfxc
 
-To use pre-compiled shaders from Windows, you must build with DesktopGL platform (not WindowsDX):
+**Option 3: Copy from Existing Build (Pre-compiled)**
 
-1. On Windows, temporarily modify `ProjectZ.csproj`:
-   - Keep `<MonoGamePlatform>DesktopGL</MonoGamePlatform>` (already correct)
-   - Change `<RuntimeIdentifiers>linux-arm64</RuntimeIdentifiers>` to `<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>`
-2. Follow the "Updating Source Code Assets" section
-3. Build: `dotnet publish -c Release -r win-x64`
-4. Copy `ladxhd_game_source_code\bin\Release\net8.0\win-x64\publish\Content\` to Linux
-5. Also copy the `Data` folder from `ladxhd_game_source_code` to Linux
-6. Revert `ProjectZ.csproj` changes on Linux
-7. Place both folders in `ladxhd_game_source_code` on Linux
-
-**Option 3: Copy from Existing Linux Build**
-
-If you or someone else has already built the game on Linux (or Windows with DesktopGL), you can simply copy both the `Content` and `Data` folders from that build to `ladxhd_game_source_code` on Linux.
-
-**NOTE:** Content from Windows DirectX builds will NOT work - only use Content from DesktopGL builds.
+If you already have a DesktopGL build (from Linux or Windows with DesktopGL platform):
+- Copy both `Content/` and `Data/` folders to `ladxhd_game_source_code` on Linux
+- **WARNING:** Do NOT use Content from Windows DirectX (WindowsDX) builds - only DesktopGL builds are compatible
 
 ### Building on Linux
 
@@ -196,10 +188,15 @@ chmod +x disable_editor_fonts.sh
 chmod +x publish_linux.sh
 
 # Run the build script
+# Shaders will be compiled automatically for OpenGL by mgfxc
 ./publish_linux.sh
 
 # The executable will be in Publish/linux-arm64/
 ```
+
+**How Shader Compilation Works:**
+
+The build process uses MonoGame's `mgfxc` tool (installed via `dotnet tool restore`) to automatically compile `.fx` shader files to `.xnb` format for the OpenGL platform. This happens during the build via `MonoGame.Content.Builder.Task`. **No Wine required!**
 
 **Alternative: Manual Build Command**
 
@@ -255,83 +252,34 @@ sudo ln -sf "$FREEIMAGE_PATH" "$(dirname "$FREEIMAGE_PATH")/libFreeImage.so"
 sudo ldconfig
 ```
 
-**Shader Compilation on Linux via Wine (Advanced)**
+**Shader Compilation Details (Technical)**
 
-If you see errors like "MGFXC effect compiler requires a valid Wine installation", this means MonoGame's Content Pipeline needs Wine to compile HLSL shader files (.fx → .xnb).
+MonoGame's shader compilation on Linux works through these components:
 
-**Quick Solution:** Use **pre-compiled shaders** from a Windows build (recommended) - see Option 1 above.
+1. **mgfxc**: Cross-platform .NET tool that compiles HLSL shaders
+   - Installed automatically via `dotnet tool restore` (see `.config/dotnet-tools.json`)
+   - Runs natively on Linux (no Wine needed)
+   - Compiles shaders for OpenGL profile when MonoGamePlatform=DesktopGL
 
-**Advanced Solution:** Set up Wine to compile shaders natively on Linux:
+2. **MonoGame.Content.Builder.Task**: MSBuild task in ProjectZ.csproj
+   - Automatically invokes mgfxc during build
+   - Processes all .fx files referenced in Content.mgcb
+   - Outputs .xnb compiled shaders to Content folder
 
-**Step 1: Install Wine and Dependencies**
+**If you encounter "Shader compilation failed" errors:**
+
 ```bash
-# Install Wine 64-bit and winetricks
-sudo apt-get install -y wine64 winetricks
+# Verify mgfxc is installed
+dotnet tool list
 
-# Initialize Wine (creates ~/.wine directory)
-winecfg
-# A configuration window will appear - just close it after it opens
-```
+# Should show: dotnet-mgfxc    3.8.1.303    dotnet-mgfxc
 
-**Step 2: Install DirectX Shader Compiler**
-```bash
-# Install d3dcompiler_47 (Microsoft's HLSL compiler)
-winetricks d3dcompiler_47
-
-# Alternative if winetricks fails:
-# Download and install manually from Microsoft DirectX End-User Runtime
-```
-
-**Step 3: Configure MonoGame to Use Wine**
-```bash
-# Set Wine prefix environment variable (add to ~/.bashrc for persistence)
-export MGFXC_WINE_PATH="$HOME/.wine"
-
-# For 64-bit Wine prefix (if you used WINEPREFIX=~/.wine64):
-# export MGFXC_WINE_PATH="$HOME/.wine64"
-
-# Verify Wine is working
-wine --version
-```
-
-**Step 4: Test Shader Compilation**
-```bash
+# If missing, restore tools
 cd ladxhd_game_source_code
-
-# Run disable_editor_fonts.sh first
-./disable_editor_fonts.sh
-
-# Try building - shaders should now compile via Wine
-./publish_linux.sh
+dotnet tool restore
 ```
 
-**Troubleshooting Wine Shader Compilation:**
-
-- **Error: "Wine is not installed"**
-  - Make sure `wine` command is in your PATH: `which wine`
-  - Set MGFXC_WINE_PATH: `export MGFXC_WINE_PATH="$HOME/.wine"`
-
-- **Error: "d3dcompiler_47.dll not found"**
-  - Run `winetricks d3dcompiler_47` again
-  - Verify installation: `ls ~/.wine/drive_c/windows/system32/d3dcompiler_47.dll`
-
-- **Shader compilation is slow**
-  - This is normal - Wine adds overhead to shader compilation
-  - First build will be slowest; subsequent builds are faster
-  - Consider using pre-compiled shaders for development workflow
-
-**Making Wine Setup Permanent:**
-
-Add to `~/.bashrc` or `~/.profile`:
-```bash
-export MGFXC_WINE_PATH="$HOME/.wine"
-```
-
-Then reload: `source ~/.bashrc`
-
-**CRITICAL:** MonoGame shaders are platform-specific. Shaders compiled for DesktopGL (OpenGL - used by Linux builds) are **NOT compatible** with WindowsDX (DirectX) builds and vice versa. The .xnb files must be compiled for the same MonoGamePlatform that will run them.
-
-**For Linux ARM64 builds:** Use shaders compiled on Linux via Wine OR on Windows with DesktopGL platform configured.
+**CRITICAL:** MonoGame shaders are platform-specific. The DesktopGL platform compiles shaders for OpenGL. Do NOT use .xnb files from WindowsDX (DirectX) builds - they are incompatible and will cause "built for a different platform" runtime errors.
 
 ### Disabling Editor Fonts for Gameplay-Only Builds
 
