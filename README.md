@@ -184,14 +184,22 @@ If you experience the error **The command “dotnet tool restore” exited with 
 
 **Error: "Unable to load DLL 'libmojoshader_64.dll'" when compiling shaders**
 - This occurs when the MonoGame Content Pipeline cannot find required native libraries for shader compilation
-- The project automatically copies these native libraries from NuGet packages during build on Windows
+- The project includes an automatic build target that copies these native libraries from NuGet packages
 - These libraries are needed to compile shaders to GLSL (OpenGL format), not DirectX
 - Ensure you have the Content folder with shader files properly set up from v1.0.0 assets
-- If the error persists:
-  1. Try running `dotnet restore` to ensure all packages are downloaded
-  2. Check that the MonoGame.Framework.Content.Pipeline package is correctly installed
-  3. Verify you're using .NET 6.0 SDK or higher
-- The shader compilation will produce OpenGL-compatible shaders regardless of the build platform
+
+If the automatic copy doesn't work, manually copy the DLLs:
+1. After running `dotnet restore`, locate your NuGet packages folder (typically `%USERPROFILE%\.nuget\packages`)
+2. Navigate to `monogame.framework.content.pipeline\3.8.1.303\runtimes\win-x64\native\`
+3. Copy `libmojoshader_64.dll` and `freetype6.dll` to your project root (`ladxhd_game_source_code\`)
+4. These DLLs are in .gitignore and won't be committed
+5. Rebuild the project
+
+Alternative approach - use the MGCB Editor:
+1. If Visual Studio build continues to fail, you can use the MonoGame Content Builder (MGCB) Editor
+2. Install it: `dotnet tool install -g dotnet-mgcb-editor`
+3. Run: `mgcb-editor Content/Content.mgcb` (if you have a .mgcb file)
+4. The MGCB Editor has its own way of finding the native libraries
 
 **Error: "The target framework 'net6.0' is out of support"**
 - This is a warning, not an error. The build will still work

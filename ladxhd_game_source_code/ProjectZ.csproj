@@ -48,12 +48,22 @@
     <Exec Command="dotnet tool restore" />
   </Target>
   
-  <!-- Copy native libraries for MonoGame Content Pipeline on Windows when building DesktopGL -->
-  <Target Name="CopyContentPipelineNativeLibraries" BeforeTargets="Build" Condition="'$(OS)' == 'Windows_NT' AND '$(MonoGamePlatform)' == 'DesktopGL'">
+  <!-- Ensure native libraries are available for MonoGame Content Pipeline on Windows -->
+  <!-- This copies libmojoshader and other required DLLs for DesktopGL shader compilation -->
+  <!-- The DLLs need to be in the project root where the Content Builder Task can find them -->
+  <Target Name="CopyContentPipelineNativeLibraries" AfterTargets="Restore" BeforeTargets="BeforeBuild" Condition="'$(OS)' == 'Windows_NT'">
+    <PropertyGroup>
+      <ContentPipelinePackagePath Condition="'$(NuGetPackageRoot)' != ''">$(NuGetPackageRoot)monogame.framework.content.pipeline\3.8.1.303</ContentPipelinePackagePath>
+      <ContentPipelinePackagePath Condition="'$(NuGetPackageRoot)' == '' AND '$(USERPROFILE)' != ''">$(USERPROFILE)\.nuget\packages\monogame.framework.content.pipeline\3.8.1.303</ContentPipelinePackagePath>
+      <ContentPipelinePackagePath Condition="'$(NuGetPackageRoot)' == '' AND '$(HOME)' != ''">$(HOME)/.nuget/packages/monogame.framework.content.pipeline/3.8.1.303</ContentPipelinePackagePath>
+    </PropertyGroup>
     <ItemGroup>
-      <ContentPipelineNativeLibs Include="$(NuGetPackageRoot)monogame.framework.content.pipeline\3.8.1.303\runtimes\win-x64\native\*.dll" />
+      <ContentPipelineNativeLibs Include="$(ContentPipelinePackagePath)\runtimes\win-x64\native\libmojoshader_64.dll" />
+      <ContentPipelineNativeLibs Include="$(ContentPipelinePackagePath)\runtimes\win-x64\native\freetype6.dll" />
     </ItemGroup>
-    <Copy SourceFiles="@(ContentPipelineNativeLibs)" DestinationFolder="$(MSBuildProjectDirectory)" SkipUnchangedFiles="true" />
+    <Message Text="Copying MonoGame Content Pipeline native libraries from: $(ContentPipelinePackagePath)\runtimes\win-x64\native\" Importance="High" />
+    <Copy SourceFiles="@(ContentPipelineNativeLibs)" DestinationFolder="$(MSBuildProjectDirectory)" SkipUnchangedFiles="true" ContinueOnError="true" />
+    <Message Text="Native libraries copied to project directory" Importance="High" Condition="'@(ContentPipelineNativeLibs)' != ''" />
   </Target>
   
   <Target Name="CleanPublish" AfterTargets="Publish">
