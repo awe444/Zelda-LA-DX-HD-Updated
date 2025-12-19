@@ -6,33 +6,129 @@ set -e
 
 CONTENT_MGCB="Content/Content.mgcb"
 
+echo "========================================="
+echo "Editor Font Disabler Script"
+echo "========================================="
+echo ""
+
 if [ ! -f "$CONTENT_MGCB" ]; then
-    echo "Error: $CONTENT_MGCB not found."
+    echo "❌ ERROR: $CONTENT_MGCB not found."
     echo "Make sure you have migrated the assets first (see README.md)."
+    echo "Current directory: $(pwd)"
+    echo "Looking for: $(readlink -f "$CONTENT_MGCB" 2>/dev/null || echo "$CONTENT_MGCB")"
     exit 1
 fi
 
-echo "Disabling editor fonts in $CONTENT_MGCB..."
+echo "✓ Found Content.mgcb at: $CONTENT_MGCB"
+echo ""
+
+# Show what we're looking for
+echo "Searching for editor font blocks to remove:"
+echo "  1. Content/Fonts/editor font.spritefont"
+echo "  2. Content/Fonts/editor mono font.spritefont"
+echo "  3. Content/Fonts/editor small mono font.spritefont"
+echo ""
+
+# Check what's in the file before modification
+FONT1_COUNT=$(grep -c "^#begin Content/Fonts/editor font\.spritefont" "$CONTENT_MGCB" || true)
+FONT2_COUNT=$(grep -c "^#begin Content/Fonts/editor mono font\.spritefont" "$CONTENT_MGCB" || true)
+FONT3_COUNT=$(grep -c "^#begin Content/Fonts/editor small mono font\.spritefont" "$CONTENT_MGCB" || true)
+
+echo "Before modification:"
+echo "  - 'editor font.spritefont' blocks found: $FONT1_COUNT"
+echo "  - 'editor mono font.spritefont' blocks found: $FONT2_COUNT"
+echo "  - 'editor small mono font.spritefont' blocks found: $FONT3_COUNT"
+echo ""
+
+if [ "$FONT1_COUNT" -eq 0 ] && [ "$FONT2_COUNT" -eq 0 ] && [ "$FONT3_COUNT" -eq 0 ]; then
+    echo "✓ No editor fonts found - already disabled or not present."
+    echo "Nothing to do!"
+    exit 0
+fi
 
 # Create backup
+echo "Creating backup: $CONTENT_MGCB.backup"
 cp "$CONTENT_MGCB" "$CONTENT_MGCB.backup"
+echo "✓ Backup created"
+echo ""
 
 # Remove editor font blocks entirely
 # Each block starts with #begin and ends with a blank line
-# We need to remove the entire block for each editor font
+echo "Removing editor font blocks..."
 
-# Use awk to filter out the editor font blocks
+# Use awk to filter out the editor font blocks with verbose output
 awk '
-BEGIN { skip = 0 }
-/^#begin Content\/Fonts\/editor font\.spritefont/ { skip = 1; next }
-/^#begin Content\/Fonts\/editor mono font\.spritefont/ { skip = 1; next }
-/^#begin Content\/Fonts\/editor small mono font\.spritefont/ { skip = 1; next }
-skip == 1 && /^$/ { skip = 0; next }
+BEGIN { 
+    skip = 0
+    removed_blocks = 0
+    current_block = ""
+}
+/^#begin Content\/Fonts\/editor font\.spritefont/ { 
+    skip = 1
+    removed_blocks++
+    current_block = "editor font.spritefont"
+    print "  → Removing block: " current_block > "/dev/stderr"
+    next 
+}
+/^#begin Content\/Fonts\/editor mono font\.spritefont/ { 
+    skip = 1
+    removed_blocks++
+    current_block = "editor mono font.spritefont"
+    print "  → Removing block: " current_block > "/dev/stderr"
+    next 
+}
+/^#begin Content\/Fonts\/editor small mono font\.spritefont/ { 
+    skip = 1
+    removed_blocks++
+    current_block = "editor small mono font.spritefont"
+    print "  → Removing block: " current_block > "/dev/stderr"
+    next 
+}
+skip == 1 && /^$/ { 
+    skip = 0
+    print "    ✓ Block removed: " current_block > "/dev/stderr"
+    current_block = ""
+    next 
+}
+skip == 1 { 
+    next 
+}
 skip == 0 { print }
+END {
+    print "" > "/dev/stderr"
+    print "Total blocks removed: " removed_blocks > "/dev/stderr"
+}
 ' "$CONTENT_MGCB.backup" > "$CONTENT_MGCB"
 
-echo "Editor fonts disabled. Backup saved to $CONTENT_MGCB.backup"
 echo ""
-echo "The build will now skip editor fonts and only support gameplay."
-echo "Editor font blocks have been removed from Content.mgcb"
-echo "To restore editor fonts, run: cp $CONTENT_MGCB.backup $CONTENT_MGCB"
+
+# Verify the changes
+FONT1_AFTER=$(grep -c "^#begin Content/Fonts/editor font\.spritefont" "$CONTENT_MGCB" || true)
+FONT2_AFTER=$(grep -c "^#begin Content/Fonts/editor mono font\.spritefont" "$CONTENT_MGCB" || true)
+FONT3_AFTER=$(grep -c "^#begin Content/Fonts/editor small mono font\.spritefont" "$CONTENT_MGCB" || true)
+
+echo "After modification:"
+echo "  - 'editor font.spritefont' blocks remaining: $FONT1_AFTER"
+echo "  - 'editor mono font.spritefont' blocks remaining: $FONT2_AFTER"
+echo "  - 'editor small mono font.spritefont' blocks remaining: $FONT3_AFTER"
+echo ""
+
+if [ "$FONT1_AFTER" -eq 0 ] && [ "$FONT2_AFTER" -eq 0 ] && [ "$FONT3_AFTER" -eq 0 ]; then
+    echo "✅ SUCCESS: All editor font blocks removed!"
+else
+    echo "⚠️  WARNING: Some editor font blocks may still remain!"
+    echo "This could indicate the .mgcb file format is different than expected."
+    echo ""
+    echo "Remaining references:"
+    grep "editor.*font\.spritefont" "$CONTENT_MGCB" || echo "  (none found with grep)"
+fi
+
+echo ""
+echo "========================================="
+echo "Summary:"
+echo "  - Backup saved: $CONTENT_MGCB.backup"
+echo "  - Modified: $CONTENT_MGCB"
+echo "  - To restore: cp $CONTENT_MGCB.backup $CONTENT_MGCB"
+echo "========================================="
+echo ""
+echo "You can now run the build script: ./publish_linux.sh"
