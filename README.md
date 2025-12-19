@@ -139,22 +139,29 @@ sudo apt-get install -y \
 
 The asset migration process works the same on Linux as on Windows, but since `LADXHD_Migrater.exe` is Windows-only, you'll need to run it with Wine or migrate assets on a Windows machine first.
 
-**Option 1: Use Wine (Recommended for Ubuntu)**
+**IMPORTANT:** MonoGame's Content Pipeline requires Wine to compile shaders (.fx files) on Linux. The easiest approach is to use **pre-compiled assets** from a Windows build or build once on Windows, then copy the compiled Content folder to Linux.
+
+**Option 1: Pre-compiled Assets (Recommended)**
+1. On a Windows machine, follow the "Updating Source Code Assets" section
+2. Build the game once on Windows (this compiles all shaders to .xnb files)
+3. Copy the entire `Content` folder from `ladxhd_game_source_code\Publish\win-x64\Content` to your Linux machine
+4. Also copy the `Data` folder from `ladxhd_game_source_code` to Linux
+5. Place both folders in `ladxhd_game_source_code` on Linux
+
+**Option 2: Use Wine to Migrate and Build Shaders**
 ```bash
 # Install Wine
 sudo apt-get install -y wine64
 
-# Run the migrator tool
+# Run the migrator tool (creates Content and Data folders)
 wine LADXHD_Migrater.exe
+
+# Note: Building with Wine-compiled shaders requires additional Wine setup
+# See "Shader Compilation on Linux" below
 ```
 
-**Option 2: Manual Asset Migration**
-1. On a Windows machine, follow the "Updating Source Code Assets" section
-2. Copy the resulting `Content` and `Data` folders from `ladxhd_game_source_code` to your Linux machine
-3. Place them in the same `ladxhd_game_source_code` directory
-
-**Option 3: Pre-migrated Assets**
-If you already have a working Windows build, simply copy the `Content` and `Data` folders from it to `ladxhd_game_source_code` on Linux.
+**Option 3: Copy from Existing Build**
+If you already have a working Windows build of the game, simply copy both the `Content` and `Data` folders from it to `ladxhd_game_source_code` on Linux.
 
 ### Building on Linux
 
@@ -227,6 +234,35 @@ sudo ln -sf "$FREEIMAGE_PATH" "$(dirname "$FREEIMAGE_PATH")/libFreeImage.so"
 # Update library cache
 sudo ldconfig
 ```
+
+**Shader Compilation Errors (MGFXC requires Wine)**
+
+If you see errors like "MGFXC effect compiler requires a valid Wine installation to be able to compile shaders", this means the Content Pipeline is trying to recompile shader source files (.fx) which require Microsoft's HLSL compiler.
+
+**Solution:** Use **pre-compiled shaders** (recommended):
+1. Get a Content folder with pre-compiled .xnb files (from a Windows build)
+2. The .xnb files are already compiled and don't need recompilation
+3. Linux builds can use these .xnb files directly without Wine
+
+**Alternative: Set up Wine for shader compilation** (advanced):
+```bash
+# Create 64-bit Wine prefix
+export WINEPREFIX=~/.wine64
+export WINEARCH=win64
+winecfg
+
+# Install d3dcompiler_47
+winetricks d3dcompiler_47
+
+# Install .NET 6
+# Download from https://dotnet.microsoft.com/download/dotnet/6.0
+wine dotnet-sdk-6.0.xxx-win-x64.exe
+
+# Set Wine path for MonoGame
+export MGFXC_WINE_PATH=~/.wine64
+```
+
+This is complex and unnecessary if you use pre-compiled assets as recommended.
 
 ### Disabling Editor Fonts for Gameplay-Only Builds
 
