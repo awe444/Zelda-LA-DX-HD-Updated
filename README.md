@@ -121,6 +121,7 @@ sudo apt-get update
 sudo apt-get install -y dotnet-sdk-8.0
 
 # Install MonoGame DesktopGL runtime dependencies
+# Note: SDL2 version 2.0.5 or newer is required
 sudo apt-get install -y \
     libopenal-dev \
     libsdl2-dev \
@@ -193,6 +194,39 @@ cd Publish/linux-arm64
 - All **gameplay features** work identically on Linux and Windows.
 - Save files are stored in `~/.local/share/Zelda_LA/SaveFiles/` (or in the game directory if `portable.txt` exists).
 - Settings are stored in `~/.local/share/Zelda_LA/settings` (or in the game directory if `portable.txt` exists).
+
+### Linux Build Troubleshooting
+
+**Error: "SDL 2.0.4 does not support changing resizable parameter"**
+
+This error indicates your system has an older version of SDL2. Ubuntu 25.04 should have SDL2 2.0.5+ by default, but if you encounter this error:
+
+```bash
+# Check your SDL2 version
+dpkg -l | grep libsdl2
+
+# If version is < 2.0.5, upgrade SDL2
+sudo apt-get update
+sudo apt-get install --only-upgrade libsdl2-2.0-0 libsdl2-dev
+
+# Verify the upgrade
+dpkg -l | grep libsdl2
+```
+
+**FreeImage Library Not Found**
+
+If you see "Unable to load shared library 'FreeImage'", create a symlink:
+
+```bash
+# Find the library
+FREEIMAGE_PATH=$(find /usr/lib -name "libfreeimage.so.3" 2>/dev/null | head -1)
+
+# Create symlink
+sudo ln -sf "$FREEIMAGE_PATH" "$(dirname "$FREEIMAGE_PATH")/libFreeImage.so"
+
+# Update library cache
+sudo ldconfig
+```
 
 ### Disabling Editor Fonts for Gameplay-Only Builds
 

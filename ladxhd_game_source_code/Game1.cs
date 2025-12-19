@@ -134,9 +134,6 @@ namespace ProjectZ
             Graphics.PreferredBackBufferWidth = Values.MinWidth * 3;
             Graphics.PreferredBackBufferHeight = Values.MinHeight * 3;
 
-            // Allow the user to resize the window.
-            Window.AllowUserResizing = true;
-
             // Store any command line parameters if available.
             IsMouseVisible = EditorMode;
             AutoLoadSave = loadSave;
@@ -148,6 +145,10 @@ namespace ProjectZ
 
         protected override void Initialize()
         {
+            // Allow the user to resize the window.
+            // Note: Must be set before base.Initialize() for SDL2 compatibility
+            Window.AllowUserResizing = true;
+            
             // Initialize the editor.
             EditorManager = new EditorManager(this);
             base.Initialize();
