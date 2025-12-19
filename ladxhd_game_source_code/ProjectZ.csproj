@@ -47,10 +47,6 @@
     <Message Text="Restoring dotnet tools" Importance="High" />
     <Exec Command="dotnet tool restore" />
   </Target>
-  <Target Name="RemovePreviousPublish" BeforeTargets="Build">
-    <RemoveDir Directories="$(PublishDir)"></RemoveDir>
-  </Target>
   <Target Name="CleanPublish" AfterTargets="Publish">
-    <Delete Files="$(PublishDir)/Link's Awakening DX HD.pdb" />
   </Target>
 </Project>

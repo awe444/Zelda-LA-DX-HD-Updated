@@ -20,6 +20,7 @@ namespace ProjectZ
 {
     public class Game1 : Game
     {
+        public static Game1 Instance;
         public static GraphicsDeviceManager Graphics;
         public static SpriteBatch SpriteBatch;
         public static UiManager UiManager = new UiManager();
@@ -114,6 +115,8 @@ namespace ProjectZ
 
         public Game1(bool editorMode, bool loadSave, int loadSlot)
         {
+            Instance = this;
+            
             // If a mod file exists load the values from it.
             string modFile = Path.Combine(Values.PathModFolder, "Game1.lahdmod");
 
