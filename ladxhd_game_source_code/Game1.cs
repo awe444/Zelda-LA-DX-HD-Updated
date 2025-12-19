@@ -513,7 +513,7 @@ namespace ProjectZ
 
                 // Use MonoGame's fullscreen toggle
                 Graphics.ToggleFullScreen();
-                WasExclusive = GameSettings.ExFullscreen;
+                WasExclusive = false; // Linux/OpenGL uses MonoGame's native fullscreen
             }
             // Switch to windowed mode.
             else

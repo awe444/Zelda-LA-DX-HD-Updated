@@ -7,31 +7,24 @@ namespace GBSPlayer
     // Stub implementation for Linux/OpenGL - GBS player disabled
     public class CDynamicEffectInstance
     {
-        struct AudioBlock
-        {
-            public byte[] ByteBuffer;
-        }
-
         private object _voiceLock = new Object();
-
-        private static ByteBufferPool _bufferPool = new ByteBufferPool();
-
-        private Queue<AudioBlock> _queuedBlocks = new Queue<AudioBlock>();
+        private static bool _warningShown = false;
 
         public SoundState State = SoundState.Stopped;
 
         public CDynamicEffectInstance(int sampleRate)
         {
-            // Stub: GBS player not available on Linux/OpenGL
-            Console.WriteLine("Warning: GBS player not available on Linux/OpenGL platform");
+            // Show warning only once
+            if (!_warningShown)
+            {
+                Console.WriteLine("Warning: GBS player not available on Linux/OpenGL platform");
+                _warningShown = true;
+            }
         }
 
         public int GetPendingBufferCount()
         {
-            lock (_voiceLock)
-            {
-                return _queuedBlocks.Count;
-            }
+            return 0;
         }
 
         public void Play()
