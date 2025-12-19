@@ -1,6 +1,6 @@
 #!/bin/bash
 # Helper script to disable editor fonts for gameplay-only builds on Linux
-# This comments out editor font references in Content.mgcb to avoid Windows font dependencies
+# This removes editor font references from Content.mgcb to avoid Windows font dependencies
 
 set -e
 
@@ -17,19 +17,22 @@ echo "Disabling editor fonts in $CONTENT_MGCB..."
 # Create backup
 cp "$CONTENT_MGCB" "$CONTENT_MGCB.backup"
 
-# Comment out the editor font lines
-sed -i 's|^\(#begin Content/Fonts/editor font.spritefont\)|#\1|' "$CONTENT_MGCB"
-sed -i 's|^\(#begin Content/Fonts/editor mono font.spritefont\)|#\1|' "$CONTENT_MGCB"
-sed -i 's|^\(#begin Content/Fonts/editor small mono font.spritefont\)|#\1|' "$CONTENT_MGCB"
+# Remove editor font blocks entirely
+# Each block starts with #begin and ends with a blank line
+# We need to remove the entire block for each editor font
 
-# Also comment out the importer/processor lines that follow
-sed -i '/^#begin Content\/Fonts\/editor.*font.spritefont$/,/^$/ {
-    /^#begin/b
-    /^$/b
-    s/^/#/
-}' "$CONTENT_MGCB"
+# Use awk to filter out the editor font blocks
+awk '
+BEGIN { skip = 0 }
+/^#begin Content\/Fonts\/editor font\.spritefont/ { skip = 1; next }
+/^#begin Content\/Fonts\/editor mono font\.spritefont/ { skip = 1; next }
+/^#begin Content\/Fonts\/editor small mono font\.spritefont/ { skip = 1; next }
+skip == 1 && /^$/ { skip = 0; next }
+skip == 0 { print }
+' "$CONTENT_MGCB.backup" > "$CONTENT_MGCB"
 
 echo "Editor fonts disabled. Backup saved to $CONTENT_MGCB.backup"
 echo ""
 echo "The build will now skip editor fonts and only support gameplay."
+echo "Editor font blocks have been removed from Content.mgcb"
 echo "To restore editor fonts, run: cp $CONTENT_MGCB.backup $CONTENT_MGCB"
