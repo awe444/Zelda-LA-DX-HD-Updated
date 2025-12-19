@@ -5,7 +5,9 @@
     <RuntimeIdentifiers>linux-arm64</RuntimeIdentifiers>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
-    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    <!-- MonoGamePlatform for content pipeline - use Windows tools when building on Windows -->
+    <MonoGamePlatform Condition="'$(OS)' == 'Windows_NT'">Windows</MonoGamePlatform>
+    <MonoGamePlatform Condition="'$(OS)' != 'Windows_NT'">DesktopGL</MonoGamePlatform>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath></OutputPath>
