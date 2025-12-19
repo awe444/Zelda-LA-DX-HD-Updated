@@ -190,6 +190,31 @@ cd Publish/linux-arm64
 - Save files are stored in `~/.local/share/Zelda_LA/SaveFiles/` (or in the game directory if `portable.txt` exists).
 - Settings are stored in `~/.local/share/Zelda_LA/settings` (or in the game directory if `portable.txt` exists).
 
+### Missing Windows Fonts (Editor Mode Only)
+
+The Content Pipeline will fail to build editor fonts if Windows fonts aren't available. These fonts are **only used in editor mode**, not during gameplay.
+
+**Solution 1: Install Microsoft Core Fonts (Recommended)**
+```bash
+sudo apt-get install -y ttf-mscorefonts-installer
+sudo fc-cache -f -v
+```
+
+**Solution 2: Use Wine Fonts**
+If you already have Wine installed for the asset migrator:
+```bash
+sudo ln -s ~/.wine/drive_c/windows/Fonts /usr/share/fonts/truetype/wine-fonts
+sudo fc-cache -f -v
+```
+
+**Solution 3: Skip Editor Fonts (Gameplay Only)**
+If you don't need editor mode, you can comment out the font references in `Content/Content.mgcb`:
+- `#Content/Fonts/editor font.spritefont`
+- `#Content/Fonts/editor mono font.spritefont`
+- `#Content/Fonts/editor small mono font.spritefont`
+
+The game will build and run normally without these fonts (editor mode won't work).
+
 ## About This Fork
 
 I am a terrible programmer, but I have a love for this game. A ton of forks popped up, some with fixes, but nowhere were they all centralized. This fork attempted to find and implement all the various fixes and improvements spread across the other various forks. Once that was done, I started tackling the issues from the repository this was cloned from. And after that was done, I worked on anything else I could find that would make the game feel more like the original game.
