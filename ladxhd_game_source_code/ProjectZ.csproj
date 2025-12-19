@@ -58,11 +58,13 @@
       <ContentPipelinePackagePath Condition="'$(NuGetPackageRoot)' == '' AND '$(HOME)' != ''">$(HOME)/.nuget/packages/monogame.framework.content.pipeline/3.8.1.303</ContentPipelinePackagePath>
     </PropertyGroup>
     <ItemGroup>
-      <ContentPipelineNativeLibs Include="$(ContentPipelinePackagePath)\runtimes\win-x64\native\libmojoshader_64.dll" />
-      <ContentPipelineNativeLibs Include="$(ContentPipelinePackagePath)\runtimes\win-x64\native\freetype6.dll" />
+      <!-- Copy ALL native DLLs including dependencies -->
+      <ContentPipelineNativeLibs Include="$(ContentPipelinePackagePath)\runtimes\win-x64\native\*.dll" />
     </ItemGroup>
     <Message Text="Copying MonoGame Content Pipeline native libraries from: $(ContentPipelinePackagePath)\runtimes\win-x64\native\" Importance="High" />
     <Copy SourceFiles="@(ContentPipelineNativeLibs)" DestinationFolder="$(MSBuildProjectDirectory)" SkipUnchangedFiles="true" ContinueOnError="true" />
+    <!-- Also copy to Content directory if it exists, as MGCB might run from there -->
+    <Copy SourceFiles="@(ContentPipelineNativeLibs)" DestinationFolder="$(MSBuildProjectDirectory)\Content" SkipUnchangedFiles="true" ContinueOnError="true" Condition="Exists('$(MSBuildProjectDirectory)\Content')" />
     <Message Text="Native libraries copied to project directory" Importance="High" Condition="'@(ContentPipelineNativeLibs)' != ''" />
   </Target>
   
