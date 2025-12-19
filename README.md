@@ -143,18 +143,11 @@ sudo apt-get install -y wine64 winetricks
 
 The asset migration process works the same on Linux as on Windows, but since `LADXHD_Migrater.exe` is Windows-only, you'll need to run it with Wine or migrate assets on a Windows machine first.
 
-**IMPORTANT:** MonoGame's Content Pipeline requires Wine to compile shaders (.fx files) on Linux. The easiest approach is to use **pre-compiled assets** from a Windows build or build once on Windows, then copy the compiled Content folder to Linux.
+**IMPORTANT:** MonoGame's Content Pipeline requires Wine to compile shaders (.fx files) on Linux. **Shaders must be compiled for the DesktopGL platform** - shaders from Windows DirectX builds will NOT work on Linux.
 
-**Option 1: Pre-compiled Assets (Recommended)**
-1. On a Windows machine, follow the "Updating Source Code Assets" section
-2. Build the game once on Windows (this compiles all shaders to .xnb files)
-3. Copy the entire `Content` folder from `ladxhd_game_source_code\Publish\win-x64\Content` to your Linux machine
-4. Also copy the `Data` folder from `ladxhd_game_source_code` to Linux
-5. Place both folders in `ladxhd_game_source_code` on Linux
+**Option 1: Use Wine for Native Linux Compilation (Recommended)**
 
-**Option 2: Use Wine to Migrate and Build Shaders (Advanced)**
-
-This option allows you to build everything natively on Linux using Wine for shader compilation.
+This compiles shaders directly on Linux for the DesktopGL (OpenGL) platform:
 
 ```bash
 # Install Wine (64-bit)
@@ -165,13 +158,30 @@ wine LADXHD_Migrater.exe
 # Click "Migrate Assets From v1.0.0" and wait for completion
 
 # Set up Wine for MonoGame shader compilation (see detailed steps below)
-# After Wine setup is complete, you can build normally with ./publish_linux.sh
+# After Wine setup is complete, build normally with ./publish_linux.sh
 ```
 
 **For detailed Wine shader compilation setup, see "Shader Compilation on Linux via Wine" below.**
 
-**Option 3: Copy from Existing Build**
-If you already have a working Windows build of the game, simply copy both the `Content` and `Data` folders from it to `ladxhd_game_source_code` on Linux.
+**Option 2: Pre-compile Shaders on Windows for DesktopGL (Advanced)**
+
+To use pre-compiled shaders from Windows, you must build with DesktopGL platform (not WindowsDX):
+
+1. On Windows, temporarily modify `ProjectZ.csproj`:
+   - Keep `<MonoGamePlatform>DesktopGL</MonoGamePlatform>` (already correct)
+   - Change `<RuntimeIdentifiers>linux-arm64</RuntimeIdentifiers>` to `<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>`
+2. Follow the "Updating Source Code Assets" section
+3. Build: `dotnet publish -c Release -r win-x64`
+4. Copy `ladxhd_game_source_code\bin\Release\net8.0\win-x64\publish\Content\` to Linux
+5. Also copy the `Data` folder from `ladxhd_game_source_code` to Linux
+6. Revert `ProjectZ.csproj` changes on Linux
+7. Place both folders in `ladxhd_game_source_code` on Linux
+
+**Option 3: Copy from Existing Linux Build**
+
+If you or someone else has already built the game on Linux (or Windows with DesktopGL), you can simply copy both the `Content` and `Data` folders from that build to `ladxhd_game_source_code` on Linux.
+
+**NOTE:** Content from Windows DirectX builds will NOT work - only use Content from DesktopGL builds.
 
 ### Building on Linux
 
@@ -319,7 +329,9 @@ export MGFXC_WINE_PATH="$HOME/.wine"
 
 Then reload: `source ~/.bashrc`
 
-**Note:** MonoGame's compiled .xnb shader files are **cross-platform compatible**. Shaders compiled via Wine on Linux will work identically to those compiled on Windows. The .xnb files contain platform-agnostic bytecode that MonoGame translates to OpenGL (Linux) or DirectX (Windows) at runtime.
+**CRITICAL:** MonoGame shaders are platform-specific. Shaders compiled for DesktopGL (OpenGL - used by Linux builds) are **NOT compatible** with WindowsDX (DirectX) builds and vice versa. The .xnb files must be compiled for the same MonoGamePlatform that will run them.
+
+**For Linux ARM64 builds:** Use shaders compiled on Linux via Wine OR on Windows with DesktopGL platform configured.
 
 ### Disabling Editor Fonts for Gameplay-Only Builds
 
