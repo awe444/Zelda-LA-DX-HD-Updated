@@ -58,43 +58,64 @@ echo ""
 echo "Removing editor font blocks..."
 
 # Use awk to filter out the editor font blocks with verbose output
+# Each block structure is:  #begin → properties → /build: → blank line → next #begin
+# Note: File may have Windows (CRLF) or Unix (LF) line endings
 awk '
 BEGIN { 
     skip = 0
     removed_blocks = 0
     current_block = ""
+    prev_was_build = 0
 }
-/^#begin (Content\/)?Fonts\/editor font\.spritefont/ { 
+# Check if this is an editor font block we want to remove
+# Match with optional whitespace/CR at end
+/^#begin (Content\/)?Fonts\/editor font\.spritefont[[:space:]]*$/ { 
     skip = 1
     removed_blocks++
     current_block = "editor font.spritefont"
     print "  → Removing block: " current_block > "/dev/stderr"
+    prev_was_build = 0
     next 
 }
-/^#begin (Content\/)?Fonts\/editor mono font\.spritefont/ { 
+/^#begin (Content\/)?Fonts\/editor mono font\.spritefont[[:space:]]*$/ { 
     skip = 1
     removed_blocks++
     current_block = "editor mono font.spritefont"
     print "  → Removing block: " current_block > "/dev/stderr"
+    prev_was_build = 0
     next 
 }
-/^#begin (Content\/)?Fonts\/editor small mono font\.spritefont/ { 
+/^#begin (Content\/)?Fonts\/editor small mono font\.spritefont[[:space:]]*$/ { 
     skip = 1
     removed_blocks++
     current_block = "editor small mono font.spritefont"
     print "  → Removing block: " current_block > "/dev/stderr"
+    prev_was_build = 0
     next 
 }
-skip == 1 && /^$/ { 
+# While skipping, track if we see the /build: line
+skip == 1 && /^\/build:/ {
+    prev_was_build = 1
+    next
+}
+# While skipping, if we see a blank line after /build:, the block is complete
+skip == 1 && /^[[:space:]]*$/ && prev_was_build == 1 { 
     skip = 0
+    prev_was_build = 0
     print "    ✓ Block removed: " current_block > "/dev/stderr"
     current_block = ""
     next 
 }
+# Any other line while skipping - just skip it
 skip == 1 { 
+    prev_was_build = 0
     next 
 }
-skip == 0 { print }
+# Not skipping - print the line and reset flag
+skip == 0 { 
+    prev_was_build = 0
+    print 
+}
 END {
     print "" > "/dev/stderr"
     print "Total blocks removed: " removed_blocks > "/dev/stderr"
