@@ -76,6 +76,28 @@ See the wiki page on [contributing to this project](https://github.com/BigheadSM
 
 ## Build Instructions
 
+This project has been configured to build for **Linux ARM64** with **OpenGL** rendering backend.
+
+### Prerequisites
+
+#### For building from Windows using Visual Studio 2022:
+- [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/)
+  - Select `.NET desktop development` workload in the Visual Studio installer
+  - Optional: Linux development tools (for advanced scenarios)
+- [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) or higher
+  - The project targets .NET 6.0 (cross-platform)
+  - Cross-compilation for Linux ARM64 is built into the .NET SDK
+
+#### For the target Linux ARM64 system:
+- Linux ARM64 operating system (e.g., Raspberry Pi OS 64-bit, Ubuntu ARM64, etc.)
+- OpenGL support (Mesa drivers or hardware OpenGL)
+- Required dependencies:
+  - `libgdiplus` (for System.Drawing functionality)
+  - OpenGL libraries (`libgl1-mesa-glx` or equivalent)
+  - FreeImage and other MonoGame dependencies
+
+### Building the Project
+
 If you wish to build the code in this repository.
 - Clone or Download this repository: green `Code` Button > `Download ZIP`
 - The game's source code is in **"ladxhd_game_source_code"** folder
@@ -83,22 +105,68 @@ If you wish to build the code in this repository.
 - Run the PowerShell script "Unblock-All-Files.ps1".
   - -OR- Go to the folder `ladxhd_game_source_code\.config` you will see `dotnet-tools.json`.
   - -AND- Right click, go to properties, check `Unblock`.
-- Open ProjectZ.sln
-- Build/run like any normal C# program
+- Open ProjectZ.sln in Visual Studio 2022
+- Build/run like any normal C# program (Note: Will build for Linux ARM64)
 
 ## Personal Build / Publishing
 
-To create a personal build, follow the steps below:
-- Download and install [.NET v6.0.428 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-6.0.428-windows-x64-installer).
+To create a personal build for Linux ARM64, follow the steps below:
+- Download and install [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) or higher
 - Clone or Download this repository: green `Code` Button > `Download ZIP`
 - Unzip the repository and open up the unzipped folder.
 - Follow the steps in **Updating Source Code Assets**
-- Run the PowerShell script "Unblock-All-Files.ps1".
+- Run the PowerShell script "Unblock-All-Files.ps1" (Windows only)
   - -OR- Go to the folder `ladxhd_game_source_code\.config` you will see `dotnet-tools.json`.
   - -AND- Right click, go to properties, check `Unblock`.
-- Run the `ladxhd_game_source_code\publish.bat` script to build the game.
-- Alternatively, the **"LADXHD_Migrater.exe"** tool can now build the game.
-- When done, the build will be in the `Publish` folder.
+
+### Publishing via Command Line:
+```bash
+cd ladxhd_game_source_code
+dotnet publish -c Release -r linux-arm64 --self-contained true
+```
+
+The built files will be in: `bin/Release/net6.0/linux-arm64/publish/`
+
+### Publishing via Publish Script:
+- Run the `ladxhd_game_source_code\publish.bat` script (or use the command above)
+- When done, the build will be in the publish output directory
+
+### Publishing via Visual Studio 2022:
+1. Open ProjectZ.sln in Visual Studio 2022
+2. Right-click on the ProjectZ project in Solution Explorer
+3. Select "Publish"
+4. Use the FolderProfile publish profile
+5. Click "Publish"
+
+### Deploying to Linux ARM64:
+1. Copy the entire publish output directory to your Linux ARM64 system
+2. Make the executable runnable: `chmod +x "Link's Awakening DX HD"`
+3. Ensure you have the required assets (Content and Data folders) from v1.0.0 as described in "Updating Source Code Assets"
+4. Run the game: `./Link\'s\ Awakening\ DX\ HD`
+
+## Important Notes
+
+### Platform-Specific Limitations
+
+**GBS Player Audio**: The original Windows version used DirectX-based audio (SharpDX.XAudio2) for the GBS music player. This functionality is currently disabled in the Linux/OpenGL build as it's not cross-platform compatible. The game will run without GBS music playback. Future updates may implement cross-platform audio using OpenAL or other alternatives.
+
+**Editor Mode**: Some editor features that relied on Windows Forms file dialogs may not function in this Linux build. The main game functionality is fully preserved.
+
+**Window Icon**: The application icon is not set in the Linux build (Windows-specific functionality).
+
+### Platform Changes
+
+This build targets:
+- **Platform**: Linux ARM64
+- **Graphics Backend**: OpenGL (via MonoGame.Framework.DesktopGL)
+- **Runtime**: .NET 6.0
+- **Build Method**: Cross-compilation from Windows or native compilation on Linux
+
+Previous Windows/DirectX-specific features have been replaced with cross-platform alternatives:
+- DirectX → OpenGL
+- Windows Forms MessageBox → Console error logging
+- Windows Forms Application.Exit → MonoGame Game.Exit()
+- Borderless fullscreen → MonoGame native fullscreen support
 
 ## Build Troubleshooting
 
@@ -107,6 +175,29 @@ If you experience the error **The command “dotnet tool restore” exited with 
 - To unblock all files in one go, run the included PowerShell script **"Unblock-All-Files.ps1"**.
 - To unblock a single file: Right click, go to Properties, check Unblock, and click OK.
 
+
+### Additional Troubleshooting for Linux ARM64
+
+**Error: "The target framework 'net6.0' is out of support"**
+- This is a warning, not an error. The build will still work
+- Consider upgrading to .NET 8.0 LTS or later for long-term support
+- The warning can be ignored for now as .NET 6.0 is still functional
+
+**Build errors about missing Content or Data folders**
+- Follow the steps in "Updating Source Code Assets" to properly migrate the asset files
+- The Data folder must exist (can be empty) for the build to succeed
+
+**Runtime error on Linux ARM64: "libgdiplus not found"**
+- Install libgdiplus: `sudo apt-get install libgdiplus` (Debian/Ubuntu)
+- Or equivalent package for your Linux distribution
+
+**Runtime error: OpenGL/graphics issues**
+- Ensure your system has OpenGL support
+- Install Mesa drivers: `sudo apt-get install libgl1-mesa-glx libgl1-mesa-dri`
+- Check OpenGL version: `glxinfo | grep "OpenGL version"`
+
+**Permission denied when running the game**
+- Make the executable runnable: `chmod +x "Link's Awakening DX HD"`
 ## About This Fork
 
 I am a terrible programmer, but I have a love for this game. A ton of forks popped up, some with fixes, but nowhere were they all centralized. This fork attempted to find and implement all the various fixes and improvements spread across the other various forks. Once that was done, I started tackling the issues from the repository this was cloned from. And after that was done, I worked on anything else I could find that would make the game feel more like the original game.
