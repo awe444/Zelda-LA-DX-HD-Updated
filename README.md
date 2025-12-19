@@ -160,6 +160,10 @@ If you already have a working Windows build, simply copy the `Content` and `Data
 ```bash
 cd ladxhd_game_source_code
 
+# Disable editor fonts (required for gameplay-only builds)
+chmod +x disable_editor_fonts.sh
+./disable_editor_fonts.sh
+
 # Make the build script executable (first time only)
 chmod +x publish_linux.sh
 
@@ -185,35 +189,40 @@ cd Publish/linux-arm64
 
 ### Linux-Specific Notes
 
-- The editor mode uses Windows Forms dialogs which are not available on Linux. Editor features requiring file dialogs will be disabled on Linux builds.
-- All gameplay features work identically on Linux and Windows.
+- **Editor mode is not supported on Linux builds.** The build configuration skips editor fonts and UI components that require Windows Forms.
+- All **gameplay features** work identically on Linux and Windows.
 - Save files are stored in `~/.local/share/Zelda_LA/SaveFiles/` (or in the game directory if `portable.txt` exists).
 - Settings are stored in `~/.local/share/Zelda_LA/settings` (or in the game directory if `portable.txt` exists).
 
-### Missing Windows Fonts (Editor Mode Only)
+### Disabling Editor Fonts for Gameplay-Only Builds
 
-The Content Pipeline will fail to build editor fonts if Windows fonts aren't available. These fonts are **only used in editor mode**, not during gameplay.
+**Linux builds skip editor mode and focus on gameplay only.** The Content Pipeline will fail if it tries to build editor fonts that require Windows fonts (Segoe UI, Courier New).
 
-**Solution 1: Install Microsoft Core Fonts (Recommended)**
+**Recommended: Use the provided script to disable editor fonts**
+
+After migrating assets, run:
+```bash
+cd ladxhd_game_source_code
+chmod +x disable_editor_fonts.sh
+./disable_editor_fonts.sh
+```
+
+This script automatically comments out editor font references in `Content/Content.mgcb`, allowing the build to succeed without Windows fonts. The game will work perfectly for gameplay - only editor mode features will be unavailable.
+
+**Manual Alternative:**
+Edit `Content/Content.mgcb` and add `#` at the start of these lines and their associated properties:
+```
+#begin Content/Fonts/editor font.spritefont
+#begin Content/Fonts/editor mono font.spritefont
+#begin Content/Fonts/editor small mono font.spritefont
+```
+
+**Optional: Install Windows Fonts (Advanced Users Only)**
+If you need editor mode support, you can install MS Core Fonts:
 ```bash
 sudo apt-get install -y ttf-mscorefonts-installer
 sudo fc-cache -f -v
 ```
-
-**Solution 2: Use Wine Fonts**
-If you already have Wine installed for the asset migrator:
-```bash
-sudo ln -s ~/.wine/drive_c/windows/Fonts /usr/share/fonts/truetype/wine-fonts
-sudo fc-cache -f -v
-```
-
-**Solution 3: Skip Editor Fonts (Gameplay Only)**
-If you don't need editor mode, you can comment out the font references in `Content/Content.mgcb`:
-- `#Content/Fonts/editor font.spritefont`
-- `#Content/Fonts/editor mono font.spritefont`
-- `#Content/Fonts/editor small mono font.spritefont`
-
-The game will build and run normally without these fonts (editor mode won't work).
 
 ## About This Fork
 
