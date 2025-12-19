@@ -24,15 +24,16 @@ echo ""
 
 # Show what we're looking for
 echo "Searching for editor font blocks to remove:"
-echo "  1. Content/Fonts/editor font.spritefont"
-echo "  2. Content/Fonts/editor mono font.spritefont"
-echo "  3. Content/Fonts/editor small mono font.spritefont"
+echo "  1. (Content/)?Fonts/editor font.spritefont"
+echo "  2. (Content/)?Fonts/editor mono font.spritefont"
+echo "  3. (Content/)?Fonts/editor small mono font.spritefont"
 echo ""
 
 # Check what's in the file before modification
-FONT1_COUNT=$(grep -c "^#begin Content/Fonts/editor font\.spritefont" "$CONTENT_MGCB" || true)
-FONT2_COUNT=$(grep -c "^#begin Content/Fonts/editor mono font\.spritefont" "$CONTENT_MGCB" || true)
-FONT3_COUNT=$(grep -c "^#begin Content/Fonts/editor small mono font\.spritefont" "$CONTENT_MGCB" || true)
+# Note: paths may be either "Fonts/..." or "Content/Fonts/..."
+FONT1_COUNT=$(grep -cE "^#begin (Content/)?Fonts/editor font\.spritefont" "$CONTENT_MGCB" || true)
+FONT2_COUNT=$(grep -cE "^#begin (Content/)?Fonts/editor mono font\.spritefont" "$CONTENT_MGCB" || true)
+FONT3_COUNT=$(grep -cE "^#begin (Content/)?Fonts/editor small mono font\.spritefont" "$CONTENT_MGCB" || true)
 
 echo "Before modification:"
 echo "  - 'editor font.spritefont' blocks found: $FONT1_COUNT"
@@ -63,21 +64,21 @@ BEGIN {
     removed_blocks = 0
     current_block = ""
 }
-/^#begin Content\/Fonts\/editor font\.spritefont/ { 
+/^#begin (Content\/)?Fonts\/editor font\.spritefont/ { 
     skip = 1
     removed_blocks++
     current_block = "editor font.spritefont"
     print "  → Removing block: " current_block > "/dev/stderr"
     next 
 }
-/^#begin Content\/Fonts\/editor mono font\.spritefont/ { 
+/^#begin (Content\/)?Fonts\/editor mono font\.spritefont/ { 
     skip = 1
     removed_blocks++
     current_block = "editor mono font.spritefont"
     print "  → Removing block: " current_block > "/dev/stderr"
     next 
 }
-/^#begin Content\/Fonts\/editor small mono font\.spritefont/ { 
+/^#begin (Content\/)?Fonts\/editor small mono font\.spritefont/ { 
     skip = 1
     removed_blocks++
     current_block = "editor small mono font.spritefont"
@@ -103,9 +104,9 @@ END {
 echo ""
 
 # Verify the changes
-FONT1_AFTER=$(grep -c "^#begin Content/Fonts/editor font\.spritefont" "$CONTENT_MGCB" || true)
-FONT2_AFTER=$(grep -c "^#begin Content/Fonts/editor mono font\.spritefont" "$CONTENT_MGCB" || true)
-FONT3_AFTER=$(grep -c "^#begin Content/Fonts/editor small mono font\.spritefont" "$CONTENT_MGCB" || true)
+FONT1_AFTER=$(grep -cE "^#begin (Content/)?Fonts/editor font\.spritefont" "$CONTENT_MGCB" || true)
+FONT2_AFTER=$(grep -cE "^#begin (Content/)?Fonts/editor mono font\.spritefont" "$CONTENT_MGCB" || true)
+FONT3_AFTER=$(grep -cE "^#begin (Content/)?Fonts/editor small mono font\.spritefont" "$CONTENT_MGCB" || true)
 
 echo "After modification:"
 echo "  - 'editor font.spritefont' blocks remaining: $FONT1_AFTER"
