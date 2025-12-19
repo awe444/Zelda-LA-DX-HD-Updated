@@ -53,6 +53,9 @@
     <Content Include="Data\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\**" Exclude="Content\obj\**;Content\bin\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
     <PropertyGroup>
     <StartupObject>ProjectZ.Program</StartupObject>
