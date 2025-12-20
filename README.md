@@ -184,34 +184,57 @@ If you experience the error **The command “dotnet tool restore” exited with 
 
 **Error: "Unable to load DLL 'libmojoshader_64.dll'" when compiling shaders**
 
-This error occurs when the MonoGame Content Pipeline cannot find required native libraries OR their dependencies. The project automatically copies these libraries, but they require the Visual C++ Redistributable.
+This error occurs when the MonoGame Content Pipeline cannot find required native libraries OR their dependencies. The project automatically copies these libraries to multiple locations, but they require the Visual C++ Redistributable.
 
-**Solution 1: Install Visual C++ Redistributable (RECOMMENDED)**
-1. Download and install the [Visual C++ Redistributable for Visual Studio 2015-2022](https://aka.ms/vs/17/release/vc_redist.x64.exe)
-2. This provides the runtime DLLs that `libmojoshader_64.dll` depends on
-3. Rebuild the project after installation
+**Solution 1: Install Visual C++ Redistributable (REQUIRED - Do this first!)**
+1. Download and install the [Visual C++ Redistributable for Visual Studio 2015-2022 (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe)
+2. **Restart Visual Studio** after installation
+3. This provides the runtime DLLs that `libmojoshader_64.dll` depends on
+4. Rebuild the project after installation
 
-**Solution 2: Manual DLL Copy**
-If you still get errors after installing VC++ Redistributable:
+**Solution 2: Add DLLs to System PATH (If Solution 1 doesn't work)**
 1. After running `dotnet restore`, locate your NuGet packages folder (typically `%USERPROFILE%\.nuget\packages`)
 2. Navigate to `monogame.framework.content.pipeline\3.8.1.303\runtimes\win-x64\native\`
-3. Copy **ALL DLL files** from that folder to:
-   - Your project root: `ladxhd_game_source_code\`
-   - Your Content folder (if it exists): `ladxhd_game_source_code\Content\`
-4. The DLLs needed include: `libmojoshader_64.dll`, `freetype6.dll`, `FreeImage.dll`, `nvtt.dll`, `PVRTexLibWrapper.dll`
-5. These DLLs are in .gitignore and won't be committed
+3. Copy the full path (e.g., `C:\Users\YourName\.nuget\packages\monogame.framework.content.pipeline\3.8.1.303\runtimes\win-x64\native\`)
+4. Add this path to your system PATH environment variable:
+   - Open System Properties → Advanced → Environment Variables
+   - Under "User variables" or "System variables", find "Path"
+   - Click "Edit" → "New" and paste the path
+   - Click OK on all dialogs
+5. **Restart Visual Studio** completely
 6. Rebuild the project
 
-**Solution 3: Use MGCB Editor**
+**Solution 3: Manual DLL Copy to Multiple Locations**
+If the above don't work:
+1. After running `dotnet restore`, locate your NuGet packages folder (typically `%USERPROFILE%\.nuget\packages`)
+2. Navigate to `monogame.framework.content.pipeline\3.8.1.303\runtimes\win-x64\native\`
+3. Copy **ALL DLL files** from that folder to ALL of these locations:
+   - Your project root: `ladxhd_game_source_code\`
+   - Your Content folder: `ladxhd_game_source_code\Content\`
+   - Your bin folder: `ladxhd_game_source_code\bin\`
+   - Your obj folder: `ladxhd_game_source_code\obj\`
+4. The DLLs needed include: `libmojoshader_64.dll`, `freetype6.dll`, `FreeImage.dll`, `nvtt.dll`, `PVRTexLibWrapper.dll`
+5. Rebuild the project
+
+**Solution 4: Use MGCB Editor (Alternative approach)**
 If Visual Studio build continues to fail:
 1. Install MGCB Editor: `dotnet tool install -g dotnet-mgcb-editor`
-2. Run: `mgcb-editor Content/Content.mgcb` (if you have a .mgcb file)
-3. The MGCB Editor has its own way of finding native libraries
+2. Open your Content.mgcb file with: `mgcb-editor Content/Content.mgcb`
+3. Build content directly in the MGCB Editor
+4. The MGCB Editor may have better native library resolution
+
+**Diagnostic Step:**
+To verify the DLLs are present and readable:
+1. Open Command Prompt in your project folder
+2. Run: `dir libmojoshader_64.dll` - should show the file
+3. Run: `dumpbin /dependents libmojoshader_64.dll` (if you have Visual Studio tools)
+4. This shows which DLLs it depends on (typically `KERNEL32.dll`, `MSVCR120.dll` or `vcruntime140.dll`)
 
 **Why this happens:**
 - The native library `libmojoshader_64.dll` requires Visual C++ runtime DLLs (like `msvcp140.dll`, `vcruntime140.dll`)
-- These are usually installed with Visual Studio, but may be missing on some systems
-- The error message "unable to load DLL or one of its dependencies" indicates a missing dependency, not the DLL itself
+- The MonoGame Content Builder runs as a separate process that may have a different working directory
+- The error "unable to load DLL or one of its dependencies" indicates a missing dependency, not the DLL itself
+- Even with the DLL copied, Windows needs to find its dependencies through PATH or the same directory
 
 **Error: "The target framework 'net6.0' is out of support"**
 - This is a warning, not an error. The build will still work

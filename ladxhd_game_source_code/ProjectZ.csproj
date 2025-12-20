@@ -27,11 +27,25 @@
     <None Remove=".gitmodules" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.1.303" />
+    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.1.303">
+      <!-- Ensure native assets are extracted and available for content pipeline -->
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
   </ItemGroup>
+  
+  <!-- Explicitly reference native runtime assets -->
+  <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+    <NativeLibs Include="$(NuGetPackageRoot)monogame.framework.content.pipeline\3.8.1.303\runtimes\win-x64\native\*.dll" />
+    <None Include="@(NativeLibs)">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </None>
+  </ItemGroup>
+  
   <ItemGroup>
     <Content Include="Data\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -50,7 +64,7 @@
   
   <!-- Ensure native libraries are available for MonoGame Content Pipeline on Windows -->
   <!-- This copies libmojoshader and other required DLLs for DesktopGL shader compilation -->
-  <!-- The DLLs need to be in the project root where the Content Builder Task can find them -->
+  <!-- The DLLs need to be in multiple locations where the Content Builder Task might look -->
   <Target Name="CopyContentPipelineNativeLibraries" AfterTargets="Restore" BeforeTargets="BeforeBuild" Condition="'$(OS)' == 'Windows_NT'">
     <PropertyGroup>
       <ContentPipelinePackagePath Condition="'$(NuGetPackageRoot)' != ''">$(NuGetPackageRoot)monogame.framework.content.pipeline\3.8.1.303</ContentPipelinePackagePath>
@@ -62,10 +76,14 @@
       <ContentPipelineNativeLibs Include="$(ContentPipelinePackagePath)\runtimes\win-x64\native\*.dll" />
     </ItemGroup>
     <Message Text="Copying MonoGame Content Pipeline native libraries from: $(ContentPipelinePackagePath)\runtimes\win-x64\native\" Importance="High" />
+    
+    <!-- Copy to multiple locations to ensure MGCB can find them -->
     <Copy SourceFiles="@(ContentPipelineNativeLibs)" DestinationFolder="$(MSBuildProjectDirectory)" SkipUnchangedFiles="true" ContinueOnError="true" />
-    <!-- Also copy to Content directory if it exists, as MGCB might run from there -->
     <Copy SourceFiles="@(ContentPipelineNativeLibs)" DestinationFolder="$(MSBuildProjectDirectory)\Content" SkipUnchangedFiles="true" ContinueOnError="true" Condition="Exists('$(MSBuildProjectDirectory)\Content')" />
-    <Message Text="Native libraries copied to project directory" Importance="High" Condition="'@(ContentPipelineNativeLibs)' != ''" />
+    <Copy SourceFiles="@(ContentPipelineNativeLibs)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" ContinueOnError="true" />
+    <Copy SourceFiles="@(ContentPipelineNativeLibs)" DestinationFolder="$(MSBuildProjectDirectory)\bin" SkipUnchangedFiles="true" ContinueOnError="true" />
+    
+    <Message Text="Native libraries copied to multiple directories for MGCB compatibility" Importance="High" Condition="'@(ContentPipelineNativeLibs)' != ''" />
   </Target>
   
   <Target Name="CleanPublish" AfterTargets="Publish">
