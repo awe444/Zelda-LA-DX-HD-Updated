@@ -42,11 +42,14 @@ The main game project (ProjectZ) requires the .NET 6.0 SDK.
    - Download the "SDK x64" installer (version 6.0.428 or later)
    - Click on the "SDK x64" link to download the latest installer
    - Note: The specific installer filename will vary based on version (e.g., `dotnet-sdk-6.0.xxx-win-x64.exe`)
+   - Verify the download completed successfully (file size should be approximately 150 MB)
 
 2. **Install the SDK:**
    - Run the downloaded installer (filename will be similar to `dotnet-sdk-6.0.xxx-win-x64.exe`)
+   - If Windows shows a security warning, click "More info" → "Run anyway"
    - Follow the installation wizard (default options are fine)
    - The installer will add the `dotnet` command to your system PATH
+   - If installation fails, see [Troubleshooting](#issue-net-sdk-installation-fails-with-error-0x80070570-or-0x80070642)
 
 3. **Verify Installation:**
    ```batch
@@ -139,6 +142,28 @@ dotnet build -c Release
 ---
 
 ## Troubleshooting
+
+### Issue: .NET SDK installation fails with error 0x80070570 or 0x80070642
+
+**Cause:** The downloaded installer file is corrupted or incomplete.
+
+**Solution:**
+1. Delete the downloaded installer file
+2. Clear your browser's download cache
+3. Re-download the .NET SDK installer from the official Microsoft website
+4. Verify the download completed successfully (file size should be ~150MB)
+5. If the problem persists:
+   - Try downloading using a different browser
+   - Temporarily disable antivirus software during download and installation
+   - Download from a different network connection if possible
+   - Use the offline installer instead of the web installer
+
+**Alternative:** Use the .NET SDK installer via winget (Windows Package Manager):
+```batch
+winget install Microsoft.DotNet.SDK.6
+```
+
+---
 
 ### Issue: `dotnet` command not found
 
