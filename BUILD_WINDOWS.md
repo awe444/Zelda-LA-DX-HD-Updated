@@ -25,6 +25,8 @@ This guide assumes:
 - Approximately 500 MB of free disk space (for .NET SDK and build outputs)
 - Pre-migrated game assets already in the `ladxhd_game_source_code` directory
 
+**Important:** You will need Visual C++ Redistributables installed for the MonoGame content pipeline to work. These are usually already present on most Windows systems, but if you encounter FreeImage.dll errors during build, see the [troubleshooting section](#issue-unable-to-load-dll-freeimage-error-during-build).
+
 ## SDK Installation
 
 ### .NET 6.0 SDK
@@ -206,7 +208,7 @@ winget install Microsoft.DotNet.SDK.6
 
 ---
 
-### Issue: TextureImporter failures with PNG files
+### Issue: TextureImporter failures with PNG files (blocked files)
 
 **Cause:** Content files are blocked by Windows or MonoGame content pipeline tools are not properly unblocked.
 
@@ -230,6 +232,40 @@ winget install Microsoft.DotNet.SDK.6
    dotnet restore
    dotnet build
    ```
+
+---
+
+### Issue: "Unable to load DLL 'FreeImage'" error during build
+
+**Cause:** MonoGame content pipeline requires native FreeImage library which is missing or cannot be loaded. This is typically caused by missing Visual C++ Redistributables.
+
+**Solution:**
+
+1. **Install Visual C++ Redistributables** (required by FreeImage):
+   - Download and install the latest Visual C++ Redistributables from Microsoft:
+   - x64: https://aka.ms/vs/17/release/vc_redist.x64.exe
+   - x86: https://aka.ms/vs/17/release/vc_redist.x86.exe
+   - Install **both** x64 and x86 versions (MonoGame content tools may need both)
+
+2. **Restart your computer** after installing the redistributables
+
+3. **Clear NuGet cache and rebuild:**
+   ```batch
+   dotnet nuget locals all --clear
+   cd ladxhd_game_source_code
+   dotnet clean
+   dotnet tool restore
+   dotnet restore
+   dotnet build
+   ```
+
+4. **Alternative: Install via winget:**
+   ```batch
+   winget install Microsoft.VCRedist.2015+.x64
+   winget install Microsoft.VCRedist.2015+.x86
+   ```
+
+**Note:** The FreeImage.dll is included in the MonoGame.Framework.Content.Pipeline NuGet package, but it requires Visual C++ runtime libraries to function.
 
 ---
 
