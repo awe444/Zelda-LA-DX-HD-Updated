@@ -99,10 +99,10 @@ namespace ProjectZ.InGame.Things
 
         public static int HandItemSlots = 6;
 
-        // The original game field size was 160x128. The minimum resolution for this port is 380x256 due to the
-        // fact the menus were designed around this size. This means the minimum real scale is at least 2x.
-        public static int MinWidth = 380;
-        public static int MinHeight = 256;
+        // The original game field size was 160x128. The minimum resolution for this port is 320x240 to support
+        // lower resolution displays.
+        public static int MinWidth = 320;
+        public static int MinHeight = 240;
 
         public static double MenuHeaderSize = 0.2;
         public static double MenuContentSize = 0.7;

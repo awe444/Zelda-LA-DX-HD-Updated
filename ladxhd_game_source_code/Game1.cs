@@ -153,8 +153,8 @@ namespace ProjectZ
             // Create the graphics device and set the back buffer width/height.
             Graphics = new GraphicsDeviceManager(this);
             Graphics.GraphicsProfile = GraphicsProfile.HiDef;
-            Graphics.PreferredBackBufferWidth = Values.MinWidth * 3;
-            Graphics.PreferredBackBufferHeight = Values.MinHeight * 3;
+            Graphics.PreferredBackBufferWidth = Values.MinWidth * 2;
+            Graphics.PreferredBackBufferHeight = Values.MinHeight * 2;
 
             // Allow the user to resize the window.
             Window.AllowUserResizing = true;
