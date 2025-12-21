@@ -1,6 +1,9 @@
 @echo off
 REM Build all projects in the repository
 REM This script builds the Game, Patcher, and Migrater projects
+REM
+REM This script builds the Release configuration.
+REM For Debug builds or more options, see BUILD_WINDOWS.md
 
 echo ========================================
 echo Building Zelda LADX HD - All Projects

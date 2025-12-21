@@ -1,6 +1,9 @@
 @echo off
 REM Build only the game project (ProjectZ)
 REM This is the most commonly needed build
+REM
+REM This script builds the Release configuration.
+REM For Debug builds or more options, see BUILD_WINDOWS.md
 
 echo ========================================
 echo Building Zelda LADX HD - Game Only

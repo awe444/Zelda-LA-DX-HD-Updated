@@ -40,11 +40,12 @@ The main game project (ProjectZ) requires the .NET 6.0 SDK.
 
 1. **Download the .NET 6.0 SDK:**
    - Visit the official Microsoft download page: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
-   - Download the "SDK x64" installer (currently version 6.0.428 or later)
-   - Direct link for 6.0.428: https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-6.0.428-windows-x64-installer
+   - Download the "SDK x64" installer (version 6.0.428 or later)
+   - Click on the "SDK x64" link to download the latest installer
+   - Note: The specific installer filename will vary based on version (e.g., `dotnet-sdk-6.0.xxx-win-x64.exe`)
 
 2. **Install the SDK:**
-   - Run the downloaded installer (`dotnet-sdk-6.0.428-win-x64.exe`)
+   - Run the downloaded installer (filename will be similar to `dotnet-sdk-6.0.xxx-win-x64.exe`)
    - Follow the installation wizard (default options are fine)
    - The installer will add the `dotnet` command to your system PATH
 
@@ -52,7 +53,7 @@ The main game project (ProjectZ) requires the .NET 6.0 SDK.
    ```batch
    dotnet --version
    ```
-   Expected output: `6.0.428` (or your installed version)
+   Expected output: A version starting with `6.0` (e.g., `6.0.428` or later)
 
    ```batch
    dotnet --list-sdks
