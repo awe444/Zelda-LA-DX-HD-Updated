@@ -206,6 +206,33 @@ winget install Microsoft.DotNet.SDK.6
 
 ---
 
+### Issue: TextureImporter failures with PNG files
+
+**Cause:** Content files are blocked by Windows or MonoGame content pipeline tools are not properly unblocked.
+
+**Solution:**
+1. Run the unblock script from the repository root:
+   ```powershell
+   .\Unblock-All-Files.ps1
+   ```
+2. If the script doesn't resolve the issue, manually unblock the MonoGame tools:
+   - Navigate to `C:\Users\<YourUsername>\.nuget\packages\monogame.content.builder.task\3.8.1.303\tools`
+   - Right-click each `.exe` and `.dll` file → Properties → Check "Unblock" → OK
+   - Or run this PowerShell command from the repository root:
+   ```powershell
+   Get-ChildItem -Path "$env:USERPROFILE\.nuget\packages\monogame.content.builder.task" -Recurse -File | Unblock-File
+   ```
+3. Clean the build cache and retry:
+   ```batch
+   cd ladxhd_game_source_code
+   dotnet clean
+   dotnet tool restore
+   dotnet restore
+   dotnet build
+   ```
+
+---
+
 ### Issue: "Access denied" or permission errors during build
 
 **Cause:** Files downloaded from the internet may be blocked by Windows.
@@ -216,6 +243,7 @@ winget install Microsoft.DotNet.SDK.6
    .\Unblock-All-Files.ps1
    ```
 2. Or manually unblock files by right-clicking → Properties → Unblock
+3. If you're still seeing TextureImporter errors, see [TextureImporter failures](#issue-textureimporter-failures-with-png-files)
 
 ---
 
