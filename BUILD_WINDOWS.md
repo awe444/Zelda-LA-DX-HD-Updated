@@ -1,18 +1,16 @@
 # Building on Windows 10/11 x64 - Minimal Environment Setup
 
-This guide provides step-by-step instructions for building The Legend of Zelda: Link's Awakening DX HD and related tools on a Windows 10/11 x64 system using **only command-line tools**, without requiring Visual Studio or any IDE installation.
+This guide provides step-by-step instructions for building The Legend of Zelda: Link's Awakening DX HD game on a Windows 10/11 x64 system using **only command-line tools**, without requiring Visual Studio or any IDE installation.
+
+**Note:** This guide assumes you have pre-migrated game assets in the build directory. The Patcher and Migrater tools do not need to be built in a minimal Windows environment.
 
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
 - [SDK Installation](#sdk-installation)
   - [.NET 6.0 SDK](#net-60-sdk)
-  - [Build Tools for Visual Studio 2022](#build-tools-for-visual-studio-2022)
 - [Environment Verification](#environment-verification)
-- [Building the Projects](#building-the-projects)
-  - [Building the Game (ProjectZ)](#building-the-game-projectz)
-  - [Building the Patcher](#building-the-patcher)
-  - [Building the Migrater](#building-the-migrater)
+- [Building the Game](#building-the-game)
 - [Build Configurations](#build-configurations)
 - [Troubleshooting](#troubleshooting)
 
@@ -24,7 +22,8 @@ This guide assumes:
 - A fresh Windows 10 x64 or Windows 11 x64 installation
 - Administrator access to install software
 - Internet connection for downloading dependencies
-- Approximately 5-10 GB of free disk space (for SDKs and build outputs)
+- Approximately 500 MB of free disk space (for .NET SDK and build outputs)
+- Pre-migrated game assets already in the `ladxhd_game_source_code` directory
 
 ## SDK Installation
 
@@ -62,57 +61,9 @@ The main game project (ProjectZ) requires the .NET 6.0 SDK.
 
 ---
 
-### Build Tools for Visual Studio 2022
-
-The Patcher and Migrater projects use the legacy .NET Framework 4.8.1, which requires MSBuild and the .NET Framework targeting pack.
-
-**What it is:** Build Tools for Visual Studio provides MSBuild, compilers, and .NET Framework SDKs for building .NET Framework applications without installing the full Visual Studio IDE.
-
-**Why it's needed:** The Patcher and Migrater projects are legacy .NET Framework 4.8.1 applications that require MSBuild to compile.
-
-#### Installation Steps:
-
-1. **Download Build Tools for Visual Studio 2022:**
-   - Visit: https://visualstudio.microsoft.com/downloads/
-   - Scroll down to "All Downloads" → expand "Tools for Visual Studio"
-   - Download "Build Tools for Visual Studio 2022"
-   - Direct link: https://aka.ms/vs/17/release/vs_buildtools.exe
-
-2. **Install Required Components:**
-   - Run the installer (`vs_buildtools.exe`)
-   - In the installer, select the **Workloads** tab
-   - Check **".NET desktop build tools"**
-   - In the **Individual components** tab (on the right), ensure these are selected:
-     - `.NET Framework 4.8.1 SDK`
-     - `.NET Framework 4.8.1 targeting pack`
-     - `MSBuild` (included with .NET desktop build tools)
-   - Click **Install** (this will download ~2-4 GB)
-
-3. **Installation Location:**
-   - Default installation path: `C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\`
-   - MSBuild location: `C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe`
-
-4. **Add MSBuild to PATH (Optional but Recommended):**
-   
-   To use `msbuild` directly from any command prompt:
-   
-   - Open **Start Menu** → Search for "Environment Variables"
-   - Click "Edit the system environment variables"
-   - Click "Environment Variables..." button
-   - Under "System variables", find and select "Path", then click "Edit..."
-   - Click "New" and add: `C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin`
-   - Click "OK" on all dialogs
-   - **Close and reopen any command prompt windows** for changes to take effect
-
-   Alternatively, use the **Developer Command Prompt** (see below).
-
----
-
 ## Environment Verification
 
-After installing both SDKs, verify your environment is correctly configured:
-
-### Verify .NET 6.0 SDK:
+After installing the .NET 6.0 SDK, verify your environment is correctly configured:
 
 ```batch
 dotnet --version
@@ -121,43 +72,15 @@ dotnet --list-sdks
 
 Expected output includes `6.0.xxx` in the SDK list.
 
-### Verify MSBuild:
-
-**Option 1: Using full path (always works):**
-```batch
-"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe" /version
-```
-
-**Option 2: Using PATH (if you added MSBuild to PATH):**
-```batch
-msbuild /version
-```
-
-**Option 3: Using Developer Command Prompt:**
-- Open **Start Menu** → Search for "Developer Command Prompt for VS 2022"
-- Run `msbuild /version`
-
-Expected output: MSBuild version 17.x.x.x
-
-### Verify .NET Framework Targeting Packs:
-
-```batch
-dir "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8.1"
-```
-
-Should show files without errors.
-
 ---
 
-## Building the Projects
+## Building the Game
 
-### Building the Game (ProjectZ)
-
-The main game uses .NET 6.0 and can be built using the `dotnet` CLI.
+The game uses .NET 6.0 and can be built using the `dotnet` CLI.
 
 #### Prerequisites:
 - .NET 6.0 SDK installed
-- Game assets must be set up (see README.md → "Updating Source Code Assets")
+- Game assets must be pre-migrated and present in the build directory
 
 #### Build Commands:
 
@@ -199,82 +122,6 @@ publish.bat
 
 ---
 
-### Building the Patcher
-
-The Patcher uses .NET Framework 4.8.1 and requires MSBuild.
-
-#### Prerequisites:
-- Build Tools for Visual Studio 2022 installed
-
-#### Build Commands:
-
-**Navigate to the patcher source directory:**
-```batch
-cd ladxhd_patcher_source_code
-```
-
-**Using Developer Command Prompt (Recommended):**
-
-1. Open "Developer Command Prompt for VS 2022" from Start Menu
-2. Navigate to the patcher directory:
-   ```batch
-   cd /d C:\path\to\Zelda-LA-DX-HD-Updated\ladxhd_patcher_source_code
-   ```
-3. Build the solution:
-   ```batch
-   msbuild LADXHD_Patcher.sln /p:Configuration=Debug
-   msbuild LADXHD_Patcher.sln /p:Configuration=Release
-   ```
-
-**Using regular Command Prompt (with full MSBuild path):**
-```batch
-"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe" LADXHD_Patcher.sln /p:Configuration=Release
-```
-
-**Output Location:**
-- `bin\Debug\LADXHD_Patcher.exe` (Debug build)
-- `bin\Release\LADXHD_Patcher.exe` (Release build)
-
----
-
-### Building the Migrater
-
-The Migrater uses .NET Framework 4.8.1 and requires MSBuild.
-
-#### Prerequisites:
-- Build Tools for Visual Studio 2022 installed
-
-#### Build Commands:
-
-**Navigate to the migrater source directory:**
-```batch
-cd ladxhd_migrate_source_code
-```
-
-**Using Developer Command Prompt (Recommended):**
-
-1. Open "Developer Command Prompt for VS 2022" from Start Menu
-2. Navigate to the migrater directory:
-   ```batch
-   cd /d C:\path\to\Zelda-LA-DX-HD-Updated\ladxhd_migrate_source_code
-   ```
-3. Build the solution:
-   ```batch
-   msbuild LADXHD_Migrater.sln /p:Configuration=Debug
-   msbuild LADXHD_Migrater.sln /p:Configuration=Release
-   ```
-
-**Using regular Command Prompt (with full MSBuild path):**
-```batch
-"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe" LADXHD_Migrater.sln /p:Configuration=Release
-```
-
-**Output Location:**
-- `bin\Debug\LADXHD_Migrater.exe` (Debug build)
-- `bin\Release\LADXHD_Migrater.exe` (Release build)
-
----
-
 ## Build Configurations
 
 ### Debug vs. Release
@@ -282,24 +129,11 @@ cd ladxhd_migrate_source_code
 - **Debug:** Includes debugging symbols, no optimizations, larger binary size. Use for development and troubleshooting.
 - **Release:** Optimized code, smaller binary size, suitable for distribution.
 
-### Common MSBuild Switches
-
-For .NET Framework projects (Patcher, Migrater):
+To build a specific configuration:
 
 ```batch
-msbuild <solution>.sln /p:Configuration=<Debug|Release> /p:Platform=AnyCPU /v:minimal
-```
-
-Options:
-- `/p:Configuration=<Debug|Release>` - Build configuration
-- `/p:Platform=AnyCPU` - Target platform
-- `/v:minimal` - Set verbosity level (quiet, minimal, normal, detailed, diagnostic)
-- `/t:Clean` - Clean build outputs before building
-- `/t:Rebuild` - Clean and rebuild
-
-Example (Clean and Rebuild):
-```batch
-msbuild LADXHD_Patcher.sln /t:Rebuild /p:Configuration=Release
+dotnet build -c Debug
+dotnet build -c Release
 ```
 
 ---
@@ -318,17 +152,6 @@ msbuild LADXHD_Patcher.sln /t:Rebuild /p:Configuration=Release
 
 ---
 
-### Issue: `msbuild` command not found
-
-**Cause:** Build Tools not installed or MSBuild not in PATH.
-
-**Solution:**
-1. Use the full path to MSBuild: `"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe"`
-2. Or use "Developer Command Prompt for VS 2022" from Start Menu
-3. Or add MSBuild to PATH (see installation steps above)
-
----
-
 ### Issue: "The command 'dotnet tool restore' exited with code 1"
 
 **Cause:** The `dotnet-tools.json` file is blocked by Windows.
@@ -344,19 +167,6 @@ msbuild LADXHD_Patcher.sln /t:Rebuild /p:Configuration=Release
 
 ---
 
-### Issue: "The reference assemblies for .NETFramework,Version=v4.8.1 were not found"
-
-**Cause:** .NET Framework 4.8.1 targeting pack not installed.
-
-**Solution:**
-1. Run the Build Tools installer again (`vs_buildtools.exe`)
-2. Click "Modify" on your installation
-3. Ensure ".NET desktop build tools" workload is selected
-4. In "Individual components", ensure `.NET Framework 4.8.1 SDK` and `.NET Framework 4.8.1 targeting pack` are checked
-5. Click "Modify" to install missing components
-
----
-
 ### Issue: Build fails with MonoGame content errors
 
 **Cause:** MonoGame content builder tools not installed or not restored.
@@ -367,7 +177,7 @@ msbuild LADXHD_Patcher.sln /t:Rebuild /p:Configuration=Release
    ```batch
    dotnet tool restore
    ```
-3. Ensure game assets are properly set up (see README.md)
+3. Ensure game assets are properly migrated and present in the build directory
 
 ---
 
@@ -401,15 +211,13 @@ Then retry running the script.
 ## Additional Resources
 
 - [.NET 6.0 Documentation](https://docs.microsoft.com/en-us/dotnet/core/whats-new/dotnet-6)
-- [MSBuild Command-Line Reference](https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference)
-- [Build Tools for Visual Studio](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022)
 - [MonoGame Documentation](https://docs.monogame.net/)
 
 ---
 
 ## Quick Reference: Complete Build Process
 
-For a complete build of all projects from scratch:
+For building the game from scratch:
 
 ```batch
 REM Navigate to repository root
@@ -424,19 +232,9 @@ dotnet tool restore
 dotnet restore
 dotnet publish -c Release -p:"PublishProfile=FolderProfile"
 cd ..
-
-REM Build the patcher (using Developer Command Prompt or full MSBuild path)
-cd ladxhd_patcher_source_code
-msbuild LADXHD_Patcher.sln /p:Configuration=Release
-cd ..
-
-REM Build the migrater (using Developer Command Prompt or full MSBuild path)
-cd ladxhd_migrate_source_code
-msbuild LADXHD_Migrater.sln /p:Configuration=Release
-cd ..
 ```
 
-Note: For MSBuild commands, use Developer Command Prompt or replace `msbuild` with the full path:
+Or simply run the provided helper script:
 ```batch
-"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe"
+build-game.bat
 ```

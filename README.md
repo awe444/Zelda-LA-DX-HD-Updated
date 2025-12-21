@@ -63,8 +63,8 @@ Again, make sure you are grabbing the correct Content and Data folders. The "Dat
 If you wish to work on the code in this repository.
 - Basic knowledge of C# .NET is required.
 - For IDE-based development: [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/)
-    - Make sure to select `.NET desktop development` components in the visual studio installer.
-- For command-line only development: See [BUILD_WINDOWS.md](BUILD_WINDOWS.md) for minimal environment setup.
+    - Make sure to select `.NET desktop development` workload in the Visual Studio installer.
+- For command-line only development (game only): See [BUILD_WINDOWS.md](BUILD_WINDOWS.md) for minimal environment setup.
 - The "base" game should remain as close to the original DX version as possible.
 - Modifications are okay in the form of options, but should default to **<ins>false</ins>**.
 - Some exceptions may be okay depending on their intent.
