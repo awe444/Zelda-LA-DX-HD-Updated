@@ -61,9 +61,10 @@ Again, make sure you are grabbing the correct Content and Data folders. The "Dat
 ## Contributing Prerequisites
 
 If you wish to work on the code in this repository.
-- Basic knowledge of C# .NET and Visual Studio is required.
-- [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/)
-    - Make sure to select `.NET desktop development` components in the visual studio installer.
+- Basic knowledge of C# .NET is required.
+- For IDE-based development: [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/)
+    - Make sure to select `.NET desktop development` workload in the Visual Studio installer.
+- For command-line only development (game only): See [BUILD_WINDOWS.md](BUILD_WINDOWS.md) for minimal environment setup.
 - The "base" game should remain as close to the original DX version as possible.
 - Modifications are okay in the form of options, but should default to **<ins>false</ins>**.
 - Some exceptions may be okay depending on their intent.
@@ -76,7 +77,11 @@ See the wiki page on [contributing to this project](https://github.com/BigheadSM
 
 ## Build Instructions
 
-If you wish to build the code in this repository.
+**For detailed build instructions including minimal Windows environment setup without Visual Studio, see [BUILD_WINDOWS.md](BUILD_WINDOWS.md).**
+
+### Quick Build (with Visual Studio)
+
+If you wish to build the code in this repository using Visual Studio:
 - Clone or Download this repository: green `Code` Button > `Download ZIP`
 - The game's source code is in **"ladxhd_game_source_code"** folder
 - Follow the steps in **Updating Source Code Assets**
@@ -85,6 +90,14 @@ If you wish to build the code in this repository.
   - -AND- Right click, go to properties, check `Unblock`.
 - Open ProjectZ.sln
 - Build/run like any normal C# program
+
+### Quick Build (command-line only)
+
+If you prefer to build without an IDE:
+- Install [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+- Clone or download this repository
+- Follow the steps in **Updating Source Code Assets**
+- Run `build-game.bat` to build the game, or see [BUILD_WINDOWS.md](BUILD_WINDOWS.md) for detailed instructions
 
 ## Personal Build / Publishing
 
@@ -97,8 +110,11 @@ To create a personal build, follow the steps below:
   - -OR- Go to the folder `ladxhd_game_source_code\.config` you will see `dotnet-tools.json`.
   - -AND- Right click, go to properties, check `Unblock`.
 - Run the `ladxhd_game_source_code\publish.bat` script to build the game.
+  - -OR- Run `build-game.bat` from the repository root.
 - Alternatively, the **"LADXHD_Migrater.exe"** tool can now build the game.
 - When done, the build will be in the `Publish` folder.
+
+**For more detailed instructions and command-line build options, see [BUILD_WINDOWS.md](BUILD_WINDOWS.md).**
 
 ## Build Troubleshooting
 
@@ -106,6 +122,8 @@ If you experience the error **The command “dotnet tool restore” exited with 
 
 - To unblock all files in one go, run the included PowerShell script **"Unblock-All-Files.ps1"**.
 - To unblock a single file: Right click, go to Properties, check Unblock, and click OK.
+
+**For more troubleshooting help, see [BUILD_WINDOWS.md](BUILD_WINDOWS.md#troubleshooting).**
 
 ## About This Fork
 
