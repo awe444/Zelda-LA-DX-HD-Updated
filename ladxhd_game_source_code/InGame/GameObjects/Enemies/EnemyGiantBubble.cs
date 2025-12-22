@@ -17,7 +17,7 @@ namespace ProjectZ.InGame.GameObjects.Enemies
         private bool _flashState;
         private double _lastFlashTime;
 
-        public EnemyGiantBubble() : base("giant Bubble") { }
+        public EnemyGiantBubble() : base("giant bubble") { }
 
         public EnemyGiantBubble(Map.Map map, int posX, int posY) : base(map)
         {
@@ -29,7 +29,7 @@ namespace ProjectZ.InGame.GameObjects.Enemies
             EntitySize = new Rectangle(-32, -32, 64, 64);
             CanReset = true;
 
-            _animator = AnimatorSaveLoad.LoadAnimator("Enemies/giant Bubble");
+            _animator = AnimatorSaveLoad.LoadAnimator("Enemies/giant bubble");
             _animator.Play("idle");
 
             _sprite = new CSprite(EntityPosition);

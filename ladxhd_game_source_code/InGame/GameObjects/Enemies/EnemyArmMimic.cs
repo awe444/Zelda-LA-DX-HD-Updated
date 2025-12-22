@@ -39,7 +39,7 @@ namespace ProjectZ.InGame.GameObjects.Enemies
             CanReset = true;
             OnReset = Reset;
 
-            _animator = AnimatorSaveLoad.LoadAnimator("Enemies/arm Mimic");
+            _animator = AnimatorSaveLoad.LoadAnimator("Enemies/arm mimic");
 
             var sprite = new CSprite(EntityPosition);
             var animatorComponent = new AnimationComponent(_animator, sprite, new Vector2(-8, -16));
