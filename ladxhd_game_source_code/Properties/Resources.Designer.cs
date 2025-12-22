@@ -63,6 +63,8 @@ namespace ProjectZ.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         ///   STUB: Icon loading disabled for Linux ARM64 platform.
+        ///   Changed return type from System.Drawing.Icon to object to avoid dependency on System.Drawing.Common
+        ///   which is not available/needed on Linux. This Icon property is not used in the Linux build.
         /// </summary>
         internal static object Icon {
             get {

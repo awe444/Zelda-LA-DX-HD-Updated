@@ -34,7 +34,7 @@ namespace ProjectZ.InGame.SaveLoad
         {
             string portable = Path.Combine(Values.WorkingDirectory,"portable.txt");
             if (File.Exists(portable))
-                return Path.Combine("SaveFiles");
+                return "SaveFiles";
             return Path.Combine(Values.AppDataFolder,"Zelda_LA","SaveFiles");
         }
 

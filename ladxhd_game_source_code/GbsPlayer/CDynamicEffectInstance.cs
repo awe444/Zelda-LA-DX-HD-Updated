@@ -10,6 +10,7 @@ namespace GBSPlayer
     {
         private static bool _warningLogged = false;
 
+        // Use SoundState enum from XNA framework for compatibility
         public SoundState State = SoundState.Stopped;
 
         public CDynamicEffectInstance(int sampleRate)
