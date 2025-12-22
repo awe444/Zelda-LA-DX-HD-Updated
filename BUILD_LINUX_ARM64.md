@@ -276,6 +276,35 @@ Fixed 1600x900 window with auto-calculated scales based on window dimensions.
 - UI scale automatically adjusts if the specified value is too large for the window
 - Settings are saved when you exit the game or change settings in-game
 
+### Verbose Display Logging
+
+The game now outputs detailed display configuration information to the console on startup:
+
+```
+[DISPLAY] Window Configuration:
+[DISPLAY]   Requested WindowWidth: 1920
+[DISPLAY]   Requested WindowHeight: 1080
+[DISPLAY]   GameScale: 4
+[DISPLAY]   UIScale: 6
+[DISPLAY]   Using configured dimensions: 1920x1080
+[DISPLAY]   PreferredBackBufferWidth: 1920
+[DISPLAY]   PreferredBackBufferHeight: 1080
+```
+
+This logging helps diagnose configuration issues:
+- Check if settings are being loaded correctly
+- Verify the requested window size matches your configuration
+- Compare actual window size with requested size
+- See display adapter information
+- Monitor scale calculations
+
+The display logs appear at these key points:
+1. **Initial Configuration** - Shows requested settings before window creation
+2. **After Initialize()** - Shows actual window size and display resolution
+3. **After LoadSettings()** - Confirms settings were loaded from file
+4. **UpdateScale()** - Shows scale calculations when window size changes
+5. **OnResize()** - Shows when and why window is resized
+
 ## Known Limitations
 
 ### Background Music (GbsPlayer) Not Available

@@ -131,16 +131,26 @@ namespace ProjectZ
             Graphics.GraphicsProfile = GraphicsProfile.HiDef;
             
             // Use configured window size if specified, otherwise use default
+            Console.WriteLine("[DISPLAY] Window Configuration:");
+            Console.WriteLine($"[DISPLAY]   Requested WindowWidth: {GameSettings.WindowWidth}");
+            Console.WriteLine($"[DISPLAY]   Requested WindowHeight: {GameSettings.WindowHeight}");
+            Console.WriteLine($"[DISPLAY]   GameScale: {GameSettings.GameScale}");
+            Console.WriteLine($"[DISPLAY]   UIScale: {GameSettings.UiScale}");
+            
             if (GameSettings.WindowWidth > 0 && GameSettings.WindowHeight > 0)
             {
                 Graphics.PreferredBackBufferWidth = GameSettings.WindowWidth;
                 Graphics.PreferredBackBufferHeight = GameSettings.WindowHeight;
+                Console.WriteLine($"[DISPLAY]   Using configured dimensions: {GameSettings.WindowWidth}x{GameSettings.WindowHeight}");
             }
             else
             {
                 Graphics.PreferredBackBufferWidth = Values.MinWidth * 2;
                 Graphics.PreferredBackBufferHeight = Values.MinHeight * 2;
+                Console.WriteLine($"[DISPLAY]   Using default dimensions: {Values.MinWidth * 2}x{Values.MinHeight * 2}");
             }
+            Console.WriteLine($"[DISPLAY]   PreferredBackBufferWidth: {Graphics.PreferredBackBufferWidth}");
+            Console.WriteLine($"[DISPLAY]   PreferredBackBufferHeight: {Graphics.PreferredBackBufferHeight}");
 
             // Allow the user to resize the window.
             // Wrapped in try-catch for SDL versions that don't support changing this after window creation
@@ -168,6 +178,24 @@ namespace ProjectZ
             // Initialize the editor.
             EditorManager = new EditorManager(this);
             base.Initialize();
+            
+            // Log actual window and display information after initialization
+            Console.WriteLine("[DISPLAY] After Initialize():");
+            Console.WriteLine($"[DISPLAY]   Actual Window.ClientBounds: {Window.ClientBounds.Width}x{Window.ClientBounds.Height}");
+            Console.WriteLine($"[DISPLAY]   GraphicsDevice.Viewport: {GraphicsDevice.Viewport.Width}x{GraphicsDevice.Viewport.Height}");
+            Console.WriteLine($"[DISPLAY]   Graphics.PreferredBackBufferWidth: {Graphics.PreferredBackBufferWidth}");
+            Console.WriteLine($"[DISPLAY]   Graphics.PreferredBackBufferHeight: {Graphics.PreferredBackBufferHeight}");
+            
+            try
+            {
+                var displayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
+                Console.WriteLine($"[DISPLAY]   Display Resolution: {displayMode.Width}x{displayMode.Height}");
+                Console.WriteLine($"[DISPLAY]   Display Format: {displayMode.Format}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[DISPLAY]   Could not get display mode: {ex.Message}");
+            }
         }
 
         protected override void OnExiting(object sender, EventArgs args)
@@ -199,6 +227,15 @@ namespace ProjectZ
 
             // Load the users saved settings.
             SettingsSaveLoad.LoadSettings();
+            
+            // Log settings after loading
+            Console.WriteLine("[DISPLAY] After LoadSettings():");
+            Console.WriteLine($"[DISPLAY]   GameSettings.WindowWidth: {GameSettings.WindowWidth}");
+            Console.WriteLine($"[DISPLAY]   GameSettings.WindowHeight: {GameSettings.WindowHeight}");
+            Console.WriteLine($"[DISPLAY]   GameSettings.GameScale: {GameSettings.GameScale}");
+            Console.WriteLine($"[DISPLAY]   GameSettings.UiScale: {GameSettings.UiScale}");
+            Console.WriteLine($"[DISPLAY]   GameSettings.IsFullscreen: {GameSettings.IsFullscreen}");
+            Console.WriteLine($"[DISPLAY]   Current Window.ClientBounds: {Window.ClientBounds.Width}x{Window.ClientBounds.Height}");
 
             // Load the Intro Screen and its resources.
             GameManager.UpdateSoundEffects();
@@ -593,10 +630,19 @@ namespace ProjectZ
             WindowWidth = Window.ClientBounds.Width;
             WindowHeight = Window.ClientBounds.Height;
             ScaleChanged = true;
+            
+            Console.WriteLine("[DISPLAY] OnResize() called:");
+            Console.WriteLine($"[DISPLAY]   New WindowWidth: {WindowWidth}, WindowHeight: {WindowHeight}");
         }
 
         private void UpdateScale()
         {
+            Console.WriteLine("[DISPLAY] UpdateScale() called:");
+            Console.WriteLine($"[DISPLAY]   WindowWidth: {WindowWidth}, WindowHeight: {WindowHeight}");
+            Console.WriteLine($"[DISPLAY]   GameSettings.GameScale: {GameSettings.GameScale}");
+            Console.WriteLine($"[DISPLAY]   GameSettings.UiScale: {GameSettings.UiScale}");
+            Console.WriteLine($"[DISPLAY]   Camera.ClassicMode: {Camera.ClassicMode}");
+            
             if (Camera.ClassicMode)
             {
                 // Force integer scale or the field rect will be thrown off. The scaling value is calculated using the original dimensions of the
@@ -660,6 +706,12 @@ namespace ProjectZ
 
             // This needs to go false or it will run every loop.
             ScaleChanged = false;
+            
+            // Log final scale values
+            Console.WriteLine("[DISPLAY] UpdateScale() results:");
+            Console.WriteLine($"[DISPLAY]   MapManager.Camera.Scale: {MapManager.Camera.Scale}");
+            Console.WriteLine($"[DISPLAY]   UiScale: {UiScale}");
+            Console.WriteLine($"[DISPLAY]   RenderWidth: {RenderWidth}, RenderHeight: {RenderHeight}");
         }
 
         private void UpdateRenderTargets()
