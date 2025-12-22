@@ -264,10 +264,13 @@ Fixed 1600x900 window with auto-calculated scales based on window dimensions.
 
 ### How It Works
 
-- When `WindowWidth` and `WindowHeight` are set to values > 0, those dimensions are used for the game window
+- **Settings are loaded BEFORE window creation**, ensuring configured dimensions are applied from the start
+- When `WindowWidth` and `WindowHeight` are set to values > 0, those dimensions are used for the initial game window
 - When either is set to 0 (default), the window size is calculated from `GameScale` as before
 - `GameScale` and `UIScale` still control the upscaling of graphics and UI elements
 - The window can be resized at runtime if SDL supports it (handled gracefully if not)
+
+**Important Note:** Due to SDL 2.0.4 limitations on Linux ARM64, the window cannot be resized after creation. Therefore, settings must be configured correctly before the first launch. If you change `WindowWidth` or `WindowHeight`, restart the game for the new dimensions to take effect.
 
 ### Notes
 

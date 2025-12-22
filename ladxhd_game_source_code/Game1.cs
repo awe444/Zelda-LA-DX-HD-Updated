@@ -126,6 +126,14 @@ namespace ProjectZ
             // Enable editor via lahdmod file or through the command line option.
             EditorMode = editorMode || editor_mode;
 
+            // Initialize ControlHandler before loading settings (SettingsSaveLoad.LoadSettings needs it)
+            ControlHandler.Initialize();
+
+            // Load user settings BEFORE creating the window so window size settings can be applied
+            Console.WriteLine("[DISPLAY] Loading settings before window creation...");
+            SettingsSaveLoad.LoadSettings();
+            Console.WriteLine("[DISPLAY] Settings loaded successfully.");
+
             // Create the graphics device and set the back buffer width/height.
             Graphics = new GraphicsDeviceManager(this);
             Graphics.GraphicsProfile = GraphicsProfile.HiDef;
@@ -221,15 +229,11 @@ namespace ProjectZ
             // Start loading the resources that are needed after the intro.
             ThreadPool.QueueUserWorkItem(LoadContentThreaded);
 
-            // Initialize controller and input handler.
-            ControlHandler.Initialize();
+            // Initialize input handler (ControlHandler was already initialized in constructor)
             Components.Add(new InputHandler(this));
 
-            // Load the users saved settings.
-            SettingsSaveLoad.LoadSettings();
-            
-            // Log settings after loading
-            Console.WriteLine("[DISPLAY] After LoadSettings():");
+            // Settings were already loaded in constructor, but log them again for reference
+            Console.WriteLine("[DISPLAY] In LoadContent():");
             Console.WriteLine($"[DISPLAY]   GameSettings.WindowWidth: {GameSettings.WindowWidth}");
             Console.WriteLine($"[DISPLAY]   GameSettings.WindowHeight: {GameSettings.WindowHeight}");
             Console.WriteLine($"[DISPLAY]   GameSettings.GameScale: {GameSettings.GameScale}");
