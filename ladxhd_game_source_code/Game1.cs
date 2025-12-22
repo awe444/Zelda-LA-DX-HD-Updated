@@ -133,7 +133,16 @@ namespace ProjectZ
             Graphics.PreferredBackBufferHeight = Values.MinHeight * 2;
 
             // Allow the user to resize the window.
-            Window.AllowUserResizing = true;
+            // Wrapped in try-catch for SDL versions that don't support changing this after window creation
+            try
+            {
+                Window.AllowUserResizing = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[WARNING] Could not enable window resizing: {ex.Message}");
+                Console.WriteLine("The game will run in fixed-size window mode.");
+            }
 
             // Store any command line parameters if available.
             IsMouseVisible = EditorMode;

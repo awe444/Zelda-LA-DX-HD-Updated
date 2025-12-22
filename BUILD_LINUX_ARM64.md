@@ -226,6 +226,20 @@ The game uses OpenGL rendering via MonoGame's DesktopGL framework. Your system m
 - OpenGL 3.0 or higher
 - SDL2 for window management
 
+### Window Resizing
+
+The game supports window resizing. However, older versions of SDL bundled with MonoGame may not support changing the resizable parameter after window creation. The game handles this gracefully:
+
+- If your SDL version supports it, the window will be resizable
+- If not, the game will display a warning and run in fixed-size window mode
+- This does not affect gameplay or other functionality
+
+**Expected console output if window resizing is not supported:**
+```
+[WARNING] Could not enable window resizing: SDL 2.0.4 does not support changing resizable parameter...
+The game will run in fixed-size window mode.
+```
+
 ## Troubleshooting
 
 ### Issue: Missing SDL2 Libraries
@@ -335,6 +349,24 @@ If you experience graphics issues:
 1. Update your graphics drivers
 2. Check OpenGL version: `glxinfo | grep "OpenGL version"`
 3. Ensure you have at least OpenGL 3.0 support
+
+### Issue: SDL Window Resizing Error
+
+**Error:**
+```
+Fatal error: SDL 2.0.4 does not support changing resizable parameter of the window after it's already been created
+```
+
+**Cause:** MonoGame 3.8.1.303 may bundle an older version of SDL2 that doesn't support runtime changes to window properties, even if you have a newer SDL2 installed on your system.
+
+**Solution:** This has been fixed in the latest version. The game now handles this error gracefully and will run in fixed-size window mode if the SDL version doesn't support resizing. 
+
+If you're running an older build:
+1. Rebuild from the latest source code
+2. The game will display a warning but continue to run normally
+3. Window resizing will be disabled, but all other functionality works
+
+**Note:** The game uses the SDL2 library bundled with MonoGame.Framework.DesktopGL, not your system's SDL2 installation.
 
 ### Issue: Black Screen on Launch
 
