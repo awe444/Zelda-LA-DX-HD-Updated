@@ -379,6 +379,44 @@ Try running with different fullscreen modes:
 ./Link\'s\ Awakening\ DX\ HD exclusive
 ```
 
+### Issue: Game Crashes with NullReferenceException
+
+**Error:**
+```
+Unhandled exception. System.NullReferenceException: Object reference not set to an instance of an object.
+   at ProjectZ.InGame.GameObjects.Enemies.EnemySpinyBeetle..ctor(...)
+```
+
+**Cause:** This usually indicates missing game data files (Data folder) or file path case sensitivity issues.
+
+**Solution:**
+1. **Ensure Data folder is present:**
+   ```bash
+   ls -la ./Data/Animations/
+   ```
+   
+2. **Check for case sensitivity issues:**
+   The game will now log detailed error messages to help diagnose missing files:
+   ```
+   [ERROR] Animator file not found: Data/Animations/Enemies/spiny beetle.ani
+   [ERROR] Found X .ani files in Data/Animations
+   ```
+
+3. **Verify all game data files are copied:**
+   - Ensure the entire `Data` folder from the original game is present
+   - The publish process should include it automatically via the `.csproj` configuration
+   - If manually copying, preserve the directory structure exactly
+
+4. **Check file permissions:**
+   ```bash
+   chmod -R 755 ./Data
+   ```
+
+5. **Rebuild with verbose logging:**
+   The latest version includes enhanced error logging that will show which specific files are missing when the game crashes.
+
+**Note about Windows paths in stack traces:** The paths shown in error messages (e.g., `C:\Users\...`) are from debug symbols generated during compilation on Windows. This is normal and doesn't indicate a problem with the Linux build itself.
+
 ## Differences from Windows Build
 
 | Feature | Windows x64 | Linux ARM64 |
