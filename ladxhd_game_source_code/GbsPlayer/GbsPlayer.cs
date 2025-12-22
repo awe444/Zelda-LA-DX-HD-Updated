@@ -4,6 +4,8 @@ using System.Threading;
 
 namespace GBSPlayer
 {
+    // STUB: GbsPlayer is stubbed for ARM64 Linux platform.
+    // Background music playback is not supported on this platform.
     public class GbsPlayer
     {
         public GameBoyCPU Cpu;
@@ -23,8 +25,16 @@ namespace GBSPlayer
 
         private Thread _updateThread;
 
+        private static bool _warningLogged = false;
+
         public GbsPlayer()
         {
+            if (!_warningLogged)
+            {
+                Console.WriteLine("[GbsPlayer-STUB] GbsPlayer initialized in stub mode for ARM64 Linux. Background music disabled.");
+                _warningLogged = true;
+            }
+
             SoundGenerator = new Sound();
             Cartridge = new Cartridge();
             Memory = new GeneralMemory(Cartridge, SoundGenerator);
@@ -38,86 +48,45 @@ namespace GBSPlayer
 
         public void LoadFile(string path)
         {
-            Cartridge.ROM = File.ReadAllBytes(path);
-
-            Cartridge.Init();
-            Cpu.Init();
-
-            GbsLoaded = true;
-
-            Console.WriteLine("finished loading file: {0}", path);
+            // Stub: Don't actually load the file
+            GbsLoaded = false;
+            Console.WriteLine("[GbsPlayer-STUB] LoadFile called but stubbed: {0}", path);
         }
 
         public void ChangeTrack(int offset)
         {
-            var newTrack = CurrentTrack + offset;
-
-            while (newTrack < 0)
-                newTrack += Cartridge.TrackCount;
-            newTrack %= Cartridge.TrackCount;
-
-            StartTrack((byte)newTrack);
+            // Stub: No-op
         }
 
         public void StartTrack(byte trackNr)
         {
-            // directly init the new song if update is not called at this time
-            lock (_updateLock)
-            {
-                CurrentTrack = trackNr;
-
-                // clear buffer; stop playback
-                SoundGenerator.Stop();
-
-                // init play
-                GbsInit(trackNr);
-
-                SoundGenerator.SetStopTime(0);
-            }
+            // Stub: No-op
+            CurrentTrack = trackNr;
         }
 
         private void GbsInit(byte trackNumber)
         {
-            Cartridge.Init();
-            Cpu.SkipBootROM();
-            Cpu.Init();
-            Cpu.SetPlaybackSpeed(1);
-
-            // tack number
-            Cpu.reg_A = trackNumber;
-
-            Cpu.reg_PC = Cartridge.InitAddress;
-            Cpu.reg_SP = Cartridge.StackPointer;
-
-            // push the idleAddress on the stack
-            Memory[--Cpu.reg_SP] = (byte)(Cpu.IdleAddress >> 0x8);
-            Memory[--Cpu.reg_SP] = (byte)(Cpu.IdleAddress & 0xFF);
-
-            Console.WriteLine("finished gbs init");
+            // Stub: No-op
         }
 
         public void Play()
         {
-            Cpu.IsRunning = true;
+            // Stub: No-op
         }
 
         public void Pause()
         {
-            SoundGenerator.Pause();
-            Cpu.IsRunning = false;
+            // Stub: No-op
         }
 
         public void Resume()
         {
-            SoundGenerator.Resume();
-            Cpu.IsRunning = true;
+            // Stub: No-op
         }
 
         public void Stop()
         {
-            // stop music playback
-            SoundGenerator.Stop();
-            Cpu.IsRunning = false;
+            // Stub: No-op
         }
 
         public float GetVolume()
@@ -128,7 +97,6 @@ namespace GBSPlayer
         public void SetVolume(float volume)
         {
             _volume = volume;
-            SoundGenerator.SetVolume(_volume * _volumeMultiplier);
         }
 
         public float GetVolumeMultiplier()
@@ -139,33 +107,21 @@ namespace GBSPlayer
         public void SetVolumeMultiplier(float multiplier)
         {
             _volumeMultiplier = multiplier;
-            SoundGenerator.SetVolume(_volume * _volumeMultiplier);
         }
 
         public void Update(float deltaTime)
         {
-            Cpu.Update();
+            // Stub: No-op
         }
 
         public void StartThread()
         {
-            // thread is used to run the cpu and playback
-            _updateThread = new Thread(UpdateThread);
-            _updateThread.Start();
+            // Stub: Don't start the update thread
         }
 
         public void UpdateThread()
         {
-            while (true)
-            {
-                if (_exitThread)
-                    return;
-
-                lock (_updateLock)
-                    Cpu.Update();
-
-                Thread.Sleep(5);
-            }
+            // Stub: No-op
         }
     }
 }

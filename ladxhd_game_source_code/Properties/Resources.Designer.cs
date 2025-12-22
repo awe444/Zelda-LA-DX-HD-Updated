@@ -62,11 +62,12 @@ namespace ProjectZ.Properties {
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        ///   STUB: Icon loading disabled for Linux ARM64 platform.
         /// </summary>
-        internal static System.Drawing.Icon Icon {
+        internal static object Icon {
             get {
-                object obj = ResourceManager.GetObject("Icon", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                // Stub: Return null for Linux ARM64 platform
+                return null;
             }
         }
     }
