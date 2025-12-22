@@ -202,6 +202,80 @@ These dependencies are **only used during the build process** on Windows and are
 - Shaders are compiled during the build phase and embedded as platform-independent bytecode
 - The same `Data` folder works on both Windows (for building) and Linux (for running)
 
+## Window Size Configuration
+
+The game now supports configurable window dimensions in addition to the traditional scale-based sizing.
+
+### Configuration Options
+
+You can configure window size through the settings file located at:
+- Linux: `~/.local/share/LADXHD/settings.data`
+- Windows: `%LOCALAPPDATA%\LADXHD\settings.data`
+
+### Available Parameters
+
+1. **WindowWidth** (integer, default: 0)
+   - Target window width in pixels
+   - Set to 0 for automatic calculation based on GameScale
+   - Example: `WindowWidth=1920`
+
+2. **WindowHeight** (integer, default: 0)
+   - Target window height in pixels
+   - Set to 0 for automatic calculation based on GameScale
+   - Example: `WindowHeight=1080`
+
+3. **GameScale** (integer, default: auto)
+   - Upscaling multiple for game graphics
+   - Works in combination with window size
+   - Higher values = larger pixels/sprites
+
+4. **UIScale** (integer, default: auto)
+   - Upscaling multiple for UI elements
+   - Independent of game graphics scale
+
+### Usage Examples
+
+**Example 1: Specific Window Size**
+```
+WindowWidth=1920
+WindowHeight=1080
+GameScale=4
+UIScale=6
+```
+Creates a 1920x1080 window with 4x game graphics scale and 6x UI scale.
+
+**Example 2: Auto Window Size (Scale-Based)**
+```
+WindowWidth=0
+WindowHeight=0
+GameScale=3
+UIScale=5
+```
+Window size calculated automatically from GameScale (traditional behavior).
+
+**Example 3: Custom Window with Auto Scales**
+```
+WindowWidth=1600
+WindowHeight=900
+GameScale=0
+UIScale=0
+```
+Fixed 1600x900 window with auto-calculated scales based on window dimensions.
+
+### How It Works
+
+- When `WindowWidth` and `WindowHeight` are set to values > 0, those dimensions are used for the game window
+- When either is set to 0 (default), the window size is calculated from `GameScale` as before
+- `GameScale` and `UIScale` still control the upscaling of graphics and UI elements
+- The window can be resized at runtime if SDL supports it (handled gracefully if not)
+
+### Notes
+
+- Both `WindowWidth` and `WindowHeight` must be > 0 to use custom window sizing
+- Minimum window size is dictated by the game's internal resolution requirements
+- UI scale automatically adjusts if the specified value is too large for the window
+- Settings are saved when you exit the game or change settings in-game
+
 ## Known Limitations
 
 ### Background Music (GbsPlayer) Not Available

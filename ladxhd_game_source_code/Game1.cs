@@ -129,8 +129,18 @@ namespace ProjectZ
             // Create the graphics device and set the back buffer width/height.
             Graphics = new GraphicsDeviceManager(this);
             Graphics.GraphicsProfile = GraphicsProfile.HiDef;
-            Graphics.PreferredBackBufferWidth = Values.MinWidth * 2;
-            Graphics.PreferredBackBufferHeight = Values.MinHeight * 2;
+            
+            // Use configured window size if specified, otherwise use default
+            if (GameSettings.WindowWidth > 0 && GameSettings.WindowHeight > 0)
+            {
+                Graphics.PreferredBackBufferWidth = GameSettings.WindowWidth;
+                Graphics.PreferredBackBufferHeight = GameSettings.WindowHeight;
+            }
+            else
+            {
+                Graphics.PreferredBackBufferWidth = Values.MinWidth * 2;
+                Graphics.PreferredBackBufferHeight = Values.MinHeight * 2;
+            }
 
             // Allow the user to resize the window.
             // Wrapped in try-catch for SDL versions that don't support changing this after window creation
