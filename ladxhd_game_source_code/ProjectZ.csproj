@@ -34,10 +34,10 @@
   </ItemGroup>
   <!-- Include Windows Content Pipeline dependencies when building on Windows -->
   <!-- This allows cross-compilation from Windows to Linux ARM64 -->
+  <!-- Note: The entire WindowsDX package is included on Windows to ensure all -->
+  <!-- native dependencies (libmojoshader_64.dll, etc.) are available to the Content Pipeline -->
   <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
-    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.1.303">
-      <PrivateAssets>contentfiles;build</PrivateAssets>
-    </PackageReference>
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.1.303" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\**">
@@ -57,6 +57,11 @@
   </Target>
   <Target Name="RemovePreviousPublish" BeforeTargets="Build">
     <RemoveDir Directories="$(PublishDir)"></RemoveDir>
+  </Target>
+  <!-- Ensure native DLLs are available for Content Pipeline on Windows -->
+  <Target Name="CopyNativeDLLsForContentPipeline" BeforeTargets="BeforeBuild" Condition="'$(OS)' == 'Windows_NT'">
+    <Message Text="Ensuring MonoGame native DLLs are available for Content Pipeline..." Importance="High" />
+    <!-- The Content Pipeline will automatically find the DLLs from the WindowsDX package -->
   </Target>
   <Target Name="CleanPublish" AfterTargets="Publish">
     <Delete Files="$(PublishDir)/Link's Awakening DX HD.pdb" />

@@ -268,18 +268,45 @@ warning NETSDK1138: The target framework 'net6.0' is out of support
 Unable to load DLL 'libmojoshader_64.dll' or one of its dependencies
 ```
 
-**Solution:**
-1. Ensure you have Visual C++ Redistributable 2015-2022 (x64) installed
-2. Run `dotnet restore ProjectZ.csproj` to ensure WindowsDX package is properly restored
-3. Check that the build is using the correct .NET SDK version (6.0+)
-4. If the error persists, try cleaning the build:
+**Root Cause:** The libmojoshader_64.dll has dependencies that may not be present or accessible on your system.
+
+**Solutions to try (in order):**
+
+1. **Install additional Visual C++ Redistributables:**
+   - Install Visual C++ Redistributable 2013 (x64) - libmojoshader may depend on older runtime
+   - Download from: https://aka.ms/highdpimfc2013x64enu
+   - Also ensure Visual C++ Redistributable 2015-2022 (x64) is installed
+
+2. **Check Windows SDK components:**
+   - Install Windows 10/11 SDK if not already present
+   - The shader compiler (D3DCompiler) dependencies may be needed
+
+3. **Clean and rebuild:**
    ```cmd
    dotnet clean ProjectZ.csproj
+   rd /s /q bin obj
    dotnet restore ProjectZ.csproj
-   dotnet build ProjectZ.csproj -r linux-arm64
+   dotnet build ProjectZ.csproj -r linux-arm64 -c Release
    ```
 
-The conditional package reference for `MonoGame.Framework.WindowsDX` provides the necessary DLLs for shader compilation on Windows.
+4. **Verify package restoration:**
+   - Check that WindowsDX package is restored: look for `.nuget\packages\monogame.framework.windowsdx\3.8.1.303`
+   - Verify libmojoshader_64.dll exists in: `.nuget\packages\monogame.framework.windowsdx\3.8.1.303\runtimes\win-x64\native\`
+
+5. **Use Dependency Walker or Dependencies.exe:**
+   - Download Dependencies.exe from https://github.com/lucasg/Dependencies
+   - Open libmojoshader_64.dll to see which DLL dependencies are missing
+   - Install the missing dependencies
+
+6. **Alternative: Pre-compile shaders on a working system:**
+   - If cross-compilation continues to fail, compile shaders on a Linux system or a Windows system where it works
+   - Copy the compiled Content folder to your Windows build machine
+   - Disable Content Pipeline by removing Content.mgcb references
+
+**Additional Notes:**
+- The error "or one of its dependencies" usually means a transitive dependency is missing, not libmojoshader_64.dll itself
+- Common missing dependencies: MSVCR120.dll, MSVCP120.dll (from VS2013), d3dcompiler_47.dll
+- libmojoshader is a native C library that bridges HLSL shader compilation
 
 ### Issue: Permission Denied When Running
 
