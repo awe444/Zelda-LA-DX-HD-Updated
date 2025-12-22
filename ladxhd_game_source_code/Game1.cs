@@ -16,10 +16,6 @@ using ProjectZ.InGame.Screens;
 using ProjectZ.InGame.Things;
 using GBSPlayer;
 
-#if WINDOWS
-using Forms = System.Windows.Forms;
-#endif
-
 namespace ProjectZ
 {
     public class Game1 : Game
@@ -51,8 +47,6 @@ namespace ProjectZ
 
         private static int _lastWindowWidth;
         private static int _lastWindowHeight;
-
-        private static System.Drawing.Rectangle _lastWindowBounds;
 
         public static bool FpsSettingChanged;
         private readonly SimpleFps _fpsCounter = new SimpleFps();
@@ -114,11 +108,6 @@ namespace ProjectZ
             (float)Graphics.PreferredBackBufferWidth / WindowWidth,
             (float)Graphics.PreferredBackBufferHeight / WindowHeight, 0));
 
-        #if WINDOWS
-            private static Forms.Form _windowForm;
-            private static Forms.FormWindowState _lastWindowState;
-        #endif
-
         // lahdmod values
         private int  max_game_scale = 20;
         private bool editor_mode = false;
@@ -137,27 +126,51 @@ namespace ProjectZ
             // Enable editor via lahdmod file or through the command line option.
             EditorMode = editorMode || editor_mode;
 
-            #if WINDOWS
-                // Get the form handle and set the icon of the window.
-                _windowForm = (Forms.Form)Forms.Control.FromHandle(Window.Handle);
-                _windowForm.Icon = Properties.Resources.Icon;
+            // Initialize ControlHandler before loading settings (SettingsSaveLoad.LoadSettings needs it)
+            ControlHandler.Initialize();
 
-                // Calculate the extra pixels taken up by the title bar and window border.
-                var deltaWidth = _windowForm.Width - _windowForm.ClientSize.Width;
-                var deltaHeight = _windowForm.Height - _windowForm.ClientSize.Height;
-
-                // Set the minimum window size including the extra pixels.
-                _windowForm.MinimumSize = new System.Drawing.Size(Values.MinWidth + deltaWidth, Values.MinHeight + deltaHeight);
-            #endif
+            // Load user settings BEFORE creating the window so window size settings can be applied
+            Console.WriteLine("[DISPLAY] Loading settings before window creation...");
+            SettingsSaveLoad.LoadSettings();
+            Console.WriteLine("[DISPLAY] Settings loaded successfully.");
 
             // Create the graphics device and set the back buffer width/height.
             Graphics = new GraphicsDeviceManager(this);
             Graphics.GraphicsProfile = GraphicsProfile.HiDef;
-            Graphics.PreferredBackBufferWidth = Values.MinWidth * 2;
-            Graphics.PreferredBackBufferHeight = Values.MinHeight * 2;
+            
+            // Use configured window size if specified, otherwise use default
+            Console.WriteLine("[DISPLAY] Window Configuration:");
+            Console.WriteLine($"[DISPLAY]   Requested WindowWidth: {GameSettings.WindowWidth}");
+            Console.WriteLine($"[DISPLAY]   Requested WindowHeight: {GameSettings.WindowHeight}");
+            Console.WriteLine($"[DISPLAY]   GameScale: {GameSettings.GameScale}");
+            Console.WriteLine($"[DISPLAY]   UIScale: {GameSettings.UiScale}");
+            
+            if (GameSettings.WindowWidth > 0 && GameSettings.WindowHeight > 0)
+            {
+                Graphics.PreferredBackBufferWidth = GameSettings.WindowWidth;
+                Graphics.PreferredBackBufferHeight = GameSettings.WindowHeight;
+                Console.WriteLine($"[DISPLAY]   Using configured dimensions: {GameSettings.WindowWidth}x{GameSettings.WindowHeight}");
+            }
+            else
+            {
+                Graphics.PreferredBackBufferWidth = Values.MinWidth * 2;
+                Graphics.PreferredBackBufferHeight = Values.MinHeight * 2;
+                Console.WriteLine($"[DISPLAY]   Using default dimensions: {Values.MinWidth * 2}x{Values.MinHeight * 2}");
+            }
+            Console.WriteLine($"[DISPLAY]   PreferredBackBufferWidth: {Graphics.PreferredBackBufferWidth}");
+            Console.WriteLine($"[DISPLAY]   PreferredBackBufferHeight: {Graphics.PreferredBackBufferHeight}");
 
             // Allow the user to resize the window.
-            Window.AllowUserResizing = true;
+            // Wrapped in try-catch for SDL versions that don't support changing this after window creation
+            try
+            {
+                Window.AllowUserResizing = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[WARNING] Could not enable window resizing: {ex.Message}");
+                Console.WriteLine("The game will run in fixed-size window mode.");
+            }
 
             // Store any command line parameters if available.
             IsMouseVisible = EditorMode;
@@ -173,6 +186,24 @@ namespace ProjectZ
             // Initialize the editor.
             EditorManager = new EditorManager(this);
             base.Initialize();
+            
+            // Log actual window and display information after initialization
+            Console.WriteLine("[DISPLAY] After Initialize():");
+            Console.WriteLine($"[DISPLAY]   Actual Window.ClientBounds: {Window.ClientBounds.Width}x{Window.ClientBounds.Height}");
+            Console.WriteLine($"[DISPLAY]   GraphicsDevice.Viewport: {GraphicsDevice.Viewport.Width}x{GraphicsDevice.Viewport.Height}");
+            Console.WriteLine($"[DISPLAY]   Graphics.PreferredBackBufferWidth: {Graphics.PreferredBackBufferWidth}");
+            Console.WriteLine($"[DISPLAY]   Graphics.PreferredBackBufferHeight: {Graphics.PreferredBackBufferHeight}");
+            
+            try
+            {
+                var displayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
+                Console.WriteLine($"[DISPLAY]   Display Resolution: {displayMode.Width}x{displayMode.Height}");
+                Console.WriteLine($"[DISPLAY]   Display Format: {displayMode.Format}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[DISPLAY]   Could not get display mode: {ex.Message}");
+            }
         }
 
         protected override void OnExiting(object sender, EventArgs args)
@@ -198,12 +229,17 @@ namespace ProjectZ
             // Start loading the resources that are needed after the intro.
             ThreadPool.QueueUserWorkItem(LoadContentThreaded);
 
-            // Initialize controller and input handler.
-            ControlHandler.Initialize();
+            // Initialize input handler (ControlHandler was already initialized in constructor)
             Components.Add(new InputHandler(this));
 
-            // Load the users saved settings.
-            SettingsSaveLoad.LoadSettings();
+            // Settings were already loaded in constructor, but log them again for reference
+            Console.WriteLine("[DISPLAY] In LoadContent():");
+            Console.WriteLine($"[DISPLAY]   GameSettings.WindowWidth: {GameSettings.WindowWidth}");
+            Console.WriteLine($"[DISPLAY]   GameSettings.WindowHeight: {GameSettings.WindowHeight}");
+            Console.WriteLine($"[DISPLAY]   GameSettings.GameScale: {GameSettings.GameScale}");
+            Console.WriteLine($"[DISPLAY]   GameSettings.UiScale: {GameSettings.UiScale}");
+            Console.WriteLine($"[DISPLAY]   GameSettings.IsFullscreen: {GameSettings.IsFullscreen}");
+            Console.WriteLine($"[DISPLAY]   Current Window.ClientBounds: {Window.ClientBounds.Width}x{Window.ClientBounds.Height}");
 
             // Load the Intro Screen and its resources.
             GameManager.UpdateSoundEffects();
@@ -527,29 +563,14 @@ namespace ProjectZ
             {
                 // Set fullscreen mode to true.
                 FullScreen = GameSettings.IsFullscreen = true;
-                var screenBounds = Forms.Screen.GetBounds(_windowForm);
 
                 // Save current window state for restoration.
-                _lastWindowState = _windowForm.WindowState;
-                _lastWindowBounds = _windowForm.Bounds;
                 _lastWindowWidth = Graphics.PreferredBackBufferWidth;
                 _lastWindowHeight = Graphics.PreferredBackBufferHeight;
 
-                // Exclusive fullscreen mode.
-                if (GameSettings.ExFullscreen)
-                {
-                    Graphics.PreferredBackBufferWidth = screenBounds.Width;
-                    Graphics.PreferredBackBufferHeight = screenBounds.Height;
-                    Graphics.ToggleFullScreen();
-                    WasExclusive = true;
-                }
-                // Borderless fullscreen mode.
-                else
-                {
-                    _windowForm.FormBorderStyle = Forms.FormBorderStyle.None;
-                    _windowForm.WindowState = Forms.FormWindowState.Normal;
-                    _windowForm.Bounds = screenBounds;
-                }
+                // Use MonoGame's built-in fullscreen toggle for Linux
+                Graphics.ToggleFullScreen();
+                WasExclusive = true;
             }
             // Switch to windowed mode.
             else
@@ -564,10 +585,6 @@ namespace ProjectZ
                     Graphics.PreferredBackBufferWidth = _lastWindowWidth;
                     Graphics.PreferredBackBufferHeight = _lastWindowHeight;
                 }
-                // Restore the windowed settings.
-                _windowForm.FormBorderStyle = Forms.FormBorderStyle.Sizable;
-                _windowForm.WindowState = _lastWindowState;
-                _windowForm.Bounds = _lastWindowBounds;
 
                 // Apply the graphics changes.
                 Graphics.ApplyChanges();
@@ -617,10 +634,19 @@ namespace ProjectZ
             WindowWidth = Window.ClientBounds.Width;
             WindowHeight = Window.ClientBounds.Height;
             ScaleChanged = true;
+            
+            Console.WriteLine("[DISPLAY] OnResize() called:");
+            Console.WriteLine($"[DISPLAY]   New WindowWidth: {WindowWidth}, WindowHeight: {WindowHeight}");
         }
 
         private void UpdateScale()
         {
+            Console.WriteLine("[DISPLAY] UpdateScale() called:");
+            Console.WriteLine($"[DISPLAY]   WindowWidth: {WindowWidth}, WindowHeight: {WindowHeight}");
+            Console.WriteLine($"[DISPLAY]   GameSettings.GameScale: {GameSettings.GameScale}");
+            Console.WriteLine($"[DISPLAY]   GameSettings.UiScale: {GameSettings.UiScale}");
+            Console.WriteLine($"[DISPLAY]   Camera.ClassicMode: {Camera.ClassicMode}");
+            
             if (Camera.ClassicMode)
             {
                 // Force integer scale or the field rect will be thrown off. The scaling value is calculated using the original dimensions of the
@@ -684,6 +710,12 @@ namespace ProjectZ
 
             // This needs to go false or it will run every loop.
             ScaleChanged = false;
+            
+            // Log final scale values
+            Console.WriteLine("[DISPLAY] UpdateScale() results:");
+            Console.WriteLine($"[DISPLAY]   MapManager.Camera.Scale: {MapManager.Camera.Scale}");
+            Console.WriteLine($"[DISPLAY]   UiScale: {UiScale}");
+            Console.WriteLine($"[DISPLAY]   RenderWidth: {RenderWidth}, RenderHeight: {RenderHeight}");
         }
 
         private void UpdateRenderTargets()

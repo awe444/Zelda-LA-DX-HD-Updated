@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using ProjectZ.InGame.GameObjects.Base;
 using ProjectZ.InGame.Things;
@@ -69,7 +70,26 @@ namespace ProjectZ.InGame.SaveLoad
         public static Animator LoadAnimatorFile(string filePath, bool redux = false)
         {
             if (!File.Exists(filePath))
+            {
+                Console.WriteLine($"[ERROR] Animator file not found: {filePath}");
+                Console.WriteLine($"[ERROR] Working directory: {Directory.GetCurrentDirectory()}");
+                Console.WriteLine($"[ERROR] Searching for similar files...");
+                
+                // Try to find similar files to help debug case sensitivity issues
+                var directory = Path.GetDirectoryName(filePath);
+                if (Directory.Exists(directory))
+                {
+                    var fileName = Path.GetFileName(filePath);
+                    var files = Directory.GetFiles(directory, "*.ani", SearchOption.AllDirectories);
+                    Console.WriteLine($"[ERROR] Found {files.Length} .ani files in {directory}");
+                    foreach (var file in files.Take(10))
+                    {
+                        Console.WriteLine($"[ERROR]   - {file}");
+                    }
+                }
+                
                 return null;
+            }
 
             var reader = new StreamReader(filePath);
             var animator = new Animator();

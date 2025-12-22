@@ -31,6 +31,8 @@
         // Video Settings
         public static int     GameScale       =  Game1.MaxGameScale + 1;
         public static int     UiScale         =  11;
+        public static int     WindowWidth     =  0;  // 0 = auto (calculated from GameScale)
+        public static int     WindowHeight    =  0;  // 0 = auto (calculated from GameScale)
         public static bool    IsFullscreen    =  false;
         public static bool    ExFullscreen    =  false;
         public static bool    EnableShadows   =  true;

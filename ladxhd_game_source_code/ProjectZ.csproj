@@ -1,16 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <RuntimeIdentifiers>linux-arm64</RuntimeIdentifiers>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
-    <UseWindowsForms>true</UseWindowsForms>
-    <MonoGamePlatform>Windows</MonoGamePlatform>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath></OutputPath>
-    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <DefineConstants>TRACE;LINUX</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Content\bin\**" />
@@ -30,8 +29,15 @@
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
-    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.1.303" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+  </ItemGroup>
+  <!-- Include Windows Content Pipeline dependencies when building on Windows -->
+  <!-- This allows cross-compilation from Windows to Linux ARM64 -->
+  <!-- Note: The entire WindowsDX package is included on Windows to ensure all -->
+  <!-- native dependencies (libmojoshader_64.dll, etc.) are available to the Content Pipeline -->
+  <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.1.303" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\**">
@@ -43,7 +49,6 @@
     <AssemblyName>Link's Awakening DX HD</AssemblyName>
     <PublishSingleFile>true</PublishSingleFile>
     <ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
     <Version>1.5.0</Version>
   </PropertyGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
@@ -53,16 +58,12 @@
   <Target Name="RemovePreviousPublish" BeforeTargets="Build">
     <RemoveDir Directories="$(PublishDir)"></RemoveDir>
   </Target>
+  <!-- Ensure native DLLs are available for Content Pipeline on Windows -->
+  <Target Name="CopyNativeDLLsForContentPipeline" BeforeTargets="BeforeBuild" Condition="'$(OS)' == 'Windows_NT'">
+    <Message Text="Ensuring MonoGame native DLLs are available for Content Pipeline..." Importance="High" />
+    <!-- The Content Pipeline will automatically find the DLLs from the WindowsDX package -->
+  </Target>
   <Target Name="CleanPublish" AfterTargets="Publish">
-    <Delete Files="$(PublishDir)/assimp.dll" />
-    <Delete Files="$(PublishDir)/ffmpeg.exe" />
-    <Delete Files="$(PublishDir)/ffprobe.exe" />
-    <Delete Files="$(PublishDir)/FreeImage.dll" />
-    <Delete Files="$(PublishDir)/freetype6.dll" />
-    <Delete Files="$(PublishDir)/libmojoshader_64.dll" />
-    <Delete Files="$(PublishDir)/Link's Awakening DX HD.dll.config" />
     <Delete Files="$(PublishDir)/Link's Awakening DX HD.pdb" />
-    <Delete Files="$(PublishDir)/nvtt.dll" />
-    <Delete Files="$(PublishDir)/PVRTexLibWrapper.dll" />
   </Target>
 </Project>

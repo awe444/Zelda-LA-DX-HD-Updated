@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Forms;
 using ProjectZ.InGame.Things;
 
 namespace ProjectZ
@@ -44,7 +43,7 @@ namespace ProjectZ
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.StackTrace, exception.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine("Fatal error: {0}\n{1}", exception.Message, exception.StackTrace);
                 throw;
             }
         }
