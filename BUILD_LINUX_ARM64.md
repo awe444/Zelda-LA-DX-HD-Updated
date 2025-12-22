@@ -1,13 +1,12 @@
-# Building on Ubuntu Linux ARM64 - Migration Guide
+# Building for Ubuntu Linux ARM64
 
-This guide provides instructions for building The Legend of Zelda: Link's Awakening DX HD game on Ubuntu Linux ARM64 systems using command-line tools.
+This guide provides instructions for building The Legend of Zelda: Link's Awakening DX HD game for Ubuntu Linux ARM64 deployment. The project supports **cross-compilation from Windows x64** as well as native builds on Linux ARM64.
 
 ## Table of Contents
 
 - [Overview](#overview)
-- [Prerequisites](#prerequisites)
-- [SDK Installation](#sdk-installation)
-- [Building the Game](#building-the-game)
+- [Cross-Compilation from Windows](#cross-compilation-from-windows)
+- [Native Build on Linux ARM64](#native-build-on-linux-arm64)
 - [Known Limitations](#known-limitations)
 - [Troubleshooting](#troubleshooting)
 
@@ -22,22 +21,79 @@ The game has been migrated from Windows x64 with DirectX to ARM64 Linux with Ope
 - **Audio**: GbsPlayer background music is stubbed out (not available on this platform)
 - **Build System**: Continues to use command-line `dotnet` tools
 
-## Prerequisites
+## Cross-Compilation from Windows
 
-This guide assumes:
+You can build the Linux ARM64 binary on Windows x64 systems. This is useful for developers working on Windows who want to deploy to Linux ARM64.
+
+### Prerequisites (Windows)
+
+- Windows 10/11 x64
+- .NET 6.0 SDK or later
+- Visual C++ Redistributable 2015-2022 (x64)
+
+### Installation Steps (Windows)
+
+1. **Install .NET 6.0 SDK:**
+   - Download from: https://dotnet.microsoft.com/en-us/download/dotnet/6.0
+   - Install the SDK x64 installer
+
+2. **Verify installation:**
+   ```cmd
+   dotnet --version
+   ```
+
+### Building on Windows for Linux ARM64
+
+1. **Navigate to project directory:**
+   ```cmd
+   cd Zelda-LA-DX-HD-Updated\ladxhd_game_source_code
+   ```
+
+2. **Restore dependencies:**
+   ```cmd
+   dotnet restore ProjectZ.csproj
+   ```
+
+3. **Build for Linux ARM64:**
+   ```cmd
+   dotnet build ProjectZ.csproj -r linux-arm64 -c Release
+   ```
+
+4. **Publish for deployment:**
+   ```cmd
+   dotnet publish ProjectZ.csproj -r linux-arm64 -c Release
+   ```
+
+The published game will be located at:
+```
+bin\Release\net6.0\linux-arm64\publish\
+```
+
+**Important**: The resulting binary is for Linux ARM64 and **will not run on Windows**. Transfer the entire `publish` folder to your Linux ARM64 system to run the game.
+
+## Native Build on Linux ARM64
+
+## Native Build on Linux ARM64
+
+If you prefer to build directly on your Linux ARM64 target system, follow these instructions.
+
+### Prerequisites (Linux)
+
 - Ubuntu Linux ARM64 system (tested on Ubuntu 20.04+)
 - Root or sudo access to install software
 - Internet connection for downloading dependencies
 - Approximately 500 MB of free disk space
 - Pre-migrated game assets already in the `ladxhd_game_source_code/Data` directory
 
-## SDK Installation
+### SDK Installation (Linux)
 
-### .NET 6.0 SDK
+### SDK Installation (Linux)
+
+#### .NET 6.0 SDK
 
 The game project requires the .NET 6.0 SDK.
 
-#### Installation Steps:
+###### Installation Steps:
 
 1. **Add Microsoft package repository:**
    ```bash
@@ -58,7 +114,7 @@ The game project requires the .NET 6.0 SDK.
    ```
    You should see version 6.0.xxx
 
-### Required System Libraries
+#### Required System Libraries
 
 MonoGame on Linux requires several system libraries:
 
@@ -70,21 +126,21 @@ sudo apt-get install -y \
     libgdiplus
 ```
 
-## Building the Game
+### Building the Game (Linux)
 
-### Navigate to Project Directory
+##### Navigate to Project Directory
 
 ```bash
 cd Zelda-LA-DX-HD-Updated/ladxhd_game_source_code
 ```
 
-### Restore Dependencies
+##### Restore Dependencies
 
 ```bash
 dotnet restore ProjectZ.csproj
 ```
 
-### Build the Game
+##### Build the Game
 
 For a debug build:
 ```bash
@@ -96,7 +152,7 @@ For a release build:
 dotnet build ProjectZ.csproj -r linux-arm64 -c Release
 ```
 
-### Publish the Game
+#### Publish the Game
 
 To create a self-contained executable:
 ```bash
@@ -108,7 +164,7 @@ The published game will be located at:
 bin/Release/net6.0/linux-arm64/publish/
 ```
 
-### Run the Game
+#### Run the Game
 
 ```bash
 cd bin/Release/net6.0/linux-arm64/publish/
@@ -126,6 +182,25 @@ Or with command-line arguments:
 # Enable editor mode (if you have a keyboard)
 ./Link\'s\ Awakening\ DX\ HD editor
 ```
+
+## How Cross-Compilation Works
+
+The project uses a conditional package reference strategy to support building on Windows for Linux ARM64:
+
+1. **MonoGame.Framework.DesktopGL** - The main runtime package for OpenGL on Linux
+2. **MonoGame.Framework.WindowsDX** (Windows only) - Provides Content Pipeline dependencies for Windows builds
+
+When building on Windows, the project includes `MonoGame.Framework.WindowsDX` with `PrivateAssets=contentfiles;build`, which provides:
+- `libmojoshader_64.dll` - For HLSL shader compilation
+- Windows-specific Content Pipeline tools
+
+These dependencies are **only used during the build process** on Windows and are not included in the final Linux ARM64 binary. The runtime binary only uses DesktopGL and OpenGL libraries.
+
+**Key Points:**
+- The Windows DLL dependencies are build-time only, not runtime dependencies
+- The final Linux binary contains no Windows-specific code or libraries
+- Shaders are compiled during the build phase and embedded as platform-independent bytecode
+- The same `Data` folder works on both Windows (for building) and Linux (for running)
 
 ## Known Limitations
 
@@ -185,6 +260,26 @@ warning NETSDK1138: The target framework 'net6.0' is out of support
 ```
 
 **Note:** This is informational only. The game builds successfully and runs on .NET 6.0. Future updates may migrate to newer .NET versions.
+
+### Issue: Shader Compilation Errors on Windows (Cross-Compilation)
+
+**Error:**
+```
+Unable to load DLL 'libmojoshader_64.dll' or one of its dependencies
+```
+
+**Solution:**
+1. Ensure you have Visual C++ Redistributable 2015-2022 (x64) installed
+2. Run `dotnet restore ProjectZ.csproj` to ensure WindowsDX package is properly restored
+3. Check that the build is using the correct .NET SDK version (6.0+)
+4. If the error persists, try cleaning the build:
+   ```cmd
+   dotnet clean ProjectZ.csproj
+   dotnet restore ProjectZ.csproj
+   dotnet build ProjectZ.csproj -r linux-arm64
+   ```
+
+The conditional package reference for `MonoGame.Framework.WindowsDX` provides the necessary DLLs for shader compilation on Windows.
 
 ### Issue: Permission Denied When Running
 

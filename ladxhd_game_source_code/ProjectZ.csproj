@@ -32,6 +32,13 @@
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
     <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
   </ItemGroup>
+  <!-- Include Windows Content Pipeline dependencies when building on Windows -->
+  <!-- This allows cross-compilation from Windows to Linux ARM64 -->
+  <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.1.303">
+      <PrivateAssets>contentfiles;build</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Data\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
