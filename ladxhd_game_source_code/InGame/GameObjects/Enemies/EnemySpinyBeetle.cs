@@ -43,7 +43,7 @@ namespace ProjectZ.InGame.GameObjects.Enemies
 
         private float moveTimer;
 
-        public EnemySpinyBeetle() : base("spiny beetle") { }
+        public EnemySpinyBeetle() : base("spiny Beetle") { }
 
         public EnemySpinyBeetle(Map.Map map, int posX, int posY, int type) : base(map)
         {
@@ -55,7 +55,7 @@ namespace ProjectZ.InGame.GameObjects.Enemies
             CanReset = true;
             OnReset = Reset;
 
-            _animator = AnimatorSaveLoad.LoadAnimator("Enemies/spiny beetle");
+            _animator = AnimatorSaveLoad.LoadAnimator("Enemies/spiny Beetle");
             _animator.Play("idle");
 
             _sprite = new CSprite(EntityPosition);

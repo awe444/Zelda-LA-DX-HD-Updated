@@ -14,7 +14,7 @@ namespace ProjectZ.InGame.GameObjects.Enemies
         private readonly Animator _animator;
         private readonly BodyComponent _body;
 
-        public EnemyMegaThwomp() : base("mega thwomp") { }
+        public EnemyMegaThwomp() : base("mega Thwomp") { }
 
         public EnemyMegaThwomp(Map.Map map, int posX, int posY) : base(map)
         {
@@ -24,7 +24,7 @@ namespace ProjectZ.InGame.GameObjects.Enemies
             EntitySize = new Rectangle(0, -1, 32, 32);
             CanReset = false;
 
-            _animator = AnimatorSaveLoad.LoadAnimator("Enemies/mega thwomp");
+            _animator = AnimatorSaveLoad.LoadAnimator("Enemies/mega Thwomp");
             _animator.Play("idle");
 
             var sprite = new CSprite(EntityPosition);
