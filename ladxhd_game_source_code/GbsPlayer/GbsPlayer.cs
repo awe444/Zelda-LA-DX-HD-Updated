@@ -86,6 +86,8 @@ namespace GBSPlayer
                 string title = Cartridge.Title?.Trim('\0') ?? "Unknown";
                 string author = Cartridge.Author?.Trim('\0') ?? "Unknown";
                 Console.WriteLine($"[GbsPlayer] Loaded GBS: {title} by {author}, {Cartridge.TrackCount} tracks");
+                Console.WriteLine($"[GbsPlayer] GBS details: LoadAddr=0x{Cartridge.LoadAddress:X4}, RomOffset=0x{Cartridge.RomOffset:X4}, ROM size={Cartridge.ROM.Length} bytes");
+                Console.WriteLine($"[GbsPlayer] FirstSong={Cartridge.FirstSong}, InitAddr=0x{Cartridge.InitAddress:X4}, PlayAddr=0x{Cartridge.PlayAddress:X4}, SP=0x{Cartridge.StackPointer:X4}");
                 
                 GbsLoaded = true;
             }

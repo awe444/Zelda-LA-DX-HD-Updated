@@ -70,18 +70,26 @@ namespace GBSPlayer
                 // ROM Bank 00
                 if (index < 0x4000)
                 {
-                    if (index - RomOffset >= 0)
-                        return ROM[index - RomOffset];
+                    var adjustedIndex = index - RomOffset;
+                    if (adjustedIndex >= 0 && adjustedIndex < ROM.Length)
+                        return ROM[adjustedIndex];
+                    
+                    // Log detailed error for debugging
+                    if (adjustedIndex < 0)
+                        Console.WriteLine("Cartridge Index unavailable: 0x{0:X} (adjusted: {1}, RomOffset: 0x{2:X})", index, adjustedIndex, RomOffset);
+                    else
+                        Console.WriteLine("Cartridge Index unavailable: 0x{0:X} (out of bounds, ROM.Length: {1})", index, ROM.Length);
                 }
                 // ROM Bank 01-..
                 else if (index < 0x8000)
                 {
                     var romIndex = (SelectedRomBank) * 0x4000 + (index - 0x4000) - RomOffset;
-                    if (romIndex < ROM.Length)
+                    if (romIndex >= 0 && romIndex < ROM.Length)
                         return ROM[romIndex];
+                    
+                    Console.WriteLine("Cartridge Index unavailable: 0x{0:X} (bank {1}, romIndex: {2})", index, SelectedRomBank, romIndex);
                 }
 
-                Console.WriteLine("Cartridge Index unavailable: {0:X}", index);
                 return 0;
             }
             set
