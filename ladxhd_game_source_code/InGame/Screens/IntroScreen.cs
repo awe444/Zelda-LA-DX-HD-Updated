@@ -315,13 +315,11 @@ namespace ProjectZ.InGame.Screens
                 }
             }
 
-#if WINDOWS
             if (Game1.GbsPlayer.SoundGenerator.WasStopped && Game1.GbsPlayer.SoundGenerator.FinishedPlaying())
             {
                 Game1.GameManager.SetMusic(0, 0);
                 Game1.GbsPlayer.Play();
             }
-#endif
 
             if (Game1.FinishedLoading &&
                 (ControlHandler.ButtonPressed(ControlHandler.ConfirmButton) || ControlHandler.ButtonPressed(CButtons.Start)))
