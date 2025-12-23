@@ -82,8 +82,10 @@ namespace GBSPlayer
                 // Initialize cartridge (parse GBS header)
                 Cartridge.Init();
                 
-                // Log GBS information
-                Console.WriteLine($"[GbsPlayer] Loaded GBS: {Cartridge.Title.Trim('\0')} by {Cartridge.Author.Trim('\0')}, {Cartridge.TrackCount} tracks");
+                // Log GBS information with null safety
+                string title = Cartridge.Title?.Trim('\0') ?? "Unknown";
+                string author = Cartridge.Author?.Trim('\0') ?? "Unknown";
+                Console.WriteLine($"[GbsPlayer] Loaded GBS: {title} by {author}, {Cartridge.TrackCount} tracks");
                 
                 GbsLoaded = true;
             }
@@ -133,6 +135,12 @@ namespace GBSPlayer
             
             // Set up registers for GBS init
             // A register = track number (zero-indexed)
+            // Ensure trackNumber is not less than FirstSong to prevent underflow
+            if (trackNumber < Cartridge.FirstSong)
+            {
+                Console.WriteLine($"[GbsPlayer] Warning: Track number {trackNumber} is less than FirstSong {Cartridge.FirstSong}. Using FirstSong.");
+                trackNumber = Cartridge.FirstSong;
+            }
             Cpu.reg_A = (byte)(trackNumber - Cartridge.FirstSong);
             
             // Set stack pointer

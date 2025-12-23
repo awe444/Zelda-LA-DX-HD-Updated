@@ -196,9 +196,10 @@ namespace GBSPlayer
             try
             {
                 // Validate buffer bounds (avoid potential integer overflow in addition)
-                if (offset < 0 || count < 0 || offset > buffer.Length || count > buffer.Length - offset || count % 2 != 0)
+                int bufferLength = buffer.Length;
+                if (offset < 0 || count < 0 || offset > bufferLength || count > bufferLength - offset || count % 2 != 0)
                 {
-                    Console.WriteLine($"[GbsPlayer] Invalid buffer parameters: offset={offset}, count={count}, buffer.Length={buffer.Length}");
+                    Console.WriteLine($"[GbsPlayer] Invalid buffer parameters: offset={offset}, count={count}, buffer.Length={bufferLength}");
                     return;
                 }
 
