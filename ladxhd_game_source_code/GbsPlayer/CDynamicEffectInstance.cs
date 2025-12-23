@@ -95,6 +95,7 @@ namespace GBSPlayer
                 }
 
                 Console.WriteLine($"[GbsPlayer] Initialized SDL2 audio: {obtained.freq}Hz, {obtained.channels} channel(s), format 0x{obtained.format:X4}");
+                Console.WriteLine($"[GbsPlayer] Audio device ID: {_audioDevice}");
             }
             catch (Exception ex)
             {
@@ -127,6 +128,10 @@ namespace GBSPlayer
 
             try
             {
+                // Check how much audio is queued before unpausing
+                uint queuedSize = SDL_GetQueuedAudioSize(_audioDevice);
+                Console.WriteLine($"[GbsPlayer] Play() called: {queuedSize} bytes queued in SDL2 buffer");
+                
                 SDL_PauseAudioDevice(_audioDevice, 0); // 0 = unpause
                 State = SoundState.Playing;
                 Console.WriteLine("[GbsPlayer] SDL2 audio device unpaused (playing)");
@@ -223,13 +228,28 @@ namespace GBSPlayer
                 }
 
                 // Queue audio data
-                SDL_QueueAudio(_audioDevice, volumeAdjustedBuffer, (uint)count);
+                int queueResult = SDL_QueueAudio(_audioDevice, volumeAdjustedBuffer, (uint)count);
+                if (queueResult < 0)
+                {
+                    string error = Marshal.PtrToStringAnsi(SDL_GetError());
+                    Console.WriteLine($"[GbsPlayer] SDL_QueueAudio failed: {error}");
+                }
                 
                 // Log first few buffer submissions for diagnostics
                 _bufferSubmitCount++;
                 if (_bufferSubmitCount <= 5)
                 {
-                    Console.WriteLine($"[GbsPlayer] Buffer #{_bufferSubmitCount} submitted: {count} bytes, volume={_volume:F2}");
+                    // Check if buffer contains non-zero audio data
+                    bool hasSound = false;
+                    for (int i = 0; i < Math.Min(count, 100); i++)
+                    {
+                        if (volumeAdjustedBuffer[i] != 0)
+                        {
+                            hasSound = true;
+                            break;
+                        }
+                    }
+                    Console.WriteLine($"[GbsPlayer] Buffer #{_bufferSubmitCount} submitted: {count} bytes, volume={_volume:F2}, hasSound={hasSound}, queueResult={queueResult}");
                 }
                 else if (_bufferSubmitCount == 100)
                 {
