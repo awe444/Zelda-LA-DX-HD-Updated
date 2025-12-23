@@ -290,9 +290,7 @@ namespace ProjectZ.InGame.Screens
             Game1.GbsPlayer.SetVolumeMultiplier(1.0f);
             Game1.GbsPlayer.Play();
             // play track for 52sec
-#if WINDOWS
             Game1.GbsPlayer.SoundGenerator.SetStopTime(51.25f);
-#endif
         }
 
         public override void Update(GameTime gameTime)
