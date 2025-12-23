@@ -480,7 +480,10 @@ namespace GBSPlayer
                     _channelLeftRightControl = value;
                 // NR52
                 else if (index == 0xFF26)
+                {
+                    Console.WriteLine("[Sound] NR52 (0xFF26) write: 0x{0:X2}, bit7={1}", value, (value & 0x80) != 0);
                     _soundOnOff = value;
+                }
 
                 // wave data
                 else if (0xFF30 <= index && index <= 0xFF3F)
