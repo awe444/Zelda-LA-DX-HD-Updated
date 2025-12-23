@@ -10,6 +10,10 @@ namespace GBSPlayer
         private const uint SDL_INIT_AUDIO = 0x00000010;
         private const ushort AUDIO_S16LSB = 0x8010; // Signed 16-bit samples, little-endian
         
+        // Buffer size calculation: (sample_rate / buffers_per_second) * bytes_per_sample
+        // e.g., (44100 / 100) * 2 = 882 bytes per buffer (10ms chunks)
+        private const int BUFFERS_PER_SECOND = 100;
+        
         [StructLayout(LayoutKind.Sequential)]
         private struct SDL_AudioSpec
         {
@@ -105,8 +109,8 @@ namespace GBSPlayer
             try
             {
                 uint queuedSize = SDL_GetQueuedAudioSize(_audioDevice);
-                // Each buffer is (sampleRate / 100) * 2 bytes, so calculate buffer count
-                int bufferSize = (_sampleRate / 100) * 2;
+                // Each buffer is (sampleRate / BUFFERS_PER_SECOND) * 2 bytes, so calculate buffer count
+                int bufferSize = (_sampleRate / BUFFERS_PER_SECOND) * 2;
                 return (int)(queuedSize / bufferSize);
             }
             catch
@@ -191,8 +195,8 @@ namespace GBSPlayer
 
             try
             {
-                // Validate buffer bounds
-                if (offset < 0 || offset + count > buffer.Length || count % 2 != 0)
+                // Validate buffer bounds (avoid potential integer overflow in addition)
+                if (offset < 0 || count < 0 || offset > buffer.Length || count > buffer.Length - offset || count % 2 != 0)
                 {
                     Console.WriteLine($"[GbsPlayer] Invalid buffer parameters: offset={offset}, count={count}, buffer.Length={buffer.Length}");
                     return;

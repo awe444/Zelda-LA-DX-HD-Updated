@@ -41,7 +41,10 @@ namespace GBSPlayer
             // Wait for the update thread to finish
             if (_updateThread != null && _updateThread.IsAlive)
             {
-                _updateThread.Join(THREAD_JOIN_TIMEOUT_MS);
+                if (!_updateThread.Join(THREAD_JOIN_TIMEOUT_MS))
+                {
+                    Console.WriteLine("[GbsPlayer] Warning: Update thread did not terminate within timeout.");
+                }
             }
             
             // Clean up sound resources
