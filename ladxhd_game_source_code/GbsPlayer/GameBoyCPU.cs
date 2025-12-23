@@ -194,9 +194,6 @@ namespace GBSPlayer
                 if (!wasFinishedInit)
                 {
                     Console.WriteLine("[CPU] Init routine finished, _finishedInit set to true");
-                }
-                if (_calledPlay)
-                {
                     Console.WriteLine("[CPU] _calledPlay is now true, sound generation will start");
                 }
 
@@ -220,6 +217,12 @@ namespace GBSPlayer
                     var updateDiff = maxPlayCycles - updateCycleCounter;
 
                     var minDiff = Math.Min(instructionDiff, updateDiff);
+                    
+                    // Debug idle state
+                    if (_gbSound.DebugCounter <= 5)
+                    {
+                        Console.WriteLine($"[CPU] Idle: updateCounter={updateCycleCounter:F0}, maxPlay={maxPlayCycles:F0}, minDiff={minDiff:F0}, maxSound={maxSoundCycles}");
+                    }
 
                     cycleCount += (int)(maxSoundCycles * (int)(minDiff / maxSoundCycles));
                     soundCount -= maxSoundCycles * (int)(minDiff / maxSoundCycles);
