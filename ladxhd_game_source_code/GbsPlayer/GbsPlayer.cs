@@ -23,6 +23,9 @@ namespace GBSPlayer
 
         private Thread _updateThread;
 
+        private const int THREAD_JOIN_TIMEOUT_MS = 1000;
+        private const int IDLE_SLEEP_MS = 10;
+
         public GbsPlayer()
         {
             SoundGenerator = new Sound();
@@ -38,7 +41,7 @@ namespace GBSPlayer
             // Wait for the update thread to finish
             if (_updateThread != null && _updateThread.IsAlive)
             {
-                _updateThread.Join(1000); // Wait up to 1 second
+                _updateThread.Join(THREAD_JOIN_TIMEOUT_MS);
             }
             
             // Clean up sound resources
@@ -260,7 +263,7 @@ namespace GBSPlayer
                 else
                 {
                     // Sleep a bit if not running to avoid busy-waiting
-                    Thread.Sleep(10);
+                    Thread.Sleep(IDLE_SLEEP_MS);
                 }
             }
             

@@ -191,6 +191,13 @@ namespace GBSPlayer
 
             try
             {
+                // Validate buffer bounds
+                if (offset < 0 || offset + count > buffer.Length || count % 2 != 0)
+                {
+                    Console.WriteLine($"[GbsPlayer] Invalid buffer parameters: offset={offset}, count={count}, buffer.Length={buffer.Length}");
+                    return;
+                }
+
                 // Apply volume by multiplying samples
                 byte[] volumeAdjustedBuffer = new byte[count];
                 
@@ -199,11 +206,9 @@ namespace GBSPlayer
                     // Read 16-bit sample (little-endian)
                     short sample = (short)(buffer[offset + i] | (buffer[offset + i + 1] << 8));
                     
-                    // Apply volume
-                    sample = (short)(sample * _volume);
-                    
-                    // Clamp to prevent overflow
-                    sample = Math.Max(short.MinValue, Math.Min(short.MaxValue, sample));
+                    // Apply volume and clamp to prevent overflow
+                    int adjustedSample = (int)(sample * _volume);
+                    sample = (short)Math.Max(short.MinValue, Math.Min(short.MaxValue, adjustedSample));
                     
                     // Write back (little-endian)
                     volumeAdjustedBuffer[i] = (byte)(sample & 0xFF);
