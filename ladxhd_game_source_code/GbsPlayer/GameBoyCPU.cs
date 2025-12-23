@@ -220,6 +220,12 @@ namespace GBSPlayer
                 return;
             }
 
+            // Debug: Track if PC goes to very low addresses (should not happen in GBS)
+            if (reg_PC < 0x0010)
+            {
+                Console.WriteLine($"[CPU] WARNING: PC at low address 0x{reg_PC:X4}, SP=0x{reg_SP:X4}, executing in forbidden zone!");
+            }
+
             currentInstruction = reg_PC;
 
             // update cycle count

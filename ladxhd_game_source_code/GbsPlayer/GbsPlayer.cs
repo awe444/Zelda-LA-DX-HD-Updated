@@ -148,11 +148,15 @@ namespace GBSPlayer
             // Set stack pointer
             Cpu.reg_SP = Cartridge.StackPointer;
             
+            // Set up idle address with HALT instruction (0x76)
+            // This ensures the CPU stops executing when it returns from init/play
+            Memory[Cpu.IdleAddress] = 0x76; // HALT opcode
+            
             // Call init routine
             Cpu.reg_PC = Cartridge.InitAddress;
             
-            // Push the play address as return address for init routine
-            // The init routine will RET, which should go to an idle loop
+            // Push the idle address as return address for init routine
+            // The init routine will RET, which should go to this idle loop
             Cpu.reg_SP -= 2;
             Memory[Cpu.reg_SP] = (byte)(Cpu.IdleAddress & 0xFF);
             Memory[Cpu.reg_SP + 1] = (byte)(Cpu.IdleAddress >> 8);
@@ -160,7 +164,7 @@ namespace GBSPlayer
             Cpu.IsRunning = true;
             
             Console.WriteLine($"[GbsPlayer] Started track {trackNumber} (A={Cpu.reg_A:X2}, Init=0x{Cartridge.InitAddress:X4}, Play=0x{Cartridge.PlayAddress:X4})");
-            Console.WriteLine($"[GbsPlayer] Sound system initialized, CPU running");
+            Console.WriteLine($"[GbsPlayer] Sound system initialized, CPU running, SP=0x{Cpu.reg_SP:X4}, IdleAddr=0x{Cpu.IdleAddress:X4}");
         }
 
         public void Play()
