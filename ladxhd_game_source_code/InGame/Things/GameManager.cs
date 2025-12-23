@@ -955,9 +955,11 @@ namespace ProjectZ.InGame.Things
                 if (_musicArray[i] >= 0)
                 {
                     var songNumber = (byte)_musicArray[i];
-                    Console.WriteLine($"[GameManager] PlayMusic: Requesting track ID {songNumber} from priority channel {i}");
-                    if (Game1.GbsPlayer.CurrentTrack != songNumber)
-                        Game1.GbsPlayer.StartTrack(songNumber);
+                    // Game uses 0-based track IDs, but GBS file uses 1-based track numbers
+                    var gbsTrackNumber = (byte)(songNumber + 1);
+                    Console.WriteLine($"[GameManager] PlayMusic: Requesting track ID {songNumber} from priority channel {i}, sending GBS track {gbsTrackNumber}");
+                    if (Game1.GbsPlayer.CurrentTrack != gbsTrackNumber)
+                        Game1.GbsPlayer.StartTrack(gbsTrackNumber);
 
                     if (startPlaying)
                         Game1.GbsPlayer.Play();
