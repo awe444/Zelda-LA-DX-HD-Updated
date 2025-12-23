@@ -172,6 +172,12 @@ namespace GBSPlayer
                 {
                     soundCount -= maxSoundCycles;
                     _gbSound.UpdateBuffer();
+                    
+                    // Log first few buffer updates
+                    if (_gbSound.DebugCounter <= 5)
+                    {
+                        Console.WriteLine($"[CPU] UpdateBuffer called (count: {_gbSound.DebugCounter})");
+                    }
                 }
             }
         }
@@ -181,8 +187,18 @@ namespace GBSPlayer
             // gbs: finished init or play function?
             if (reg_PC == IdleAddress)
             {
+                bool wasFinishedInit = _finishedInit;
                 _calledPlay = _finishedInit;
                 _finishedInit = true;
+                
+                if (!wasFinishedInit)
+                {
+                    Console.WriteLine("[CPU] Init routine finished, _finishedInit set to true");
+                }
+                if (_calledPlay)
+                {
+                    Console.WriteLine("[CPU] _calledPlay is now true, sound generation will start");
+                }
 
                 if (updateCycleCounter >= maxPlayCycles)
                 {
