@@ -48,7 +48,9 @@ namespace GBSPlayer
         public const float UpdateRate = 59.73f;
         public const int Clockrate = 4194304;
         
-        private const float maxPlayCycles60 = Clockrate / UpdateRate; // Clockrate / 59.73;
+        // GBS files expect Play routine to be called at ~120Hz (twice per frame)
+        // This matches the Game Boy's timer interrupt frequency used for music
+        private const float maxPlayCycles60 = Clockrate / (UpdateRate * 2); // ~120Hz for GBS
 
         public int cycleCount;  // 69905 70224
         public int lastCycleCount;  // 69905 70224
