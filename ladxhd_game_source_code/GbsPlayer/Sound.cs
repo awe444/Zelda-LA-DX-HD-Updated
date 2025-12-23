@@ -157,6 +157,11 @@ namespace GBSPlayer
 
             _bufferIndex = 0;
             WasStopped = false;
+            
+            // Enable Game Boy sound system master switch (NR52 bit 7)
+            // This is essential for audio output - without it, all channels are muted
+            _soundOnOff = 0x80;
+            Console.WriteLine("[Sound] NR52 initialized: 0x80 (sound system enabled)");
         }
 
         public bool IsPlaying()
