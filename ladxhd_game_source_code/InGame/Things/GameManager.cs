@@ -955,6 +955,7 @@ namespace ProjectZ.InGame.Things
                 if (_musicArray[i] >= 0)
                 {
                     var songNumber = (byte)_musicArray[i];
+                    Console.WriteLine($"[GameManager] PlayMusic: Requesting track ID {songNumber} from priority channel {i}");
                     if (Game1.GbsPlayer.CurrentTrack != songNumber)
                         Game1.GbsPlayer.StartTrack(songNumber);
 
@@ -1003,6 +1004,7 @@ namespace ProjectZ.InGame.Things
 
         public void SetMusic(int trackID, int priority, bool startPlaying = true)
         {
+            Console.WriteLine($"[GameManager] SetMusic: trackID={trackID}, priority={priority}");
             // See if we should play music and if there is any nuances to take care of before playing the music.
             if (CheckSetMusicConditions(trackID, priority))
                 PlayMusic(startPlaying);

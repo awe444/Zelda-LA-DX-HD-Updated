@@ -121,6 +121,8 @@ namespace GBSPlayer
 
             CurrentTrack = trackNr;
             
+            Console.WriteLine($"[GbsPlayer] StartTrack called with track number: {trackNr}");
+            
             lock (_updateLock)
             {
                 GbsInit(trackNr);
