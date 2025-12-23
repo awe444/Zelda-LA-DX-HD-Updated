@@ -18,7 +18,7 @@ The game has been migrated from Windows x64 with DirectX to ARM64 Linux with Ope
 
 - **Graphics API**: DirectX → OpenGL (via MonoGame DesktopGL)
 - **Platform**: Windows x64 → Linux ARM64
-- **Audio**: GbsPlayer background music is stubbed out (not available on this platform)
+- **Audio**: GbsPlayer background music restored using SDL2 (full Game Boy sound emulation)
 - **Build System**: Continues to use command-line `dotnet` tools
 
 ## Cross-Compilation from Windows
@@ -308,23 +308,54 @@ The display logs appear at these key points:
 4. **UpdateScale()** - Shows scale calculations when window size changes
 5. **OnResize()** - Shows when and why window is resized
 
+## Background Music Restored via SDL2
+
+The GbsPlayer audio system has been **restored** for Linux ARM64 using SDL2's cross-platform audio API. The game now features authentic Game Boy Sound (GBS) music playback.
+
+### How It Works
+
+- **Audio Backend**: SDL2 queued audio API (replaces Windows-specific SharpDX/XAudio2)
+- **Output Format**: 16-bit mono PCM at 44.1kHz
+- **Sound Emulation**: Complete Game Boy Z80 CPU and 4-channel audio chip emulation
+- **Music Source**: `Data/Music/awakening.gbs` - The Legend of Zelda: Link's Awakening soundtrack as authentic Game Boy machine code
+
+### Features
+
+- ✅ Full background music playback with authentic Game Boy sound
+- ✅ Volume control via in-game settings (music volume slider)
+- ✅ Track changes supported (game dynamically switches tracks based on scene)
+- ✅ Pause/resume functionality
+- ✅ Proper synchronization with game state (pauses when window loses focus, etc.)
+- ✅ No additional dependencies (uses MonoGame's bundled SDL2 library)
+
+### Console Output
+
+On startup, you'll see logs indicating successful audio initialization:
+```
+[GbsPlayer] Initialized SDL2 audio: 44100Hz, 1 channel(s), format 0x8010
+[GbsPlayer] Loaded GBS: THE LEGEND OF ZELDA by KAZUMI TOTAKA, 184 tracks
+[GbsPlayer] Background update thread started
+[GbsPlayer] Started track 1 (A=00, Init=0x4000, Play=0x4003)
+```
+
+### Technical Details
+
+The implementation uses:
+- **SDL_OpenAudioDevice()** for audio device initialization
+- **SDL_QueueAudio()** for submitting audio buffers (thread-safe)
+- **SDL_GetQueuedAudioSize()** for buffer management
+- **SDL_PauseAudioDevice()** for playback control
+- Software volume control by multiplying samples before queuing
+
+The Game Boy CPU emulator runs in a background thread, continuously executing the music driver code at the correct timing (~60Hz). The sound chip emulator generates PCM audio samples that are queued to SDL2 for playback.
+
+### Requirements
+
+- SDL2 library (included with MonoGame.Framework.DesktopGL)
+- ALSA support (built into SDL2, automatically uses ALSA backend on Linux)
+- No additional system dependencies required
+
 ## Known Limitations
-
-### Background Music (GbsPlayer) Not Available
-
-The GbsPlayer audio system, which provides authentic Game Boy Sound music playback, relies on Windows-specific audio libraries (SharpDX/XAudio2) and is **not available** on Linux ARM64.
-
-**What this means:**
-- Background music will not play
-- Sound effects work normally
-- The game will display console warnings about stubbed audio on startup
-- All other gameplay functionality is unaffected
-
-**Console output you'll see:**
-```
-[GbsPlayer-STUB] GbsPlayer initialized in stub mode for ARM64 Linux. Background music disabled.
-[GbsPlayer-STUB] LoadFile called but stubbed: Data/Music/awakening.gbs
-```
 
 ### Graphics
 
@@ -528,7 +559,7 @@ Unhandled exception. System.NullReferenceException: Object reference not set to 
 | Feature | Windows x64 | Linux ARM64 |
 |---------|-------------|-------------|
 | Graphics API | DirectX 11 | OpenGL 3.x+ |
-| Background Music | ✅ Full GBS playback | ❌ Stubbed (no music) |
+| Background Music | ✅ Full GBS playback | ✅ Full GBS playback (SDL2) |
 | Sound Effects | ✅ | ✅ |
 | Windowed Mode | ✅ | ✅ |
 | Borderless Fullscreen | ✅ | ⚠️ Uses standard fullscreen |
@@ -551,7 +582,7 @@ This build represents a complete platform migration:
 1. ✅ Project file updated for linux-arm64 target
 2. ✅ MonoGame switched from WindowsDX to DesktopGL
 3. ✅ All Windows Forms dependencies removed
-4. ✅ GbsPlayer audio system stubbed out
+4. ✅ GbsPlayer audio system restored with SDL2 implementation
 5. ✅ File path handling made cross-platform
 6. ✅ Shader pipeline uses MonoGame's automatic HLSL→GLSL conversion
 7. ✅ All Windows-specific code removed or replaced

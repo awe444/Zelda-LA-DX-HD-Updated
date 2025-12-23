@@ -48,7 +48,9 @@ namespace GBSPlayer
         public const float UpdateRate = 59.73f;
         public const int Clockrate = 4194304;
         
-        private const float maxPlayCycles60 = Clockrate / UpdateRate; // Clockrate / 59.73;
+        // GBS files expect Play routine to be called at ~120Hz (twice per frame)
+        // This matches the Game Boy's timer interrupt frequency used for music
+        private const float maxPlayCycles60 = Clockrate / (UpdateRate * 2); // ~120Hz for GBS
 
         public int cycleCount;  // 69905 70224
         public int lastCycleCount;  // 69905 70224
@@ -167,11 +169,23 @@ namespace GBSPlayer
             if (_calledPlay && !_gbSound.WasStopped)
             {
                 soundCount += (cycleCount - lastCycleCount);
+                
+                // Debug soundCount
+                if (_gbSound.DebugCounter <= 5)
+                {
+                    Console.WriteLine($"[CPU] soundCount={soundCount:F2}, maxSoundCycles={maxSoundCycles}, condition={soundCount >= maxSoundCycles}");
+                }
 
                 while (soundCount >= maxSoundCycles)
                 {
                     soundCount -= maxSoundCycles;
                     _gbSound.UpdateBuffer();
+                    
+                    // Log first few buffer updates
+                    if (_gbSound.DebugCounter <= 5)
+                    {
+                        Console.WriteLine($"[CPU] UpdateBuffer called (count: {_gbSound.DebugCounter})");
+                    }
                 }
             }
         }
@@ -181,8 +195,15 @@ namespace GBSPlayer
             // gbs: finished init or play function?
             if (reg_PC == IdleAddress)
             {
+                bool wasFinishedInit = _finishedInit;
                 _calledPlay = _finishedInit;
                 _finishedInit = true;
+                
+                if (!wasFinishedInit)
+                {
+                    Console.WriteLine("[CPU] Init routine finished, _finishedInit set to true");
+                    Console.WriteLine("[CPU] _calledPlay is now true, sound generation will start");
+                }
 
                 if (updateCycleCounter >= maxPlayCycles)
                 {
@@ -204,20 +225,50 @@ namespace GBSPlayer
                     var updateDiff = maxPlayCycles - updateCycleCounter;
 
                     var minDiff = Math.Min(instructionDiff, updateDiff);
+                    
+                    // Debug idle state
+                    if (_gbSound.DebugCounter <= 5)
+                    {
+                        Console.WriteLine($"[CPU] Idle BEFORE: updateCounter={updateCycleCounter:F0}, soundCount={soundCount:F2}, minDiff={minDiff:F0}");
+                    }
 
                     cycleCount += (int)(maxSoundCycles * (int)(minDiff / maxSoundCycles));
-                    soundCount -= maxSoundCycles * (int)(minDiff / maxSoundCycles);
+                    // BUG FIX: Don't decrement soundCount here! It should accumulate naturally in CPUCycle
+                    // soundCount -= maxSoundCycles * (int)(minDiff / maxSoundCycles);
 
                     while (minDiff >= maxSoundCycles && !_gbSound.WasStopped)
                     {
                         minDiff -= maxSoundCycles;
-                        _gbSound.UpdateBuffer();
+                        soundCount += maxSoundCycles;  // ADD: Accumulate sound cycles properly
+                        
+                        // Process sound buffer when enough cycles accumulated
+                        if (soundCount >= maxSoundCycles)
+                        {
+                            soundCount -= maxSoundCycles;
+                            _gbSound.UpdateBuffer();
+                            
+                            if (_gbSound.DebugCounter <= 5)
+                            {
+                                Console.WriteLine($"[CPU] UpdateBuffer called in idle (count: {_gbSound.DebugCounter})");
+                            }
+                        }
                     }
 
                     cycleCount += (int)minDiff + 1;
+                    
+                    if (_gbSound.DebugCounter <= 5)
+                    {
+                        Console.WriteLine($"[CPU] Idle AFTER: soundCount={soundCount:F2}, cycleCount={cycleCount}");
+                    }
                 }
 
                 return;
+            }
+
+            // Debug: Track if PC goes to very low addresses (should not happen in GBS)
+            if (reg_PC < 0x0010)
+            {
+                Console.WriteLine($"[CPU] WARNING: PC at low address 0x{reg_PC:X4}, SP=0x{reg_SP:X4}, executing in forbidden zone!");
             }
 
             currentInstruction = reg_PC;
