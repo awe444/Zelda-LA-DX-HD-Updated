@@ -167,6 +167,12 @@ namespace GBSPlayer
             if (_calledPlay && !_gbSound.WasStopped)
             {
                 soundCount += (cycleCount - lastCycleCount);
+                
+                // Debug soundCount
+                if (_gbSound.DebugCounter <= 5)
+                {
+                    Console.WriteLine($"[CPU] soundCount={soundCount:F2}, maxSoundCycles={maxSoundCycles}, condition={soundCount >= maxSoundCycles}");
+                }
 
                 while (soundCount >= maxSoundCycles)
                 {
@@ -221,19 +227,37 @@ namespace GBSPlayer
                     // Debug idle state
                     if (_gbSound.DebugCounter <= 5)
                     {
-                        Console.WriteLine($"[CPU] Idle: updateCounter={updateCycleCounter:F0}, maxPlay={maxPlayCycles:F0}, minDiff={minDiff:F0}, maxSound={maxSoundCycles}");
+                        Console.WriteLine($"[CPU] Idle BEFORE: updateCounter={updateCycleCounter:F0}, soundCount={soundCount:F2}, minDiff={minDiff:F0}");
                     }
 
                     cycleCount += (int)(maxSoundCycles * (int)(minDiff / maxSoundCycles));
-                    soundCount -= maxSoundCycles * (int)(minDiff / maxSoundCycles);
+                    // BUG FIX: Don't decrement soundCount here! It should accumulate naturally in CPUCycle
+                    // soundCount -= maxSoundCycles * (int)(minDiff / maxSoundCycles);
 
                     while (minDiff >= maxSoundCycles && !_gbSound.WasStopped)
                     {
                         minDiff -= maxSoundCycles;
-                        _gbSound.UpdateBuffer();
+                        soundCount += maxSoundCycles;  // ADD: Accumulate sound cycles properly
+                        
+                        // Process sound buffer when enough cycles accumulated
+                        if (soundCount >= maxSoundCycles)
+                        {
+                            soundCount -= maxSoundCycles;
+                            _gbSound.UpdateBuffer();
+                            
+                            if (_gbSound.DebugCounter <= 5)
+                            {
+                                Console.WriteLine($"[CPU] UpdateBuffer called in idle (count: {_gbSound.DebugCounter})");
+                            }
+                        }
                     }
 
                     cycleCount += (int)minDiff + 1;
+                    
+                    if (_gbSound.DebugCounter <= 5)
+                    {
+                        Console.WriteLine($"[CPU] Idle AFTER: soundCount={soundCount:F2}, cycleCount={cycleCount}");
+                    }
                 }
 
                 return;
