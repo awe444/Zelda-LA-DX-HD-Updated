@@ -54,6 +54,7 @@ namespace GBSPlayer
         private readonly int _sampleRate;
         private float _volume = 1.0f;
         private bool _disposed = false;
+        private int _bufferSubmitCount = 0;
 
         // Use SoundState enum from XNA framework for compatibility
         public SoundState State { get; private set; } = SoundState.Stopped;
@@ -128,6 +129,7 @@ namespace GBSPlayer
             {
                 SDL_PauseAudioDevice(_audioDevice, 0); // 0 = unpause
                 State = SoundState.Playing;
+                Console.WriteLine("[GbsPlayer] SDL2 audio device unpaused (playing)");
             }
             catch (Exception ex)
             {
@@ -222,6 +224,17 @@ namespace GBSPlayer
 
                 // Queue audio data
                 SDL_QueueAudio(_audioDevice, volumeAdjustedBuffer, (uint)count);
+                
+                // Log first few buffer submissions for diagnostics
+                _bufferSubmitCount++;
+                if (_bufferSubmitCount <= 5)
+                {
+                    Console.WriteLine($"[GbsPlayer] Buffer #{_bufferSubmitCount} submitted: {count} bytes, volume={_volume:F2}");
+                }
+                else if (_bufferSubmitCount == 100)
+                {
+                    Console.WriteLine($"[GbsPlayer] 100 buffers submitted successfully, audio generation working");
+                }
             }
             catch (Exception ex)
             {

@@ -24,23 +24,51 @@ namespace GBSPlayer
         {
             get
             {
-                // Cartridge
+                // Cartridge ROM (0x0000-0x7FFF)
                 if (index < 0x8000)
                     return _cartridge[index];
-                if (0xA000 <= index && index < 0xE000)
+                
+                // Video RAM (0x8000-0x9FFF) - Not used by GBS, return dummy values
+                if (index < 0xA000)
+                {
+                    // GBS files don't use VRAM, return 0
+                    return 0;
+                }
+                
+                // External RAM / Working RAM (0xA000-0xDFFF)
+                if (index < 0xE000)
                 {
                     // GBS:
                     // Player authors: you should disregard writes to $4000-$5fff and $ff70, and just implement main RAM from $a000 to $dfff.
                     return Memory[index];
                 }
-                // shadow ram
-                if (0xE000 <= index && index < 0xFE00)
+                
+                // Echo RAM / Shadow RAM (0xE000-0xFDFF)
+                if (index < 0xFE00)
                     return Memory[index - 0x2000];
-                // Sound registries
-                if (0xFF10 <= index && index <= 0xFF3F)
+                
+                // OAM (Object Attribute Memory) (0xFE00-0xFE9F) - Not used by GBS
+                if (index < 0xFEA0)
+                    return 0;
+                
+                // Not usable / IO Ports (0xFEA0-0xFF0F)
+                if (index < 0xFF10)
+                    return 0;
+                
+                // Sound registers (0xFF10-0xFF3F)
+                if (index <= 0xFF3F)
                     return _gbSound[index];
-                // High RAM (HRAM)
-                if (0xFF80 <= index && index <= 0xFFFF)
+                
+                // LCD/PPU registers (0xFF40-0xFF7F) - Not used by GBS
+                if (index < 0xFF80)
+                    return 0;
+                
+                // High RAM (HRAM) (0xFF80-0xFFFE)
+                if (index < 0xFFFF)
+                    return Memory[index];
+                
+                // Interrupt Enable Register (0xFFFF)
+                if (index == 0xFFFF)
                     return Memory[index];
 
                 Console.WriteLine("Read at 0x{0:X} not supported", index);

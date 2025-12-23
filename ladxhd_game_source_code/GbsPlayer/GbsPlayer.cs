@@ -158,6 +158,7 @@ namespace GBSPlayer
             Cpu.IsRunning = true;
             
             Console.WriteLine($"[GbsPlayer] Started track {trackNumber} (A={Cpu.reg_A:X2}, Init=0x{Cartridge.InitAddress:X4}, Play=0x{Cartridge.PlayAddress:X4})");
+            Console.WriteLine($"[GbsPlayer] Sound system initialized, CPU running");
         }
 
         public void Play()
@@ -166,6 +167,7 @@ namespace GBSPlayer
                 return;
 
             SoundGenerator.Play();
+            Console.WriteLine("[GbsPlayer] Play() called - starting audio playback");
         }
 
         public void Pause()
@@ -270,6 +272,10 @@ namespace GBSPlayer
                             Cpu.IsRunning = false;
                         }
                     }
+                    
+                    // Small sleep to prevent 100% CPU usage when audio buffer is full
+                    // The Cpu.Update() will fill buffers but returns immediately when buffer is full
+                    Thread.Sleep(1);
                 }
                 else
                 {
