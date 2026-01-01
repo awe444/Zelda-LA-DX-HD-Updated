@@ -37,6 +37,7 @@ namespace LADXHD_Patcher
         private static string[] musicTile  = new[] { "musicOverworldClassic.data" };
         private static string[] dungeon3M  = new[] { "dungeon3.map" };
         private static string[] dungeon3D  = new[] { "dungeon3.map.data" };
+        private static string[] animations = new[] { "bowwow_water.ani" };
 
         // THE "KEY" IS THE MASTER FILE THAT CREATES OTHER FILES FROM IT. THE "VALUE" IS THE STRING ARRAY THAT HOLDS THOSE FILES
 
@@ -56,7 +57,8 @@ namespace LADXHD_Patcher
             { "ui.png",               uiImages },
             { "musicOverworld.data", musicTile },
             { "dungeon3_1.map",      dungeon3M },
-            { "dungeon3_1.map.data", dungeon3D }
+            { "dungeon3_1.map.data", dungeon3D },
+            { "BowWow.ani",         animations }
         };
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -75,7 +77,7 @@ namespace LADXHD_Patcher
         {
             // Because old versions of the patchers saved "new" files, we need to remove them or they will cause problems.
             string[][] list = { langFiles, langDialog, smallFonts, backGround, linkImages, npcImages, itemImages, introImage, 
-                                miniMapImg, objectsImg, photograph, uiImages, musicTile, dungeon3M, dungeon3D };
+                                miniMapImg, objectsImg, photograph, uiImages, musicTile, dungeon3M, dungeon3D, animations };
 
             string[] remove = list.SelectMany(x => x).ToArray();
 
@@ -98,8 +100,8 @@ namespace LADXHD_Patcher
 
         private static string[] obsoleteFiles = new[] 
         {  
-            "cave bird.map.data", "dungeon_end.map.data", "dungeon3_1.map", "dungeon3_1.map.data", "dungeon3_2.map", "dungeon3_2.map.data", 
-            "dungeon3_3.map", "dungeon3_3.map.data", "dungeon3_4.map", "dungeon3_4.map.data", "dungeon 7_2d.map.data", "three_1.txt", "three_2.txt", "three_3.txt" 
+            "cave bird.map.data", "dungeon_end.map.data", "dungeon3_1.map", "dungeon3_1.map.data", "dungeon3_2.map", "dungeon3_2.map.data", "dungeon3_3.map", 
+            "dungeon3_3.map.data", "dungeon3_4.map", "dungeon3_4.map.data", "dungeon 7_2d.map.data", "three_1.txt", "three_2.txt", "three_3.txt" 
         };
 
         private static void RemoveObsolete()

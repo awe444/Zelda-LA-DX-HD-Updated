@@ -123,6 +123,7 @@ $uiImages   = @("ui_deu.png", "ui_esp.png", "ui_fre.png", "ui_ind.png", "ui_ita.
 $musicTile  = @("musicOverworldClassic.data")
 $dungeon3M  = @("dungeon3.map")
 $dungeon3D  = @("dungeon3.map.data")
+$animations = @("bowwow_water.ani")
 
 $FileTargets = @{
     "eng.lng"             = $langFiles
@@ -140,6 +141,7 @@ $FileTargets = @{
     "musicOverworld.data" = $musicTile
     "dungeon3_1.map"      = $dungeon3M
     "dungeon3_1.map.data" = $dungeon3D
+    "BowWow.ani"		  = $animations
 }
 
 function Build-ReverseMap($Targets)
