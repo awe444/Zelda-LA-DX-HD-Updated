@@ -163,10 +163,12 @@ namespace LADXHD_Patcher
             }
         }
 
-        private static void PatchGameFiles()
+        private static int PatchGameFiles(bool silentMode)
         {
             // Remove any garbage files that will just mess up the patcher.
             RemoveBadBackupFiles();
+
+            int patchCount = 0;
 
             foreach (string file in Config.baseFolder.GetFiles("*", true))
             {
@@ -182,10 +184,12 @@ namespace LADXHD_Patcher
 
                 // Backup file if it has patch and a backup doesn't exist or restore from backup if one does exist.
                 if (xdelta3File.TestPath())
+                {
                     if (!backupPath.TestPath())
                         fileItem.FullName.CopyPath(backupPath, true);
                     else
                         backupPath.CopyPath(fileItem.FullName, true);
+                }
 
                 // If this file creates other files do so now.
                 if (fileTargets.ContainsKey(fileItem.Name))
@@ -198,7 +202,9 @@ namespace LADXHD_Patcher
                 // Patch the file.
                 string patchedFile = Path.Combine(Config.tempFolder + "\\patchedFiles", fileItem.Name);
                 XDelta3.Execute(Operation.Apply, fileItem.FullName, xdelta3File, patchedFile, fileItem.FullName);
+                patchCount++;
             }
+
             // Because of a mistake I made not keeping "dungeon_3_1.map" around, it now needs a special fix.
             Dungeon3PatchFix();
 
@@ -208,10 +214,19 @@ namespace LADXHD_Patcher
             // Now is a good time to remove any files that the game no longer needs or may cause problems.
             RemoveObsolete();
 
-            string message = patchFromBackup 
-                ? "Patching the game from v1.0.0 backup files was successful. The game was updated to v"+ Config.version + "." 
-                : "Patching Link's Awakening DX HD v1.0.0 was successful. The game was updated to v"+ Config.version + ".";
-            Forms.okayDialog.Display("Patching Complete", 260, 40, 34, 16, 10, message);
+            if (silentMode)
+            {
+                Console.WriteLine("Patched " + patchCount + " files.");
+            }
+            else
+            {
+                string message = patchFromBackup 
+                    ? "Patching the game from v1.0.0 backup files was successful. The game was updated to v"+ Config.version + "." 
+                    : "Patching Link's Awakening DX HD v1.0.0 was successful. The game was updated to v"+ Config.version + ".";
+                Forms.okayDialog.Display("Patching Complete", 260, 40, 34, 16, 10, message);
+            }
+
+            return patchCount;
         }
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -258,11 +273,68 @@ namespace LADXHD_Patcher
             ZipPatches.ExtractPatches();
 
             XDelta3.Create();
-            PatchGameFiles();
+            PatchGameFiles(silentMode: false);
             XDelta3.Remove();
 
             Config.tempFolder.RemovePath();
             Forms.mainDialog.ToggleDialog(true);
+        }
+
+        /// <summary>
+        /// Run patching in silent mode without GUI prompts.
+        /// Returns exit code: 0 = success, 1 = exe not found, 2 = patching failed
+        /// </summary>
+        public static int StartPatchingSilent()
+        {
+            Console.WriteLine("LADXHD Patcher v" + Config.version + " - Silent Mode");
+            Console.WriteLine("============================================");
+
+            SetSourceFiles();
+
+            // Validate executable exists
+            if (!Executable.TestPath())
+            {
+                Console.WriteLine("ERROR: Could not find \"Link's Awakening DX HD.exe\" to patch.");
+                Console.WriteLine("Make sure this patcher is in the same folder as the game.");
+                return 1;
+            }
+
+            Console.WriteLine("Found game executable. Starting patch process...");
+
+            try
+            {
+                Config.tempFolder.CreatePath(true);
+                Console.WriteLine("Extracting patches...");
+                ZipPatches.ExtractPatches();
+
+                Console.WriteLine("Creating xdelta3...");
+                XDelta3.Create();
+
+                Console.WriteLine("Patching game files...");
+                PatchGameFiles(silentMode: true);
+
+                Console.WriteLine("Cleaning up...");
+                XDelta3.Remove();
+                Config.tempFolder.RemovePath();
+
+                Console.WriteLine("============================================");
+                Console.WriteLine("SUCCESS: Game patched to v" + Config.version);
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR: Patching failed - " + ex.Message);
+                
+                // Cleanup on failure
+                try
+                {
+                    XDelta3.Remove();
+                    Config.tempFolder.RemovePath();
+                }
+                catch { }
+
+                return 2;
+            }
         }
     }
 }
