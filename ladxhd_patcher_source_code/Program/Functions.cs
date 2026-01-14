@@ -8,7 +8,9 @@ namespace LADXHD_Patcher
 {
     internal class Functions
     {
-        private static bool patchFromBackup;
+        private static int    filesPatched;
+        private static bool   silentMode;
+        private static bool   patchFromBackup;
         private static string Executable;
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -163,12 +165,11 @@ namespace LADXHD_Patcher
             }
         }
 
-        private static int PatchGameFiles(bool silentMode)
+        private static void PatchGameFiles()
         {
             // Remove any garbage files that will just mess up the patcher.
             RemoveBadBackupFiles();
-
-            int patchCount = 0;
+            filesPatched = 0;
 
             foreach (string file in Config.baseFolder.GetFiles("*", true))
             {
@@ -202,7 +203,7 @@ namespace LADXHD_Patcher
                 // Patch the file.
                 string patchedFile = Path.Combine(Config.tempFolder + "\\patchedFiles", fileItem.Name);
                 XDelta3.Execute(Operation.Apply, fileItem.FullName, xdelta3File, patchedFile, fileItem.FullName);
-                patchCount++;
+                filesPatched++;
             }
 
             // Because of a mistake I made not keeping "dungeon_3_1.map" around, it now needs a special fix.
@@ -214,19 +215,8 @@ namespace LADXHD_Patcher
             // Now is a good time to remove any files that the game no longer needs or may cause problems.
             RemoveObsolete();
 
-            if (silentMode)
-            {
-                Console.WriteLine("Patched " + patchCount + " files.");
-            }
-            else
-            {
-                string message = patchFromBackup 
-                    ? "Patching the game from v1.0.0 backup files was successful. The game was updated to v"+ Config.version + "." 
-                    : "Patching Link's Awakening DX HD v1.0.0 was successful. The game was updated to v"+ Config.version + ".";
-                Forms.okayDialog.Display("Patching Complete", 260, 40, 34, 16, 10, message);
-            }
-
-            return patchCount;
+            // Show the final message to the user.
+            ReportFinished();
         }
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -261,6 +251,40 @@ namespace LADXHD_Patcher
                 "Are you sure you wish to patch the game to v" + Config.version + "?");
         }
 
+        private static void ReportFinished()
+        {
+            if (silentMode)
+            {
+                Console.WriteLine("Patched " + filesPatched + " files.");
+            }
+            else
+            {
+                string message = patchFromBackup
+                    ? "Patching the game from v1.0.0 backup files was successful. The game was updated to v"+ Config.version + "." 
+                    : "Patching Link's Awakening DX HD v1.0.0 was successful. The game was updated to v"+ Config.version + ".";
+                Forms.okayDialog.Display("Patching Complete", 260, 40, 34, 16, 10, message);
+            }
+        }
+
+        private static void CreateModFolders()
+        {
+            // Create the new mods folders.
+            Config.lahdmodModPath.CreatePath(true);
+            Config.graphicsModPath.CreatePath(true);
+
+            // Find the old "Mods" path for lahdmods and exit if it doesn't exist.
+            if (!Directory.Exists(Config.previousModPath))
+                return;
+
+            // Move any lahdmods in the old "Mods" folder to the new location.
+            foreach (string file in Directory.GetFiles(Config.previousModPath, "*", SearchOption.AllDirectories))
+            {
+                FileItem fileItem = new FileItem(file);
+                string newModLoc = Path.Combine(Config.lahdmodModPath, fileItem.Name);
+                fileItem.FullName.MovePath(newModLoc, true);
+            }
+        }
+
         public static void StartPatching()
         {
             SetSourceFiles();
@@ -273,8 +297,10 @@ namespace LADXHD_Patcher
             ZipPatches.ExtractPatches();
 
             XDelta3.Create();
-            PatchGameFiles(silentMode: false);
+            PatchGameFiles();
             XDelta3.Remove();
+
+            CreateModFolders();
 
             Config.tempFolder.RemovePath();
             Forms.mainDialog.ToggleDialog(true);
@@ -303,6 +329,8 @@ namespace LADXHD_Patcher
 
             try
             {
+                silentMode = true;
+
                 Config.tempFolder.CreatePath(true);
                 Console.WriteLine("Extracting patches...");
                 ZipPatches.ExtractPatches();
@@ -311,7 +339,10 @@ namespace LADXHD_Patcher
                 XDelta3.Create();
 
                 Console.WriteLine("Patching game files...");
-                PatchGameFiles(silentMode: true);
+                PatchGameFiles();
+
+                Console.WriteLine("Creating mods folders...");
+                CreateModFolders();
 
                 Console.WriteLine("Cleaning up...");
                 XDelta3.Remove();
@@ -319,6 +350,8 @@ namespace LADXHD_Patcher
 
                 Console.WriteLine("============================================");
                 Console.WriteLine("SUCCESS: Game patched to v" + Config.version);
+                Console.WriteLine("");
+                Console.WriteLine("Files patched: " + filesPatched);
                 return 0;
             }
             catch (Exception ex)

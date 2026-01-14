@@ -55,7 +55,8 @@
 
 $OldGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\original"
 $NewGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated"
-$GameVersion = "1.5.3"
+$ZipFilePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD-Updated\ladxhd_patcher_source_code"
+$GameVersion = "1.5.4"
 
 #========================================================================================================================================
 # SETUP XDELTA & OUTPUTS
@@ -172,6 +173,19 @@ function GetOldFilePath([object]$File, [string]$RelativePath)
 }
 
 #========================================================================================================================================
+# CREATE ZIP FILE
+#========================================================================================================================================
+
+function CreateZipFile()
+{
+  $ZipPath = $PatchFolder + "\*"
+  $ZipFile = $ZipFilePath + "\patches.zip"
+
+  Remove-Item -Path $ZipFile -Force -ErrorAction SilentlyContinue | Out-Null
+  Compress-Archive -Path $ZipPath -DestinationPath $ZipFile | Out-Null
+}
+
+#========================================================================================================================================
 # GENERATE PATCHES
 #========================================================================================================================================
 
@@ -197,6 +211,10 @@ foreach ($file in Get-ChildItem -LiteralPath $NewGamePath -Recurse -File)
         & $XDelta3 -f -e -s $OldFilePath $NewFilePath $PatchFile
     }
 }
+Write-Host ""
+Write-Host 'Generating "patches.zip" for patcher program.'
+CreateZipFile
+
 Write-Host ""
 Write-Host "Patch generation complete. Patches can be found in folder:"
 Write-Host $PatchFolder

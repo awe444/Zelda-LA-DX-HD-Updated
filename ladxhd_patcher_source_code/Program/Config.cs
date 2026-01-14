@@ -6,13 +6,17 @@ namespace LADXHD_Patcher
     internal class Config
     {
         // The hash for "newHash" will need to be calculated for each new version.
-        public const string version = "1.5.3";
+        public const string version = "1.5.4";
 
         public static string appPath;
         public static string baseFolder;
         public static string tempFolder;
         public static string zeldaEXE;
         public static string backupPath;
+
+        public static string previousModPath;
+        public static string lahdmodModPath;
+        public static string graphicsModPath;
 
         public static void Initialize()
         {
@@ -21,6 +25,10 @@ namespace LADXHD_Patcher
             tempFolder = Path.Combine(baseFolder, "~temp");
             zeldaEXE = Path.Combine(baseFolder, "Link's Awakening DX HD.exe");
             backupPath = (Path.Combine(baseFolder, "Data", "Backup")).CreatePath();
+
+            previousModPath = Path.Combine(baseFolder, "Data", "Mods");
+            lahdmodModPath = Path.Combine(baseFolder, "Mods", "LAHDMods");
+            graphicsModPath = Path.Combine(baseFolder, "Mods", "Graphics");
         }
     }
 }
