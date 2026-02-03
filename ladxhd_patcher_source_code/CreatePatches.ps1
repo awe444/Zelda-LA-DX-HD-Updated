@@ -125,7 +125,7 @@ $musicTile  = @("musicOverworldClassic.data")
 $dungeon3M  = @("dungeon3.map")
 $dungeon3D  = @("dungeon3.map.data")
 $bowwowanim = @("bowwow_water.ani")
-$dungeonani = @("mapDungeon.ani")
+$dungeonani = @("mapDungeon.ani", "mapManboPond.ani")
 
 $FileTargets = @{
     "eng.lng"             = $langFiles
