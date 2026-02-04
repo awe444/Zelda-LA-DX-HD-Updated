@@ -71,12 +71,6 @@ namespace LADXHD_Patcher
        
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-        public static bool InBackup(FileItem fileItem)
-        {
-            // A quick check to know if we are currently in the backup directory.
-            return (fileItem.DirectoryName.IndexOf("Data\\Backup", StringComparison.OrdinalIgnoreCase) >= 0);
-        }
-
         private static void RemoveBadBackupFiles()
         {
             // Because old versions of the patchers saved "new" files, we need to remove them or they will cause problems.
@@ -88,6 +82,7 @@ namespace LADXHD_Patcher
             // Loop through the files in the backup folder.
             foreach (string file in Config.backupPath.GetFiles("*", true))
             {
+                // Get the file as a file item which gives us some cool properties to reference.
                 FileItem fileItem = new FileItem(file);
 
                 // If the current array file exists then remove it.
@@ -112,10 +107,11 @@ namespace LADXHD_Patcher
         {
             foreach (string file in Config.baseFolder.GetFiles("*", true))
             {
+                // Get the file as a file item which gives us some cool properties to reference.
                 FileItem fileItem = new FileItem(file);
 
                 // Skip backup files for safety.
-                if (InBackup(fileItem))
+                if (fileItem.IsInFolder("Backup"))
                     continue;
 
                 // If the obsolete file exists then delete it.
@@ -175,10 +171,11 @@ namespace LADXHD_Patcher
 
             foreach (string file in Config.baseFolder.GetFiles("*", true))
             {
+                // Get the file as a file item which gives us some cool properties to reference.
                 FileItem fileItem = new FileItem(file);
 
-                // Do not try to patch the patcher or files directly in the backup folder.
-                if (fileItem.Name == "xdelta3.exe" || InBackup(fileItem))
+                // Do not try to patch the patcher, modded files, or files directly in the backup folder.
+                if (fileItem.Name == "xdelta3.exe" || fileItem.IsInFolder("Mods") || fileItem.IsInFolder("Backup")  )
                     continue;
 
                 // Get the backup path to test for existing backups and create new ones to it.
