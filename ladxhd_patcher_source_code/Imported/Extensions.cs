@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace LADXHD_Patcher
@@ -32,27 +33,40 @@ namespace LADXHD_Patcher
         public static bool TestPath(this string InputPath, bool IsDirectory = false)
         {
             // If the value is null or empty then return false.
-            if (InputPath == null || InputPath == "")
+            if (string.IsNullOrWhiteSpace(InputPath))
                 return false;
 
-            // Attempt to pull attributes from the file/folder.
-            try {
-                FileAttributes Dummy = File.GetAttributes(InputPath);
+            // Test the path for file or directory.
+            try
+            {
+                // Attempt to pull attributes from the file/folder.
+                var attributes = File.GetAttributes(InputPath);
+                bool isDir = (attributes & FileAttributes.Directory) != 0;
+
+                // If parameter is set only return true if it's a directory.
+                if (IsDirectory)
+                    return isDir;
+
+                // If it's a file or directory without the paramemter return true.
+                return true;
             }
             // Catch all known exception types.
-            catch (Exception x) {
-                if (x is DirectoryNotFoundException || x is FileNotFoundException || x is ArgumentException || x is NotSupportedException)
+            catch (Exception x) 
+            {
+                // Catches types where directory does not eixst.
+                if (x is DirectoryNotFoundException || 
+                    x is FileNotFoundException || 
+                    x is ArgumentException || 
+                    x is NotSupportedException)
                     return false;
-            }
-            // The above should already catch most paths or files that don't exist. But any paths or files that make it past
-            // the exception, get the type that they are (path or file) then use the respective method to test if they exist.*/
-            if (File.GetAttributes(InputPath).HasFlag(FileAttributes.Directory))
-                return Directory.Exists(InputPath);
-            else if (!IsDirectory)
-                return File.Exists(InputPath);
 
-            // If file checks were blocked with IsDirectory, we end up here so return false.
-            return false;
+                // Directory exists but is inaccessible.
+                else if (x is UnauthorizedAccessException)
+                    return true;
+
+                // Exception is unknown.
+                return false;
+            }
         }
 
         public static string CreatePath(this string InputPath, bool NoReturn = false)
@@ -83,35 +97,53 @@ namespace LADXHD_Patcher
             Directory.Move(Source, Destination);
         }
 
-        public static void RemovePath(this string InputPath)
+        public static void RemovePath(this string inputPath)
         {
             // If the path is empty then it does not exist.
-            if (string.IsNullOrEmpty(InputPath) || !InputPath.TestPath())
+            if (string.IsNullOrEmpty(inputPath))
                 return;
 
             // Set up a loop for retries if a file is still locked when trying to delete it.
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 10; i++)
             {
+                // Attempt to delete the file or folder.
                 try
                 {
-                    // If the path exists call the type needed to remove it.
-                    if (File.GetAttributes(InputPath).HasFlag(FileAttributes.Directory))
-                        Directory.Delete(InputPath, true);
+                    // Get whether it's a file or a folder and run the proper delete command.
+                    var attributes = File.GetAttributes(inputPath);
+
+                    // If it's a directory (folder).
+                    if ((attributes & FileAttributes.Directory) != 0)
+                    {
+                        // Clear "read-only" on directories recursively.
+                        foreach (var file in Directory.GetFiles(inputPath, "*", SearchOption.AllDirectories))
+                            File.SetAttributes(file, FileAttributes.Normal);
+                        foreach (var dir in Directory.GetDirectories(inputPath, "*", SearchOption.AllDirectories))
+                            File.SetAttributes(dir, FileAttributes.Normal);
+                       
+                        // Clear potential "read-only" and delete the directory.
+                        File.SetAttributes(inputPath, FileAttributes.Normal);
+                        Directory.Delete(inputPath, true);
+                    }
+                    // If it's simply a file.
                     else
                     {
-                        File.SetAttributes(InputPath, FileAttributes.Normal);
-                        File.Delete(InputPath);
+                        // Clear potential "read-only" and delete the file.
+                        File.SetAttributes(inputPath, FileAttributes.Normal);
+                        File.Delete(inputPath);
                     }
                     return;
                 }
-                // Catch any exceptions if it didn't delete and try again.
-                catch (IOException)
+                // Catch exceptions and try to delete again.
+                catch (Exception x) 
                 {
-                    System.Threading.Thread.Sleep(200);
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    System.Threading.Thread.Sleep(200);
+                    // Catch types where directory does not exist.
+                    if (x is DirectoryNotFoundException || x is FileNotFoundException)
+                        return;
+
+                    // Catch types were a delete retry takes place.
+                    else if (x is IOException || x is UnauthorizedAccessException)
+                        Thread.Sleep(200);
                 }
             }
         }

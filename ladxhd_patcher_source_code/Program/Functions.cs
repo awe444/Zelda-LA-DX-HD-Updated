@@ -284,6 +284,21 @@ namespace LADXHD_Patcher
             }
         }
 
+        private static void TryRemoveTempPath()
+        {
+            // Try to remove the temp path.
+            try
+            {
+                Config.tempFolder.RemovePath();
+            }
+            // If it fails, show an error message.
+            catch
+            {
+                string message = "The game was patched successfully, but the patcher failed to delete the \"temp\" folder. Please report this as an issue on the Github repo!";
+                Forms.okayDialog.Display("Patching Complete", 260, 40, 28, 10, 10, message);
+            }
+        }
+
         public static void StartPatching()
         {
             SetSourceFiles();
@@ -301,7 +316,7 @@ namespace LADXHD_Patcher
 
             CreateModFolders();
 
-            Config.tempFolder.RemovePath();
+            TryRemoveTempPath();
             Forms.mainDialog.ToggleDialog(true);
         }
 
@@ -361,7 +376,7 @@ namespace LADXHD_Patcher
                 try
                 {
                     XDelta3.Remove();
-                    Config.tempFolder.RemovePath();
+                    TryRemoveTempPath();
                 }
                 catch { }
 
