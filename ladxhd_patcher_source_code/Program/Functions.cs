@@ -84,9 +84,11 @@ namespace LADXHD_Patcher
 
             // Set the path to the Chinese font that will be created.
             string chinaFontXNB = Path.Combine(Config.gameFontsPath, "smallFont_chn.xnb");
+            string chinaFontXNBRedux = Path.Combine(Config.gameFontsPath, "smallFont_chn_redux.xnb");
 
             // Write the chinese language file to the directory.
             File.WriteAllBytes(chinaFontXNB, (byte[])resources["smallFont_chn.xnb"]);
+            File.WriteAllBytes(chinaFontXNBRedux, (byte[])resources["smallFont_chn_redux.xnb"]);
         }
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -241,8 +243,8 @@ namespace LADXHD_Patcher
                 // Get the file as a file item which gives us some cool properties to reference.
                 FileItem fileItem = new FileItem(file);
 
-                // Do not try to patch the patcher, the chinese font, modded files, or files directly in the backup folder.
-                if (fileItem.Name == "xdelta3.exe" || fileItem.Name == "smallFont_chn.xnb" || fileItem.IsInFolder("Mods") || fileItem.IsInFolder("Backup")  )
+                // Do not try to patch the patcher, the chinese fonts, modded files, or files directly in the backup folder.
+                if (fileItem.Name == "xdelta3.exe" || fileItem.Name.StartsWith("smallFont_chn") || fileItem.IsInFolder("Mods") || fileItem.IsInFolder("Backup")  )
                     continue;
 
                 // Get the backup path to test for existing backups and create new ones to it.
