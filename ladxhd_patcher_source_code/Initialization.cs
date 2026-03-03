@@ -79,7 +79,7 @@ namespace LADXHD_Patcher
             {
                 // Initialize forms and show the main dialog
                 Forms.Initialize();
-                Forms.mainDialog.ShowDialog();
+                Forms.MainDialog.ShowDialog();
                 return 0;
             }
         }

@@ -6,14 +6,14 @@ namespace LADXHD_Patcher
     internal class Forms
     {
         public static Form_MainForm  MainDialog;
-        public static Form_OkayForm  okayDialog; 
-        public static Form_YesNoForm yesNoDialog; 
+        public static Form_OkayForm  OkayDialog; 
+        public static Form_YesNoForm YesNoDialog; 
 
         public static void Initialize()
         {
             MainDialog  = new Form_MainForm();
-            okayDialog  = new Form_OkayForm();
-            yesNoDialog = new Form_YesNoForm();
+            OkayDialog  = new Form_OkayForm();
+            YesNoDialog = new Form_YesNoForm();
         }
 
         public static void CreatePatcherText()
