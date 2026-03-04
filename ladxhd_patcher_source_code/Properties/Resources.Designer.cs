@@ -71,22 +71,22 @@ namespace LADXHD_Patcher {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] Icon {
-            get {
-                object obj = ResourceManager.GetObject("Icon", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Icon_bmp {
             get {
                 object obj = ResourceManager.GetObject("Icon.bmp", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Icon_ico {
+            get {
+                object obj = ResourceManager.GetObject("Icon.ico", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

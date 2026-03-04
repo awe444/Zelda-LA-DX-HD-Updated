@@ -122,7 +122,7 @@
     <value>..\Resources\Courier-Prime.ttf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     <comment>TrueType Font</comment>
   </data>
-  <data name="Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Icon.ico" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icon.ico;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     <comment>Icon File</comment>
   </data>

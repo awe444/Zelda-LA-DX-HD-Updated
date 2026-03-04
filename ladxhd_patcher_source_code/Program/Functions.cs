@@ -96,18 +96,25 @@ namespace LADXHD_Patcher
             string editorFontB = Path.Combine(Config.ContentPath, "Fonts", "NotoSans-Regular.ttf");
 
             // Write the files to the "Content\Fonts" folder.
-            File.WriteAllBytes(smallFont_chn_fileA, (byte[])resources["Courier-Prime.ttf"]);
-            File.WriteAllBytes(smallFont_chn_fileB, (byte[])resources["NotoSans-Regular.ttf"]);
+            File.WriteAllBytes(editorFontA, (byte[])resources["Courier-Prime.ttf"]);
+            File.WriteAllBytes(editorFontB, (byte[])resources["NotoSans-Regular.ttf"]);
+
+            // Set up the path to the Icon.
+            string iconPath = Path.Combine(Config.DataPath, "Icon").CreatePath();
+            string iconFile = Path.Combine(iconPath, "Icon.ico");
+
+            // Write the files to the "Content\Fonts" folder.
+            File.WriteAllBytes(iconFile, (byte[])resources["Icon.ico"]);
 
             // Set up the path to the bitmap Icon.
-            string iconPath = Path.Combine(Config.DataPath, "Icon").CreatePath();
-            string iconFile = Path.Combine(iconPath, "Icon.bmp");
+            string iconBmpPath = Path.Combine(Config.DataPath, "Icon").CreatePath();
+            string iconBmpFile = Path.Combine(iconBmpPath, "Icon.bmp");
 
             // Write the bitmap icon to the "Data\Icon" folder.
             using (var ms = new MemoryStream())
             {
                 ((Bitmap)resources["Icon.bmp"]).Save(ms, ImageFormat.Bmp);
-                File.WriteAllBytes(iconFile, ms.ToArray());
+                File.WriteAllBytes(iconBmpFile, ms.ToArray());
             }
         }
 
