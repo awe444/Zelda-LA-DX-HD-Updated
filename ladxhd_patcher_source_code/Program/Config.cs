@@ -14,13 +14,16 @@ namespace LADXHD_Patcher
         public static string ZeldaEXE;
         public static string BackupPath;
 
-        public static string ContentPath;
-        public static string DataPath;
-        public static string PreviousModPath;
         public static string LAHDModPath;
         public static string GraphicsModPath;
 
-        public enum Platform { Windows }
+        public static string ApkSign;
+        public static string ZipAlign;
+        public static string KeyStore;
+        public static string JavaExe;
+        public static string SevenZip;
+
+        public enum Platform { Windows, Android }
         public static Platform SelectedPlatform;
 
         public enum GraphicsAPI { DirectX, OpenGL }
@@ -34,11 +37,14 @@ namespace LADXHD_Patcher
             ZeldaEXE = Path.Combine(BaseFolder, "Link's Awakening DX HD.exe");
             BackupPath = (Path.Combine(BaseFolder, "Data", "Backup")).CreatePath();
 
-            ContentPath = Path.Combine(BaseFolder, "Content");
-            DataPath = Path.Combine(BaseFolder, "Data");
-            PreviousModPath = Path.Combine(DataPath, "Mods");
             LAHDModPath = Path.Combine(BaseFolder, "Mods", "LAHDMods");
             GraphicsModPath = Path.Combine(BaseFolder, "Mods", "Graphics");
+
+            ApkSign  = Path.Combine(TempFolder, "android", "apksigner.jar");
+            ZipAlign = Path.Combine(TempFolder, "android", "zipalign.exe");
+            KeyStore = Path.Combine(TempFolder, "android", "keystore.jks");
+            JavaExe  = Path.Combine(TempFolder, "android", "java", "bin", "java.exe");
+            SevenZip = Path.Combine(TempFolder, "android", "7z.exe");
         }
     }
 }

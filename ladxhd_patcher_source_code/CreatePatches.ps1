@@ -55,18 +55,18 @@
 #========================================================================================================================================
 
 $GameVersion = "1.6.4"
-$GraphicsAPI = "GL"
+$PlatformAPI = "Android"
 $OldGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\original"
 $NewGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated"
-$ZipFilePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD-Updated\ladxhd_patcher_source_code"
+$ZipFilePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD-Updated\ladxhd_patcher_source_code\Resources"
 
 #========================================================================================================================================
 # SETUP XDELTA & OUTPUTS
 #========================================================================================================================================
 
 $BaseFolder  = Split-Path $script:MyInvocation.MyCommand.Path
-$XDelta3     = Join-Path $BaseFolder "xdelta3.exe"
-$PatchFolder = Join-Path $BaseFolder ("\Patches\v" + $GameVersion + " (" + $GraphicsAPI + ") Patches")
+$XDelta3     = Join-Path $BaseFolder ("\Resources\xdelta3.exe")
+$PatchFolder = Join-Path $BaseFolder ("\Patches\v" + $GameVersion + " (" + $PlatformAPI + ") Patches")
 
 #========================================================================================================================================
 # MISCELLANEOUS
@@ -88,7 +88,7 @@ if (!(Test-Path (Join-Path $OldGamePath "Link's Awakening DX HD.exe"))) {
     Write-Host "Invalid path for original game (OldGamePath)."
     PauseBeforeClose
 }
-if (!(Test-Path (Join-Path $NewGamePath "Link's Awakening DX HD.exe"))) {
+if ((!(Test-Path (Join-Path $NewGamePath "Link's Awakening DX HD.exe"))) -and (!($PlatformAPI -eq "Android"))) {
     Write-Host "Invalid path for updated game (NewGamePath)."
     PauseBeforeClose
 }
@@ -185,7 +185,7 @@ function GetOldFilePath([object]$File, [string]$RelativePath)
 function CreateZipFile()
 {
   $ZipPath = $PatchFolder + "\*"
-  $ZipFile = $ZipFilePath + "\patches_" + $GraphicsAPI.ToLower() + ".zip"
+  $ZipFile = $ZipFilePath + "\patches_" + $PlatformAPI.ToLower() + ".zip"
 
   Remove-Item -Path $ZipFile -Force -ErrorAction SilentlyContinue | Out-Null
   Compress-Archive -Path $ZipPath -DestinationPath $ZipFile | Out-Null

@@ -61,6 +61,16 @@ namespace LADXHD_Patcher {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] android_tools_zip {
+            get {
+                object obj = ResourceManager.GetObject("android_tools.zip", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Icon_bmp {
@@ -87,6 +97,16 @@ namespace LADXHD_Patcher {
             get {
                 object obj = ResourceManager.GetObject("la", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] patches_android_zip {
+            get {
+                object obj = ResourceManager.GetObject("patches_android.zip", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
