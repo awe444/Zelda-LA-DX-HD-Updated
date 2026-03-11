@@ -241,6 +241,10 @@ namespace LADXHD_Patcher
             string apkSigned = Path.Combine(Config.TempFolder, "signed.apk");
             string apkFinalize = Path.Combine(Config.BaseFolder, "zelda.ladxhd.apk");
 
+            // Extract tools to the temp folder.
+            ZipFunctions.ExtractAndroidTools();
+            ZipFunctions.ExtractSevenZip();
+
             // Run through the creation and signing steps.
             ZipFunctions.CreateUnsignedAPK(apkFolder, apkUnsigned);
             ZipFunctions.ZipAlignAPK(apkUnsigned, apkAligned);
@@ -564,7 +568,7 @@ namespace LADXHD_Patcher
             // Extract patches and potentially Android files.
             ZipFunctions.ExtractPatches();
             if (Config.SelectedPlatform == Platform.Android)
-                ZipFunctions.ExtractAndroidTools();
+                ZipFunctions.ExtractAndroidFiles();
 
             // Create XDelta executable and patch files.
             XDelta3.Create();

@@ -48,6 +48,18 @@ namespace LADXHD_Patcher
             zipFilePath.RemovePath();
         }
 
+        public static void ExtractAndroidFiles()
+        {
+            // Set the path to extract android files.
+            string androidPath = Path.Combine(Config.TempFolder, "android").CreatePath();
+            string zipFilePath = Path.Combine(Config.TempFolder, "android_files.zip");
+
+            // Write the zipfile, extract it, then delete it.
+            File.WriteAllBytes(zipFilePath, (byte[])resources["android_files.zip"]);
+            ZipFile.ExtractToDirectory(zipFilePath, androidPath);
+            zipFilePath.RemovePath();
+        }
+
         public static void ExtractAndroidTools()
         {
             // Set the path to extract android tools.
@@ -58,6 +70,17 @@ namespace LADXHD_Patcher
             File.WriteAllBytes(zipFilePath, (byte[])resources["android_tools.zip"]);
             ZipFile.ExtractToDirectory(zipFilePath, androidPath);
             zipFilePath.RemovePath();
+        }
+
+        public static void ExtractSevenZip()
+        {
+            // Set the path to extract android tools.
+            string sevenZipPath = Path.Combine(Config.TempFolder, "7zip.zip");
+
+            // Write the zipfile, extract it, then delete it.
+            File.WriteAllBytes(sevenZipPath, (byte[])resources["7zip.zip"]);
+            ZipFile.ExtractToDirectory(sevenZipPath, Config.TempFolder);
+            sevenZipPath.RemovePath();
         }
 
         private static void RunFinishProcess(ProcessStartInfo startInfo)

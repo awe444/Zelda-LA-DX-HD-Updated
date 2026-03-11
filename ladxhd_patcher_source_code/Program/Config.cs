@@ -44,7 +44,7 @@ namespace LADXHD_Patcher
             ZipAlign = Path.Combine(TempFolder, "android", "zipalign.exe");
             KeyStore = Path.Combine(TempFolder, "android", "keystore.jks");
             JavaExe  = Path.Combine(TempFolder, "android", "java", "bin", "java.exe");
-            SevenZip = Path.Combine(TempFolder, "android", "7z.exe");
+            SevenZip = Path.Combine(TempFolder, "7z.exe");
         }
     }
 }
