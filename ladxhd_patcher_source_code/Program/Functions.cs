@@ -123,8 +123,12 @@ namespace LADXHD_Patcher
             if (d3map.TestPath())
             {
                 // Patch the file directly into the maps folder.
-                string xdelta3File = Path.Combine(Config.TempFolder + "\\patches\\dungeon3.map.xdelta");
-                string patchedFile = Path.Combine(Config.BaseFolder + "\\Data\\Maps\\dungeon3.map");
+                string xdelta3File = Path.Combine(Config.TempFolder, "patches", "dungeon3.map.xdelta");
+                string patchedFile = Path.Combine(Config.BaseFolder, "Data", "Maps", "dungeon3.map");
+
+                if (Config.SelectedPlatform == Platform.Android)
+                    patchedFile = Path.Combine(Config.TempFolder, "android", "com.zelda.ladxhd", "assets", "Data", "Maps", "dungeon3.map");
+
                 XDelta3.Execute(Operation.Apply, d3map, xdelta3File, patchedFile);
             }
         }
@@ -301,6 +305,9 @@ namespace LADXHD_Patcher
                 // Store the key if it doesn't exist and set the value to the full path.
                 if (!_gameFileLookup.ContainsKey(name))
                     _gameFileLookup[name] = file;
+                // If there is a duplicate key, add a hashtag that will be trimmed later.
+                else
+                    _gameFileLookup[name + "#"] = file;
             }
         }
 
@@ -317,14 +324,14 @@ namespace LADXHD_Patcher
             foreach (string newFile in targets)
             {
                 // Set up the path to the patch.
-                string xdelta3File = Path.Combine(Config.TempFolder + "\\patches", newFile + ".xdelta");
+                string xdelta3File = Path.Combine(Config.TempFolder, "patches", newFile + ".xdelta");
 
                 // Make sure a patch exists.
                 if (!xdelta3File.TestPath())
                     continue;
 
                 // Where the patched file will be temporarily held.
-                string patchedFile = Path.Combine(Config.TempFolder + "\\patchedFiles", newFile);
+                string patchedFile = Path.Combine(Config.TempFolder, "patchedFiles", newFile);
 
                 // The path to move the file. 
                 string newFilePath = Path.Combine(fileItem.DirectoryName, newFile);
@@ -360,7 +367,7 @@ namespace LADXHD_Patcher
                 // We don't need a perfect representation of progress just a rough idea of the time left.
                 UpdateProgress();
 
-                string fileName = kvp.Key;
+                string fileName = kvp.Key.TrimEnd('#');
                 string fullPath = kvp.Value;
 
                 // Get the file as a file item which gives us some cool properties to reference.
@@ -401,10 +408,7 @@ namespace LADXHD_Patcher
 
                     // If the patch doesn't exist, we can just copy the file to the Android folder.
                     if (!patchExists)
-                    {
                         fullPath.CopyPath(outputFile, true);
-                        continue;
-                    }
                 }
                 // Windows is a bit simpler.
                 else if (isWindows)
@@ -482,11 +486,22 @@ namespace LADXHD_Patcher
             }
             else
             {
-                string title = "Patching Complete";
-                string message = _patchFromBackup
-                    ? "Patching the game from v1.0.0 backup files was successful. The game was updated to v"+ Config.Version + "." 
-                    : "Patching Link's Awakening DX HD v1.0.0 was successful. The game was updated to v"+ Config.Version + ".";
-                Forms.OkayDialog.Display(title, 260, 40, 34, 16, 10, message);
+                if (Config.SelectedPlatform == Platform.Android)
+                {
+                    string title = "APK Created";
+                    string message = _patchFromBackup
+                        ? "Creating an APK from v1.0.0 backup files was successful. The game version is set to v"+ Config.Version + "." 
+                        : "Creating an APK from original v1.0.0 files was successful. The game version is set to v"+ Config.Version + ".";
+                    Forms.OkayDialog.Display(title, 260, 40, 34, 16, 10, message);
+                }
+                else
+                {
+                    string title = "Patching Complete";
+                    string message = _patchFromBackup
+                        ? "Patching the game from v1.0.0 backup files was successful. The game was updated to v"+ Config.Version + "." 
+                        : "Patching Link's Awakening DX HD v1.0.0 was successful. The game was updated to v"+ Config.Version + ".";
+                    Forms.OkayDialog.Display(title, 260, 40, 34, 16, 10, message);
+                }
             }
         }
 
@@ -513,6 +528,8 @@ namespace LADXHD_Patcher
 
         public static void StartPatching()
         {
+            ReportFinished();
+
             // Reset progress bar and set whether we are patching from v1.0.0 or backup files.
             ResetProgress();
             SetSourceFiles();
