@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
-
 using static LADXHD_Patcher.Config;
 
 namespace LADXHD_Patcher
@@ -20,8 +19,12 @@ namespace LADXHD_Patcher
                 return "patches_android.zip";
 
             // If Android is selected then choose its patches.
-            if (Config.SelectedPlatform == Platform.Linux)
-                return "patches_linux.zip";
+            if (Config.SelectedPlatform == Platform.Linux_x86)
+                return "patches_linux_x86.zip";
+
+            // If Android is selected then choose its patches.
+            if (Config.SelectedPlatform == Platform.Linux_Arm64)
+                return "patches_linux_arm64.zip";
 
             // If Windows and OpenGL is selected choose those patches.
             if (Config.SelectedPlatform == Platform.Windows)
@@ -196,11 +199,16 @@ namespace LADXHD_Patcher
 
         public static void ExtractLinuxFiles()
         {
+            // The files are different depending on Linux CPU.
+            string zipName = Config.SelectedPlatform == Platform.Linux_x86 
+                ? "linux_x86_files.zip" 
+                : "linux_arm64_files.zip";
+
             // Set the patches and zipfile paths.
-            string zipFilePath = Path.Combine(Config.TempFolder, "linux_files.zip");
+            string zipFilePath = Path.Combine(Config.TempFolder, zipName);
 
             // Write the zipfile, extract it, then delete it.
-            File.WriteAllBytes(zipFilePath, (byte[])resources["linux_files.zip"]);
+            File.WriteAllBytes(zipFilePath, (byte[])resources[zipName]);
             ZipFile.ExtractToDirectory(zipFilePath, Config.BaseFolder);
             zipFilePath.RemovePath();
         }

@@ -59,12 +59,14 @@ $OldGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\original"
 $WinDXInPath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated_win_dx"
 $WinGLInPath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated_win_gl"
 $DroidInPath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated_android"
-$LinuxInPath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated_linux"
+$Linux86Path = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated_linux_x86"
+$LinuxArPath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated_linux_arm64"
 
 $CreateWinDX = $true
 $CreateWinGL = $true
 $CreateDroid = $true
-$CreateLinux = $true
+$CreateLix86 = $true
+$CreateLiArm = $true
 
 $ZipFilePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD-Updated\ladxhd_patcher_source_code\Resources"
 
@@ -79,7 +81,8 @@ $PatchFolder  = Join-Path $BaseFolder "\Patches"
 $WinDXPatches = Join-Path $BaseFolder ("\Patches\v" + $GameVersion + " (Win-DX) Patches")
 $WinGLPatches = Join-Path $BaseFolder ("\Patches\v" + $GameVersion + " (Win-GL) Patches")
 $DroidPatches = Join-Path $BaseFolder ("\Patches\v" + $GameVersion + " (Android) Patches")
-$LinuxPatches = Join-Path $BaseFolder ("\Patches\v" + $GameVersion + " (Linux) Patches")
+$Lix86Patches = Join-Path $BaseFolder ("\Patches\v" + $GameVersion + " (Linux-x86) Patches")
+$LiArmPatches = Join-Path $BaseFolder ("\Patches\v" + $GameVersion + " (Linux-Arm64) Patches")
 
 #========================================================================================================================================
 # CREATE PATCHES FOLDER
@@ -94,8 +97,11 @@ if ($CreateWinGL -and (!(Test-Path $WinGLPatches))) {
 if ($CreateDroid -and (!(Test-Path $DroidPatches))) {
     New-Item -Path $DroidPatches -ItemType Directory | Out-Null
 }
-if ($CreateLinux -and (!(Test-Path $LinuxPatches))) {
-    New-Item -Path $LinuxPatches -ItemType Directory | Out-Null
+if ($CreateLix86 -and (!(Test-Path $Lix86Patches))) {
+    New-Item -Path $Lix86Patches -ItemType Directory | Out-Null
+}
+if ($CreateLiArm -and (!(Test-Path $LiArmPatches))) {
+    New-Item -Path $LiArmPatches -ItemType Directory | Out-Null
 }
 
 #========================================================================================================================================
@@ -152,8 +158,8 @@ $FileTargets = @{
     "musicOverworld.data" = $musicTile
     "dungeon3_1.map"      = $dungeon3M
     "dungeon3_1.map.data" = $dungeon3D
-    "BowWow.ani"		  = $bowwowanim
-    "mapPlayer.ani"		  = $dungeonani
+    "BowWow.ani"          = $bowwowanim
+    "mapPlayer.ani"       = $dungeonani
 }
 
 
@@ -176,7 +182,7 @@ $ReverseFileTargets = Build-ReverseMap -Targets $FileTargets
 
 function GetOldFilePath([object]$File, [string]$GamePath, [string]$RelativePath, [string]$Platform)
 {
-    if (($Platform -eq "Linux") -and ($File.Name -eq "Link's Awakening DX HD"))
+    if (($Platform -like "Linux_*") -and ($File.Name -eq "Link's Awakening DX HD"))
     {
         return Join-Path $OldGamePath ($RelativePath + ".exe")
     }
@@ -195,7 +201,7 @@ function GetOldFilePath([object]$File, [string]$GamePath, [string]$RelativePath,
 }
 
 #========================================================================================================================================
-# CREATE ZIP FILE
+# CREATE PATCH ZIP FILES
 #========================================================================================================================================
 
 function CreateZipFile([string]$PatchOutput, [string]$Platform)
@@ -208,8 +214,88 @@ function CreateZipFile([string]$PatchOutput, [string]$Platform)
 }
 
 #========================================================================================================================================
+# ANDROID EXTRA FILES
+#========================================================================================================================================
+
+function PrepareAndroid([string]$GamePath)
+{
+    $WorkDir = Join-Path $GamePath "~Temp"
+    $APKFile = Join-Path $GamePath "com.zelda.ladxhd-Signed.apk"
+    $TempZIP = Join-Path $WorkDir "com.zelda.ladxhd-Signed.zip"
+    $MetaInf = Join-Path $WorkDir "META-INF"
+
+    New-Item -Path $WorkDir -ItemType Directory | Out-Null
+    Copy-Item -LiteralPath $APKFile -Destination $TempZIP
+    Expand-Archive -Path $TempZIP -DestinationPath $WorkDir
+
+    Remove-Item -Path $MetaInf -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+    Remove-Item -Path $TempZIP -Force -ErrorAction SilentlyContinue | Out-Null
+
+    $TempPath = Join-Path $WorkDir "com.zelda.ladxhd"
+    New-Item -Path $TempPath -ItemType Directory | Out-Null
+
+    foreach ($Item in Get-ChildItem -LiteralPath $WorkDir)
+    {
+        if ($Item.Name -eq "com.zelda.ladxhd") { continue }
+        Move-Item -LiteralPath $Item.FullName -Destination $TempPath
+    }
+    $ContPath = Join-Path (Join-Path $TempPath "assets") "Content"
+    $DataPath = Join-Path (Join-Path $TempPath "assets") "Data"
+    $ZipFile = Join-Path $ZipFilePath "android_files.zip"
+
+    Move-Item -LiteralPath $ContPath -Destination $GamePath
+    Move-Item -LiteralPath $DataPath -Destination $GamePath
+    Remove-Item -Path $ZipFile -Force -ErrorAction SilentlyContinue | Out-Null
+
+    Write-Host ('Generating "android_files.zip" for patcher program.')
+    Write-Host ""
+    Compress-Archive -Path $TempPath -DestinationPath $ZipFile | Out-Null
+    Remove-Item -Path $WorkDir -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+}
+
+#========================================================================================================================================
+# LINUX EXTRA FILES
+#========================================================================================================================================
+
+$LinuxExtraFiles = @(
+    "System.IO.Compression.Native.a",
+    "System.Native.a",
+    "System.Net.Http.Native.a",
+    "System.Net.Security.Native.a",
+    "System.Security.Cryptography.Native.OpenSsl.a"
+)
+
+function CreateLinuxExtraFilesZip([bool]$CreatePatches, [string]$GamePath, [string]$Platform)
+{
+    if ((!$CreatePatches) -or ($Platform -notlike "Linux_*")) { return }
+
+    $ZipName = $Platform.ToLower() + "_files.zip"
+    $ZipFile = Join-Path $ZipFilePath $ZipName
+
+    $TempPath = Join-Path ([System.IO.Path]::GetTempPath()) ("ladxhd_" + $Platform.ToLower() + "_extra_files")
+    $AllFiles = Get-ChildItem -LiteralPath $GamePath -File
+
+    Remove-Item -Path $ZipFile -Force -ErrorAction SilentlyContinue | Out-Null
+    New-Item -Path $TempPath -ItemType Directory | Out-Null
+
+    foreach ($FileName in $LinuxExtraFiles)
+    {
+        $SourceFile = $AllFiles | Where-Object { $_.Name -eq $FileName } | Select-Object -First 1
+        Copy-Item -LiteralPath $SourceFile.FullName -Destination (Join-Path $TempPath $FileName) -Force
+    }
+    if ((Get-ChildItem -LiteralPath $TempPath -File | Measure-Object).Count -gt 0)
+    {
+        Write-Host ('Generating "' + $ZipName + '" for patcher program.')
+        Write-Host ""
+        Compress-Archive -Path (Join-Path $TempPath "*") -DestinationPath $ZipFile | Out-Null
+    }
+    Remove-Item -Path $TempPath -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+}
+
+#========================================================================================================================================
 # VERIFICATION
 #========================================================================================================================================
+
 function VerifyOriginal()
 {
     if (!(Test-Path (Join-Path $OldGamePath "Link's Awakening DX HD.exe"))) 
@@ -235,7 +321,7 @@ function VerifyExecutable([string]$Platform, [string]$GamePath)
     switch -wildcard ($Platform)
     {
         "Win_*"   { if (!(Test-Path (Join-Path $GamePath "Link's Awakening DX HD.exe"))) { return $false } }
-        "Linux"   { if (!(Test-Path (Join-Path $GamePath "Link's Awakening DX HD"))) { return $false } }
+        "Linux_*" { if (!(Test-Path (Join-Path $GamePath "Link's Awakening DX HD"))) { return $false } }
         "Android" { return $true }
     }
     return $true
@@ -249,7 +335,10 @@ function GeneratePatches([bool]$CreatePatches, [string]$GamePath, [string]$Patch
 {
     if ((!$CreatePatches) -or (!(VerifyExecutable -Platform $Platform -GamePath $GamePath))) { return }
 
+    if ($Platform -eq "Android") { PrepareAndroid -GamePath $GamePath }
+
     Write-Host "------------------------------------------------------------------------------------------"
+    Write-Host ""
     Write-Host ("Generating " + $Platform + " patches for Link's Awakening DX HD v" + $GameVersion + "...")
     Write-Host ""
 
@@ -274,7 +363,9 @@ function GeneratePatches([bool]$CreatePatches, [string]$GamePath, [string]$Patch
     }
     Write-Host ""
     Write-Host ('Generating "patches_' + $Platform.ToLower() + '.zip" for patcher program.')
+    Write-Host ""
     CreateZipFile -PatchOutput $PatchOutput -Platform $Platform
+    CreateLinuxExtraFilesZip -CreatePatches $CreatePatches -GamePath $GamePath -Platform $Platform
 }
 
 if ((VerifyOriginal) -and (VerifyXDelta))
@@ -282,8 +373,9 @@ if ((VerifyOriginal) -and (VerifyXDelta))
     GeneratePatches -CreatePatches $CreateWinDX -GamePath $WinDXInPath -PatchOutput $WinDXPatches -Platform "Win_DX"
     GeneratePatches -CreatePatches $CreateWinGL -GamePath $WinGLInPath -PatchOutput $WinGLPatches -Platform "Win_GL"
     GeneratePatches -CreatePatches $CreateDroid -GamePath $DroidInPath -PatchOutput $DroidPatches -Platform "Android"
-    GeneratePatches -CreatePatches $CreateLinux -GamePath $LinuxInPath -PatchOutput $LinuxPatches -Platform "Linux"
-    
+    GeneratePatches -CreatePatches $CreateLix86 -GamePath $Linux86Path -PatchOutput $Lix86Patches -Platform "Linux_x86"
+    GeneratePatches -CreatePatches $CreateLiArm -GamePath $LinuxArPath -PatchOutput $LiArmPatches -Platform "Linux_Arm64"
+
     Write-Host "------------------------------------------------------------------------------------------"
     Write-Host ""
     Write-Host "Patch generation complete. Patches can be found in folder:"

@@ -61,7 +61,15 @@ namespace LADXHD_Patcher
             }
             if (comboBox.SelectedIndex == 2)
             {
-                Config.SelectedPlatform = Platform.Linux;
+                Config.SelectedPlatform = Platform.Linux_x86;
+
+                combBox_API.Items.Clear();
+                combBox_API.Items.Add("OpenGL");
+                button_Patch.Text = "Patch";
+            }
+            if (comboBox.SelectedIndex == 3)
+            {
+                Config.SelectedPlatform = Platform.Linux_Arm64;
 
                 combBox_API.Items.Clear();
                 combBox_API.Items.Add("OpenGL");

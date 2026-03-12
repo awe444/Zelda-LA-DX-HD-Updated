@@ -23,7 +23,7 @@ namespace LADXHD_Patcher
         public static string JavaExe;
         public static string SevenZip;
 
-        public enum Platform { Windows, Android, Linux }
+        public enum Platform { Windows, Android, Linux_x86, Linux_Arm64 }
         public static Platform SelectedPlatform;
 
         public enum GraphicsAPI { DirectX, OpenGL }

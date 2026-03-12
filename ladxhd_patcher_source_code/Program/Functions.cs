@@ -275,9 +275,10 @@ namespace LADXHD_Patcher
             // Do something unique for each Platform.
             switch (Config.SelectedPlatform)
             {
-                case Platform.Windows: { CreateModFolders(); break; }
-                case Platform.Android: { GenerateAPKFile(); break; }
-                case Platform.Linux:   { CreateModFolders(); ZipFunctions.ExtractLinuxFiles(); break; }
+                case Platform.Windows:     { CreateModFolders(); break; }
+                case Platform.Android:     { GenerateAPKFile(); break; }
+                case Platform.Linux_x86:   { CreateModFolders(); ZipFunctions.ExtractLinuxFiles(); break; }
+                case Platform.Linux_Arm64: { CreateModFolders(); ZipFunctions.ExtractLinuxFiles(); break; }
             }
         }
 
@@ -355,8 +356,8 @@ namespace LADXHD_Patcher
             // Check to see if we are on Android.
             bool isAndroid = Config.SelectedPlatform == Platform.Android;
             bool isWindows = Config.SelectedPlatform == Platform.Windows;
-            bool isLinux   = Config.SelectedPlatform == Platform.Linux;
-            
+            bool isLinux   = Config.SelectedPlatform == Platform.Linux_x86 || Config.SelectedPlatform == Platform.Linux_Arm64;
+
             // Remove the extension from the executable for Linux.
             if (isLinux)
             {
