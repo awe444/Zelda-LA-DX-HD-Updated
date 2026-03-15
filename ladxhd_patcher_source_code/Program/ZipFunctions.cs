@@ -51,6 +51,18 @@ namespace LADXHD_Patcher
             zipFilePath.RemovePath();
         }
 
+        public static void ExtractAndroidIcons()
+        {
+            // Set the path to extract android buttons.
+            string buttonsPath = Path.Combine(Config.TempFolder, "android", "com.zelda.ladxhd", "assets", "Data", "Buttons").CreatePath();
+            string zipFilePath = Path.Combine(Config.TempFolder, "android_buttons.zip");
+
+            // Write the zipfile, extract it, then delete it.
+            File.WriteAllBytes(zipFilePath, (byte[])resources["android_buttons.zip"]);
+            ZipFile.ExtractToDirectory(zipFilePath, buttonsPath);
+            zipFilePath.RemovePath();
+        }
+
         public static void ExtractAndroidFiles()
         {
             // Set the path to extract android files.

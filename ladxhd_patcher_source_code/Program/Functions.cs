@@ -276,7 +276,7 @@ namespace LADXHD_Patcher
             switch (Config.SelectedPlatform)
             {
                 case Platform.Windows:     { CreateModFolders(); break; }
-                case Platform.Android:     { GenerateAPKFile(); break; }
+                case Platform.Android:     { ZipFunctions.ExtractAndroidIcons(); GenerateAPKFile(); break; }
                 case Platform.Linux_x86:   { CreateModFolders(); ZipFunctions.ExtractLinuxFiles(); break; }
                 case Platform.Linux_Arm64: { CreateModFolders(); ZipFunctions.ExtractLinuxFiles(); break; }
             }
