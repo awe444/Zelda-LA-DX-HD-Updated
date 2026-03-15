@@ -62,11 +62,11 @@ $DroidInPath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated_andro
 $Linux86Path = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated_linux_x86"
 $LinuxArPath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated_linux_arm64"
 
-$CreateWinDX = $true
-$CreateWinGL = $true
+$CreateWinDX = $false
+$CreateWinGL = $false
 $CreateDroid = $true
-$CreateLix86 = $true
-$CreateLiArm = $true
+$CreateLix86 = $false
+$CreateLiArm = $false
 
 $ResourcePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD-Updated\ladxhd_patcher_source_code\Resources"
 
