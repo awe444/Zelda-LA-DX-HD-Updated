@@ -360,6 +360,7 @@ namespace LADXHD_Patcher
 
         public static string CalculateHash(this string FilePath, string HashType)
         {
+            if (!FilePath.TestPath()) { return ""; }
             HashAlgorithm Algorithm = HashAlgorithm.Create(HashType);
             byte[] ByteArray = File.ReadAllBytes(FilePath);
             return BitConverter.ToString(Algorithm.ComputeHash(ByteArray)).Replace("-", "");

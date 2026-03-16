@@ -330,6 +330,27 @@ namespace LADXHD_Patcher
             }
         }
 
+        private static void PrepareLinuxFiles()
+        {
+            // The path where we want the extensionless executable.
+            string exePath = Config.ZeldaEXE.Substring(0, Config.ZeldaEXE.Length - 4);
+
+            // If the correct file isn't already in place move it.
+            if (_executable != exePath)
+                _executable.MovePath(exePath, true);
+
+            // Remove any Linux specific files as they will be recopied here.
+            string[] linuxFiles = new string[]{ Config.ZeldaEXE, "System.IO.Compression.Native.a", "System.Native.a", 
+                "System.Net.Http.Native.a", "System.Net.Security.Native.a", "System.Security.Cryptography.Native.OpenSsl.a" };
+
+            // Remove the patched executable and any linux specific files.
+            foreach (string file in linuxFiles) 
+            {
+                string filePath = Path.Combine(Config.BaseFolder, file);
+                filePath.RemovePath();
+            }
+        }
+
         private static void PatchGameFiles()
         {
             // Check to see if we are on Android.
@@ -340,22 +361,10 @@ namespace LADXHD_Patcher
             // Create the backup path if it doesn't exist.
             Config.BackupPath.CreatePath();
 
-            // Remove the extension from the executable for Linux.
+            // The v1.0.0 executable must be in the base path for Linux without the extension.
             if (isLinux)
-            {
-                // We're probably going to be working from the backup file.
-                string backupExe = Path.Combine(Config.BackupPath, "Link's Awakening DX HD.exe");
-                string linuxFile = Config.ZeldaEXE.Substring(0, Config.ZeldaEXE.Length - 4);
+                PrepareLinuxFiles();
 
-                // If backup file exists, restore it. If it doesn't, then simply rename the current executable.
-                if (backupExe.TestPath())
-                    backupExe.MovePath(linuxFile, true);
-                else
-                    Config.ZeldaEXE.RenamePath(linuxFile, true);
-
-                // When restoring from backup the executable will still be around.
-                Config.ZeldaEXE.RemovePath();
-            }
             // Remove any garbage files that will just mess up the patcher.
             RemoveBadBackupFiles();
             _filesPatched = 0;
@@ -451,29 +460,71 @@ namespace LADXHD_Patcher
        
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-        private static void SetSourceFiles()
+        private static void DisplayExecutableError()
         {
-            string backupExe = Path.Combine(Config.BackupPath, "Link's Awakening DX HD.exe");
-            _patchFromBackup = backupExe.TestPath();
-            _executable = _patchFromBackup
-                ? backupExe
-                : Config.ZeldaEXE;
+            string title = "Original Executable Not Found";
+            string message = "Could not find the original \"Link's Awakening DX HD.exe\" to patch. It is suggested to start over with the original release of v1.0.0 and run it from there.";
+            Forms.OkayDialog.Display(title, 250, 40, 27, 10, 15, message);
+        }
+
+        private static bool CompareHashes(string hash1, string hash2, string exePath)
+        {
+            // If the hashes match then we have what we are looking for.
+            if (exePath.TestPath() && hash1 == hash2)
+            {
+                _executable = exePath;
+                _patchFromBackup = false;
+                return true;
+            }
+            // If they don't match blank out the executable path.
+            _executable = "";
+            return false;
+        }
+
+        private static bool SetSourceFile()
+        {
+            // Start with the hash of the file found in the main folder.
+            string exeCheck = Config.ZeldaEXE;
+            string goodHash = "F4ADFBA864B852908705EA6A18A48F18";
+
+            // Checks the file path, hashes, and sets the variables.
+            bool CheckFile(string path) { return CompareHashes(goodHash, path.CalculateHash("MD5"), path); }
+
+            // First check the executable found in the main folder.
+            if (CheckFile(exeCheck)) { return true; }
+
+            // Try the same executable without the extension.
+            exeCheck = exeCheck.Substring(0, exeCheck.Length - 4);
+            if (CheckFile(exeCheck)) { return true; }
+
+            // If it's already been patched try to find the executable in the backup path.
+            exeCheck = Path.Combine(Config.BackupPath, "Link's Awakening DX HD.exe");
+            if (CheckFile(exeCheck)) { return true; }
+
+            // If it doesn't exist with the extension check without it.
+            exeCheck = exeCheck.Substring(0, exeCheck.Length - 4);
+            if (CheckFile(exeCheck)) { return true; }
+
+            // If we still don't have the good hash then we're screwed.
+            return false;
         }
 
         private static bool ValidateExist()
         {
+            // If the executable was not resolved by the function above.
             if (!_executable.TestPath())
             {
-                string title = "Game Executable Not Found";
-                string message = "Could not find \"Link's Awakening DX HD.exe\" to patch. Copy this patcher executable to the folder of the original release of v1.0.0 and run it from there.";
-                Forms.OkayDialog.Display(title, 250, 40, 27, 10, 15, message);
+                // Show an error message to the user.
+                DisplayExecutableError();
                 return false;
             }
+            // We can continue with the patching.
             return true;
         }
 
         private static bool ValidateStart()
         {
+            // The verification message changes if Android is selected to patch.
             string title = Config.SelectedPlatform == Platform.Android
                 ? "Create v" + Config.Version + " APK"
                 : "Patch to v" + Config.Version;
@@ -535,9 +586,9 @@ namespace LADXHD_Patcher
         {
             // Reset progress bar and set whether we are patching from v1.0.0 or backup files.
             ResetProgress();
-            SetSourceFiles();
 
             // Validate if patching should take place.
+            if (!SetSourceFile()) return;
             if (!ValidateExist()) return;
             if (!ValidateStart()) return;
 
@@ -576,7 +627,7 @@ namespace LADXHD_Patcher
             Console.WriteLine("LADXHD Patcher v" + Config.Version + " - Silent Mode");
             Console.WriteLine("============================================");
 
-            SetSourceFiles();
+            SetSourceFile();
 
             // Validate executable exists
             if (!_executable.TestPath())
