@@ -62,11 +62,11 @@ $DroidInPath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated_andro
 $Linux86Path = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated_linux_x86"
 $LinuxArPath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated_linux_arm64"
 
-$CreateWinDX = $false
-$CreateWinGL = $false
+$CreateWinDX = $true
+$CreateWinGL = $true
 $CreateDroid = $true
-$CreateLix86 = $false
-$CreateLiArm = $false
+$CreateLix86 = $true
+$CreateLiArm = $true
 
 $ResourcePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD-Updated\ladxhd_patcher_source_code\Resources"
 
@@ -211,6 +211,7 @@ function PrepareAndroid([string]$GamePath)
     $TempZIP = Join-Path $WorkDir "com.zelda.ladxhd-Signed.zip"
     $MetaInf = Join-Path $WorkDir "META-INF"
 
+    Remove-Item -Path $WorkDir -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
     New-Item -Path $WorkDir -ItemType Directory | Out-Null
     Copy-Item -LiteralPath $APKFile -Destination $TempZIP
     Expand-Archive -Path $TempZIP -DestinationPath $WorkDir
