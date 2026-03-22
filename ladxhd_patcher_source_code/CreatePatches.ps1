@@ -53,7 +53,7 @@
 # CONFIGURATION
 #========================================================================================================================================
 
-$GameVersion = "1.6.7"
+$GameVersion = "1.6.8"
 $OldGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\original"
 
 $WinDXInPath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated_win_dx"
