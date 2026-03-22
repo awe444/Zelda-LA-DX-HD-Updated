@@ -55,6 +55,7 @@
 
 $GameVersion = "1.6.8"
 $OldGamePath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\original"
+$SevenZipExe = "C:\Program Files\7-Zip\7z.exe"
 
 $WinDXInPath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated_win_dx"
 $WinGLInPath = "C:\Users\Bighead\source\repos\Zelda-LA-DX-HD_Stuff\updated_win_gl"
@@ -213,8 +214,8 @@ function PrepareAndroid([string]$GamePath)
 
     Remove-Item -Path $WorkDir -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
     New-Item -Path $WorkDir -ItemType Directory | Out-Null
-    Copy-Item -LiteralPath $APKFile -Destination $TempZIP
-    Expand-Archive -Path $TempZIP -DestinationPath $WorkDir
+    Copy-Item -LiteralPath $APKFile -Destination $TempZIP -Force
+    Expand-Archive -Path $TempZIP -DestinationPath $WorkDir -Force
 
     Remove-Item -Path $MetaInf -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
     Remove-Item -Path $TempZIP -Force -ErrorAction SilentlyContinue | Out-Null
@@ -225,20 +226,22 @@ function PrepareAndroid([string]$GamePath)
     foreach ($Item in Get-ChildItem -LiteralPath $WorkDir)
     {
         if ($Item.Name -eq "com.zelda.ladxhd") { continue }
-        Move-Item -LiteralPath $Item.FullName -Destination $TempPath
+        Move-Item -LiteralPath $Item.FullName -Destination $TempPath -Force
     }
     $ContPath = Join-Path (Join-Path $TempPath "assets") "Content"
     $DataPath = Join-Path (Join-Path $TempPath "assets") "Data"
-    $ZipFile = Join-Path $ResourcePath "android_files.zip"
+    $BaseAPK = Join-Path $ResourcePath "android_base.apk"
 
-    Move-Item -LiteralPath $ContPath -Destination $GamePath
-    Move-Item -LiteralPath $DataPath -Destination $GamePath
-    Remove-Item -Path $ZipFile -Force -ErrorAction SilentlyContinue | Out-Null
+    Move-Item -LiteralPath $ContPath -Destination $GamePath -Force
+    Move-Item -LiteralPath $DataPath -Destination $GamePath -Force
+    Remove-Item -Path $BaseAPK -Force -ErrorAction SilentlyContinue | Out-Null
 
-    Write-Host ('Generating "android_files.zip" for patcher program.')
-    Write-Host ""
-    Compress-Archive -Path $TempPath -DestinationPath $ZipFile | Out-Null
-    Remove-Item -Path $WorkDir -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+    $TempAPK = Join-Path $GamePath "com.zelda.ladxhd-temp.zip"
+    Copy-Item -LiteralPath $APKFile -Destination $TempAPK -Force
+    & $SevenZipExe "d" $TempAPK "META-INF\*" "assets\Content\*" "assets\Data\*" "-r"
+    Copy-Item -LiteralPath $TempAPK -Destination $BaseAPK -Force
+
+    Remove-Item -Path $TempAPK -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
 }
 
 #========================================================================================================================================

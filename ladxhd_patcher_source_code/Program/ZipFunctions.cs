@@ -53,26 +53,34 @@ namespace LADXHD_Patcher
 
         public static void ExtractAndroidIcons()
         {
-            // Set the path to extract android buttons.
-            string buttonsPath = Path.Combine(Config.TempFolder, "android", "com.zelda.ladxhd", "assets", "Data", "Buttons").CreatePath();
+            string stageRoot   = Path.Combine(Config.TempFolder, "android", "com.zelda.ladxhd");
+            string buttonsPath = Path.Combine(stageRoot, "assets", "Data", "Buttons").CreatePath();
             string zipFilePath = Path.Combine(Config.TempFolder, "android_buttons.zip");
 
-            // Write the zipfile, extract it, then delete it.
             File.WriteAllBytes(zipFilePath, (byte[])resources["android_buttons.zip"]);
             ZipFile.ExtractToDirectory(zipFilePath, buttonsPath);
             zipFilePath.RemovePath();
         }
 
-        public static void ExtractAndroidFiles()
+        public static void ExtractAndroidBaseApk()
         {
-            // Set the path to extract android files.
             string androidPath = Path.Combine(Config.TempFolder, "android").CreatePath();
-            string zipFilePath = Path.Combine(Config.TempFolder, "android_files.zip");
+            string apkPath = Path.Combine(androidPath, "unsigned.apk");
+            File.WriteAllBytes(apkPath, (byte[])resources["android_base.apk"]);
+        }
 
-            // Write the zipfile, extract it, then delete it.
-            File.WriteAllBytes(zipFilePath, (byte[])resources["android_files.zip"]);
-            ZipFile.ExtractToDirectory(zipFilePath, androidPath);
-            zipFilePath.RemovePath();
+        public static void UpdateApkAssets(string apkPath, string stageRoot)
+        {
+            RunFinishProcess(new ProcessStartInfo
+            {
+                FileName = Config.SevenZip,
+                Arguments = $"a -tzip \"{apkPath}\" \"assets\\Content\\*\" \"assets\\Data\\*\" -r -mx=9 -mm=Deflate",
+                WorkingDirectory = stageRoot,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            });
         }
 
         public static void ExtractAndroidTools()
@@ -119,75 +127,13 @@ namespace LADXHD_Patcher
             }
         }
 
-        private static void SevenZipProcess(string inputPath, string outputPath, List<string> files, string compression)
-        {
-            // Write out the file list to HDD which is then read into 7z.
-            string listPath = Path.Combine(Config.TempFolder, "7z_filelist.txt");
-            File.WriteAllLines(listPath, files);
-
-            // Run the 7zip process.
-            RunFinishProcess(new ProcessStartInfo
-            {
-                FileName = Config.SevenZip,
-                Arguments = $"a -tzip \"{outputPath}\" @\"{listPath}\" {compression}",
-                WorkingDirectory = inputPath,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            });
-            // Remove the list for the next run.
-            listPath.RemovePath();
-        }
-
-        public static void CreateUnsignedAPK(string inputPath, string outputPath)
-        {
-            // Remove any previous APK so 7z starts from a clean file.
-            outputPath.RemovePath();
-
-            // Old signature files should not be carried into the rebuilt APK.
-            string metaInfPath = Path.Combine(inputPath, "META-INF");
-            if (Directory.Exists(metaInfPath))
-                Directory.Delete(metaInfPath, true);
-
-            // Android is specific about how files are stored in the APK.
-            var deflateFiles = new List<string>();
-            var storeFiles = new List<string>();
-
-            // Loop through all files and split them by desired compression method.
-            foreach (string file in Directory.GetFiles(inputPath, "*", SearchOption.AllDirectories))
-            {
-                string relativePath = file.Substring(inputPath.Length).TrimStart('\\', '/');
-                string entryName = relativePath.Replace("\\", "/");
-
-                bool store = entryName.Equals("resources.arsc", StringComparison.OrdinalIgnoreCase) ||
-                             entryName.Equals("assemblies/assemblies.arm64_v8a.blob", StringComparison.OrdinalIgnoreCase) ||
-                             entryName.Equals("assemblies/assemblies.blob", StringComparison.OrdinalIgnoreCase) ||
-                             entryName.Equals("assemblies/rc.bin", StringComparison.OrdinalIgnoreCase) ||
-                             entryName.EndsWith(".png", StringComparison.OrdinalIgnoreCase);
-
-                // Some files must be stored (no compression), others can be compressed.
-                if (store)
-                    storeFiles.Add(relativePath);
-                else
-                    deflateFiles.Add(relativePath);
-            }
-            // Add all normal files first using Deflate.
-            if (deflateFiles.Count > 0)
-                SevenZipProcess(inputPath, outputPath, deflateFiles, "-mx=9 -mm=Deflate");
-
-            // Add all stored files second with no compression.
-            if (storeFiles.Count > 0)
-                SevenZipProcess(inputPath, outputPath, storeFiles, "-mx=0 -mm=Copy");
-        }
-
         public static void ZipAlignAPK(string inputPath, string outputPath)
         {
             // Aligns the APK file in a way Android expects.
             RunFinishProcess(new ProcessStartInfo
             {
                 FileName = Config.ZipAlign,
-                Arguments = $"-f -v 4 \"{inputPath}\" \"{outputPath}\"",
+                Arguments = $"-P 16 -f -v 4 \"{inputPath}\" \"{outputPath}\"",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
@@ -202,6 +148,29 @@ namespace LADXHD_Patcher
             {
                 FileName = Config.JavaExe,
                 Arguments = $"-jar \"{Config.ApkSign}\" sign --ks \"{Config.KeyStore}\" --ks-key-alias zelda-la --ks-pass pass:zeldala --out \"{outputPath}\" \"{inputPath}\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            });
+        }
+
+        public static void VerifyAPK(string apkPath)
+        {
+            RunFinishProcess(new ProcessStartInfo
+            {
+                FileName = Config.ZipAlign,
+                Arguments = $"-c -P 16 -v 4 \"{apkPath}\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            });
+
+            RunFinishProcess(new ProcessStartInfo
+            {
+                FileName = Config.JavaExe,
+                Arguments = $"-jar \"{Config.ApkSign}\" verify -v \"{apkPath}\"",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,

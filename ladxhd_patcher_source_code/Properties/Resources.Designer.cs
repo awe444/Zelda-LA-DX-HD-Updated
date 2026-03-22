@@ -73,9 +73,9 @@ namespace LADXHD_Patcher {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] android_buttons_zip {
+        internal static byte[] android_base_apk {
             get {
-                object obj = ResourceManager.GetObject("android_buttons.zip", resourceCulture);
+                object obj = ResourceManager.GetObject("android_base.apk", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace LADXHD_Patcher {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] android_files_zip {
+        internal static byte[] android_buttons_zip {
             get {
-                object obj = ResourceManager.GetObject("android_files.zip", resourceCulture);
+                object obj = ResourceManager.GetObject("android_buttons.zip", resourceCulture);
                 return ((byte[])(obj));
             }
         }

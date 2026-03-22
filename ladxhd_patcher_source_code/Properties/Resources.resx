@@ -158,10 +158,6 @@
     <value>..\Resources\7zip.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     <comment>ZIP Archive</comment>
   </data>
-  <data name="android_files.zip" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\android_files.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    <comment>ZIP Archive</comment>
-  </data>
   <data name="patches_linux_x86.zip" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\patches_linux_x86.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     <comment>ZIP Archive</comment>
@@ -185,5 +181,9 @@
   <data name="dungeon3_1.map" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\d3map;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     <comment>Backup Map</comment>
+  </data>
+  <data name="android_base.apk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\android_base.apk;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>APK File</comment>
   </data>
 </root>
