@@ -1,10 +1,10 @@
-# Building the LADXHD Patcher on Ubuntu 24.04 x64 (No Wine Required)
+# Building the LADXHD Patcher on Linux (No Wine Required)
 
-The patcher can be cross-compiled for Windows from Ubuntu 24.04 x64 using the .NET 8.0 SDK. The resulting executable is a standard Windows PE binary that you transfer to a Windows system to run.
+The patcher can be cross-compiled for Windows from Linux using the .NET 8.0 SDK. The resulting executable is a standard Windows PE binary that you transfer to a Windows system to run.
 
 ## Prerequisites
 
-Install the .NET 8.0 SDK (or later) on Ubuntu 24.04:
+Install the .NET 8.0 SDK (or later). On Ubuntu:
 
 ```bash
 sudo apt update
