@@ -874,6 +874,8 @@ namespace ProjectZ
             WindowWidth = w;
             WindowHeight = h;
             ScaleChanged = true;
+
+            Console.WriteLine($"[UIScale] OnResize: WindowWidth={w}, WindowHeight={h}");
         }
 
         public void ForceRecalculateScaling()
@@ -898,6 +900,8 @@ namespace ProjectZ
             // Update the current window dimensions.
             WindowWidth = w;
             WindowHeight = h;
+
+            Console.WriteLine($"[UIScale] ForceRecalculateScaling: w={w}, h={h}");
 
             // Force rescale to correct the size of render targets. 
             ScaleChanged = true;
@@ -961,12 +965,18 @@ namespace ProjectZ
             // Scale of the user interface.
             int interfaceScale = MathHelper.Clamp(Math.Min(WindowWidth / Values.MinWidth, WindowHeight / Values.MinHeight), 1, 11);
 
+            Console.WriteLine($"[UIScale] UpdateScale: WindowWidth={WindowWidth}, WindowHeight={WindowHeight}, " +
+                $"MinWidth={Values.MinWidth}, MinHeight={Values.MinHeight}, " +
+                $"interfaceScale={interfaceScale}, GameSettings.UiScale={GameSettings.UiScale}");
+
             if (GameSettings.UiScale > interfaceScale)
                 UiScale = interfaceScale;
             else
                 UiScale = GameSettings.UiScale == 0 
                     ? interfaceScale 
                     : MathHelper.Clamp(GameSettings.UiScale, 1, interfaceScale);
+
+            Console.WriteLine($"[UIScale] UpdateScale: final UiScale={UiScale}");
 
             // Call all of the "OnResize" methods to recalculate render targets.
             if (_finishedLoading)
