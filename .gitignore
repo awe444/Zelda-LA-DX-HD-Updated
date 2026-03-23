@@ -14,3 +14,4 @@ ladxhd_game_source_code/ProjectZ.Linux/Data/
 ladxhd_game_source_code/ProjectZ.Core/Data/*
 !ladxhd_game_source_code/ProjectZ.Core/Data/Buttons/
 !ladxhd_game_source_code/ProjectZ.Core/Data/Buttons/**
+.nuget/
