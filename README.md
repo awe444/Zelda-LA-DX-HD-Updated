@@ -53,7 +53,8 @@ LADXHD.Patcher.exe --silent
 A few years back, an anonymous user posted a PC Port of Link's Awakening on itch.io built with MonoGame. It wasn't long before the game was taken down, fortunately the release contained the source code. This is a continuation of that PC Port but with the assets stripped away to avoid copyright issues. 
 
 This section explains the files and folders found in the base of this respository.<br>
-All software is Windows only aside from the game which has been ported to Android and Linux.
+All software is Windows only aside from the game which has been ported to Android and Linux.<br>
+The patcher can be cross-compiled for Windows from Linux — see [BUILD_PATCHER_LINUX.md](BUILD_PATCHER_LINUX.md).
 
 - **assets_original**: This is where the **"Content"** and **"Data"** folders from v1.0.0 should go.
 - **assets_patches**: Contains xdelta3 patches that are the difference of assets from v1.0.0 to the latest updates.
