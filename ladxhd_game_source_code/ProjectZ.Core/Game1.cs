@@ -158,7 +158,9 @@ namespace ProjectZ
         /// Force the back buffer to the real display size if it is currently
         /// smaller (e.g. because the navigation bar was still visible when
         /// the GL surface was first created).  Only attempts once to avoid
-        /// calling Graphics.ApplyChanges() every frame.
+        /// calling Graphics.ApplyChanges() every frame.  If the attempt
+        /// succeeds (back buffer reaches hint size), the flag stays set.
+        /// If it fails, the flag is reset so a later call can retry.
         /// </summary>
         private void EnsureBackBufferMatchesSurfaceHint()
         {
@@ -169,8 +171,6 @@ namespace ProjectZ
             if (GraphicsDevice == null)
                 return;
 
-            _backBufferHintApplied = true;
-
             var pp = GraphicsDevice.PresentationParameters;
             if (pp.BackBufferWidth < _androidSurfaceWidthHint ||
                 pp.BackBufferHeight < _androidSurfaceHeightHint)
@@ -180,6 +180,17 @@ namespace ProjectZ
                 Graphics.PreferredBackBufferWidth  = _androidSurfaceWidthHint;
                 Graphics.PreferredBackBufferHeight = _androidSurfaceHeightHint;
                 Graphics.ApplyChanges();
+
+                // Check whether the resize actually took effect.
+                pp = GraphicsDevice.PresentationParameters;
+                _backBufferHintApplied =
+                    pp.BackBufferWidth >= _androidSurfaceWidthHint &&
+                    pp.BackBufferHeight >= _androidSurfaceHeightHint;
+            }
+            else
+            {
+                // Already at or above the hint — no action needed.
+                _backBufferHintApplied = true;
             }
         }
 
