@@ -96,7 +96,7 @@ cd ladxhd_game_source_code
 dotnet publish ProjectZ.Android/ProjectZ.Android.csproj -c Release -f net8.0-android
 ```
 
-This compiles all C# source code, bundles .NET assemblies and native libraries for all four Android architectures (x86, x64, arm, arm64), and packages everything into an APK.
+This compiles all C# source code, bundles .NET assemblies and native libraries for arm64-v8a, and packages everything into an APK.
 
 The output APK is at:
 
@@ -217,6 +217,6 @@ cd ..
 ## Notes
 
 - **Wine is not required** at any step. The .NET SDK handles Android compilation natively and cross-compiles the Windows patcher via `EnableWindowsTargeting`.
-- The Android APK is built for all four architectures: x86, x64, arm, and arm64.
+- The Android APK is built for arm64-v8a only.
 - The `Content.mgcb` placeholder and the `Content/` directory are gitignored, so they will not appear in `git status`.
 - If you later need a full build with game assets (e.g., for direct testing on a device), follow the **Updating Source Code Assets** section in the main [README](README.md) to migrate the v1.0.0 assets, then rebuild.
