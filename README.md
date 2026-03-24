@@ -54,7 +54,8 @@ A few years back, an anonymous user posted a PC Port of Link's Awakening on itch
 
 This section explains the files and folders found in the base of this respository.<br>
 All software is Windows only aside from the game which has been ported to Android and Linux.<br>
-The patcher can be cross-compiled for Windows from Linux — see [BUILD_PATCHER_LINUX.md](BUILD_PATCHER_LINUX.md).
+The patcher can be cross-compiled for Windows from Linux — see [BUILD_PATCHER_LINUX.md](BUILD_PATCHER_LINUX.md).<br>
+For details on how the Android APK is built and what the patcher does, see [BUILD_ANDROID.md](BUILD_ANDROID.md).
 
 - **assets_original**: This is where the **"Content"** and **"Data"** folders from v1.0.0 should go.
 - **assets_patches**: Contains xdelta3 patches that are the difference of assets from v1.0.0 to the latest updates.
@@ -132,6 +133,8 @@ To create a personal build, follow the steps below:
 - Run the `ladxhd_game_source_code\publish.bat` script to build all ports of the game.
 - Alternatively, the **"LADXHD_Migrater.exe"** tool can now build a single port game.
 - When done, the build will be in the `Publish` folder.
+- For Android builds, the `android` workload must be installed: `dotnet workload install android`
+- See [BUILD_ANDROID.md](BUILD_ANDROID.md) for details on the Android build pipeline.
 
 ## Build Troubleshooting
 
