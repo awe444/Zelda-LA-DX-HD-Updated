@@ -104,6 +104,7 @@ namespace ProjectZ
     #if ANDROID
         private static int _androidSurfaceWidthHint;
         private static int _androidSurfaceHeightHint;
+        private bool _backBufferHintApplied;
     #endif
 
         private static volatile bool _finishedLoading;
@@ -156,19 +157,26 @@ namespace ProjectZ
         /// <summary>
         /// Force the back buffer to the real display size if it is currently
         /// smaller (e.g. because the navigation bar was still visible when
-        /// the GL surface was first created).
+        /// the GL surface was first created).  Only attempts once to avoid
+        /// calling Graphics.ApplyChanges() every frame.
         /// </summary>
         private void EnsureBackBufferMatchesSurfaceHint()
         {
+            if (_backBufferHintApplied)
+                return;
             if (_androidSurfaceWidthHint <= 0 || _androidSurfaceHeightHint <= 0)
                 return;
             if (GraphicsDevice == null)
                 return;
 
+            _backBufferHintApplied = true;
+
             var pp = GraphicsDevice.PresentationParameters;
             if (pp.BackBufferWidth < _androidSurfaceWidthHint ||
                 pp.BackBufferHeight < _androidSurfaceHeightHint)
             {
+                Android.Util.Log.Info("UIScale",
+                    $"EnsureBackBuffer: pp={pp.BackBufferWidth}x{pp.BackBufferHeight} < hint={_androidSurfaceWidthHint}x{_androidSurfaceHeightHint}, applying");
                 Graphics.PreferredBackBufferWidth  = _androidSurfaceWidthHint;
                 Graphics.PreferredBackBufferHeight = _androidSurfaceHeightHint;
                 Graphics.ApplyChanges();
@@ -185,6 +193,24 @@ namespace ProjectZ
                 return;
             if (w < _androidSurfaceWidthHint)  w = _androidSurfaceWidthHint;
             if (h < _androidSurfaceHeightHint) h = _androidSurfaceHeightHint;
+        }
+
+        /// <summary>
+        /// Check whether the effective back-buffer dimensions (with surface
+        /// hint floor applied) differ from the current WindowWidth/Height.
+        /// Used in Update() to avoid re-triggering OnResize every frame when
+        /// the real back buffer is smaller than the surface hint.
+        /// </summary>
+        private bool AndroidNeedsResize()
+        {
+            if (GraphicsDevice == null) return false;
+            var pp = GraphicsDevice.PresentationParameters;
+            if (pp.BackBufferWidth <= 0 || pp.BackBufferHeight <= 0) return false;
+
+            int w = pp.BackBufferWidth;
+            int h = pp.BackBufferHeight;
+            ApplySurfaceHintFloor(ref w, ref h);
+            return WindowWidth != w || WindowHeight != h;
         }
     #endif
 
@@ -424,15 +450,8 @@ namespace ProjectZ
                 _startDelayElapsed += gameTime.ElapsedGameTime.TotalSeconds;
 
             #if ANDROID
-                if (GraphicsDevice != null)
-                {
-                    var pp = GraphicsDevice.PresentationParameters;
-                    if (pp.BackBufferWidth > 0 && pp.BackBufferHeight > 0)
-                    {
-                        if (WindowWidth != pp.BackBufferWidth || WindowHeight != pp.BackBufferHeight)
-                            OnResize();
-                    }
-                }
+                if (AndroidNeedsResize())
+                    OnResize();
             #else
                 if ((WindowWidth != Window.ClientBounds.Width) || (WindowHeight != Window.ClientBounds.Height))
                     OnResize();
@@ -474,16 +493,10 @@ namespace ProjectZ
             }
 
         #if ANDROID
-            // On Android use PP as the source of truth, not ClientBounds
-            if (GraphicsDevice != null)
-            {
-                var pp = GraphicsDevice.PresentationParameters;
-                if (pp.BackBufferWidth > 0 && pp.BackBufferHeight > 0)
-                {
-                    if (WindowWidth != pp.BackBufferWidth || WindowHeight != pp.BackBufferHeight)
-                        OnResize();
-                }
-            }
+            // On Android, compare effective dimensions (with surface hint floor)
+            // to avoid re-triggering OnResize every frame.
+            if (AndroidNeedsResize())
+                OnResize();
         #else
             // If the window size has changed then trigger a resize event.
             if ((WindowWidth != Window.ClientBounds.Width) || (WindowHeight != Window.ClientBounds.Height))
@@ -867,14 +880,17 @@ namespace ProjectZ
         #if ANDROID
             if (GraphicsDevice == null) return;
 
-            // Ensure the back buffer covers the full physical display.
+            // One-shot attempt to resize the back buffer to the full display.
             EnsureBackBufferMatchesSurfaceHint();
 
             var pp = GraphicsDevice.PresentationParameters;
             var cb = Window?.ClientBounds;
 
-            w = pp.BackBufferWidth;
-            h = pp.BackBufferHeight;
+            int rawW = pp.BackBufferWidth;
+            int rawH = pp.BackBufferHeight;
+
+            w = rawW;
+            h = rawH;
     
             // Only fall back to ClientBounds if PP gives us nothing useful
             if (w <= 0 || h <= 0)
@@ -883,7 +899,9 @@ namespace ProjectZ
                 h = cb?.Height ?? 0;
             }
 
-            // Use the real display size as a floor.
+            // Use the real display size as a floor so that UI scale is
+            // computed from the full physical resolution, even if the GL
+            // surface is slightly smaller due to system bars.
             ApplySurfaceHintFloor(ref w, ref h);
         #else
             w = Window.ClientBounds.Width;
@@ -917,7 +935,7 @@ namespace ProjectZ
 
         #if ANDROID
             Android.Util.Log.Info("UIScale",
-                $"OnResize: WindowWidth={w}, WindowHeight={h}, " +
+                $"OnResize: effective={w}x{h}, rawBackBuffer={rawW}x{rawH}, " +
                 $"SurfaceHint={_androidSurfaceWidthHint}x{_androidSurfaceHeightHint}");
         #else
             Console.WriteLine($"[UIScale] OnResize: WindowWidth={w}, WindowHeight={h}");
