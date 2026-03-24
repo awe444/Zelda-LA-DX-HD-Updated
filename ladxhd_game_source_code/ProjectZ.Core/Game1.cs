@@ -152,6 +152,40 @@ namespace ProjectZ
                 _androidSurfaceHeightHint = height;
             }
         }
+
+        /// <summary>
+        /// Force the back buffer to the real display size if it is currently
+        /// smaller (e.g. because the navigation bar was still visible when
+        /// the GL surface was first created).
+        /// </summary>
+        private void EnsureBackBufferMatchesSurfaceHint()
+        {
+            if (_androidSurfaceWidthHint <= 0 || _androidSurfaceHeightHint <= 0)
+                return;
+            if (GraphicsDevice == null)
+                return;
+
+            var pp = GraphicsDevice.PresentationParameters;
+            if (pp.BackBufferWidth < _androidSurfaceWidthHint ||
+                pp.BackBufferHeight < _androidSurfaceHeightHint)
+            {
+                Graphics.PreferredBackBufferWidth  = _androidSurfaceWidthHint;
+                Graphics.PreferredBackBufferHeight = _androidSurfaceHeightHint;
+                Graphics.ApplyChanges();
+            }
+        }
+
+        /// <summary>
+        /// Clamp <paramref name="w"/> and <paramref name="h"/> so they are
+        /// never smaller than the real display dimensions recorded at startup.
+        /// </summary>
+        private static void ApplySurfaceHintFloor(ref int w, ref int h)
+        {
+            if (_androidSurfaceWidthHint <= 0 || _androidSurfaceHeightHint <= 0)
+                return;
+            if (w < _androidSurfaceWidthHint)  w = _androidSurfaceWidthHint;
+            if (h < _androidSurfaceHeightHint) h = _androidSurfaceHeightHint;
+        }
     #endif
 
         public static Matrix GetMatrix
@@ -833,23 +867,8 @@ namespace ProjectZ
         #if ANDROID
             if (GraphicsDevice == null) return;
 
-            // The GL surface may initially be sized to the area *excluding*
-            // the navigation bar (e.g. 1280×912 instead of 1280×960).
-            // Once immersive mode takes effect the surface expands, but
-            // MonoGame may not update the back buffer automatically.
-            // Force the back buffer to the real display size so that the
-            // full resolution is used for scale calculation.
-            if (_androidSurfaceWidthHint > 0 && _androidSurfaceHeightHint > 0)
-            {
-                var pp0 = GraphicsDevice.PresentationParameters;
-                if (pp0.BackBufferWidth < _androidSurfaceWidthHint ||
-                    pp0.BackBufferHeight < _androidSurfaceHeightHint)
-                {
-                    Graphics.PreferredBackBufferWidth  = _androidSurfaceWidthHint;
-                    Graphics.PreferredBackBufferHeight = _androidSurfaceHeightHint;
-                    Graphics.ApplyChanges();
-                }
-            }
+            // Ensure the back buffer covers the full physical display.
+            EnsureBackBufferMatchesSurfaceHint();
 
             var pp = GraphicsDevice.PresentationParameters;
             var cb = Window?.ClientBounds;
@@ -864,14 +883,8 @@ namespace ProjectZ
                 h = cb?.Height ?? 0;
             }
 
-            // If the back buffer is still smaller than the real display
-            // (e.g. nav bar was visible at GL surface creation), use the
-            // surface hints as the authoritative size.
-            if (_androidSurfaceWidthHint > 0 && _androidSurfaceHeightHint > 0)
-            {
-                if (w < _androidSurfaceWidthHint)  w = _androidSurfaceWidthHint;
-                if (h < _androidSurfaceHeightHint) h = _androidSurfaceHeightHint;
-            }
+            // Use the real display size as a floor.
+            ApplySurfaceHintFloor(ref w, ref h);
         #else
             w = Window.ClientBounds.Width;
             h = Window.ClientBounds.Height;
@@ -918,30 +931,14 @@ namespace ProjectZ
             int w = 0, h = 0;
             if (GraphicsDevice != null)
             {
-                // Force back buffer to the real display size if it's smaller.
-                if (_androidSurfaceWidthHint > 0 && _androidSurfaceHeightHint > 0)
-                {
-                    var pp0 = GraphicsDevice.PresentationParameters;
-                    if (pp0.BackBufferWidth < _androidSurfaceWidthHint ||
-                        pp0.BackBufferHeight < _androidSurfaceHeightHint)
-                    {
-                        Graphics.PreferredBackBufferWidth  = _androidSurfaceWidthHint;
-                        Graphics.PreferredBackBufferHeight = _androidSurfaceHeightHint;
-                        Graphics.ApplyChanges();
-                    }
-                }
+                EnsureBackBufferMatchesSurfaceHint();
 
                 var pp = GraphicsDevice.PresentationParameters;
                 w = pp.BackBufferWidth;
                 h = pp.BackBufferHeight;
             }
 
-            // Use surface hints as fallback / floor.
-            if (_androidSurfaceWidthHint > 0 && _androidSurfaceHeightHint > 0)
-            {
-                if (w < _androidSurfaceWidthHint)  w = _androidSurfaceWidthHint;
-                if (h < _androidSurfaceHeightHint) h = _androidSurfaceHeightHint;
-            }
+            ApplySurfaceHintFloor(ref w, ref h);
 
             if (w <= 0 || h <= 0) return;
         #else
