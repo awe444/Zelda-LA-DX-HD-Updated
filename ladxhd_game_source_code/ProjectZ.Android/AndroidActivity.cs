@@ -38,6 +38,11 @@ namespace ProjectZ.Android
 
             base.OnCreate(savedInstanceState);
 
+            // Apply immersive fullscreen BEFORE reading surface dimensions or
+            // creating the game view, so the nav-bar is already hidden when
+            // Android lays out the GL surface.
+            ApplyFullscreenFlags();
+
             var root = Application.Context.GetExternalFilesDir(null)!.AbsolutePath;
 
             // Point Values to a writable location on Android.
@@ -49,14 +54,15 @@ namespace ProjectZ.Android
             System.IO.Directory.CreateDirectory(Values.PathGraphicsMods);
             System.IO.Directory.CreateDirectory(Values.PathSaveFolder);
 
-            // Get real display size for proper fullscreen rendering.
+            // Get the REAL display size (unaffected by system-bar visibility).
+            // MaximumWindowMetrics (API 30+) always returns the full physical
+            // display bounds.  GetRealSize (older) does the same thing.
             var surfaceWidth = 0;
             var surfaceHeight = 0;
 
             if (OperatingSystem.IsAndroidVersionAtLeast(30))
             {
-                var metrics = WindowManager?.CurrentWindowMetrics;
-                var bounds = metrics?.Bounds;
+                var bounds = WindowManager?.MaximumWindowMetrics?.Bounds;
                 if (bounds != null)
                 {
                     surfaceWidth = bounds.Width();
@@ -86,6 +92,8 @@ namespace ProjectZ.Android
                     surfaceWidth = surfaceHeight;
                     surfaceHeight = swap;
                 }
+                global::Android.Util.Log.Info("UIScale",
+                    $"Real display size: {surfaceWidth}x{surfaceHeight}");
                 Game1.SetAndroidSurfaceSizeHint(surfaceWidth, surfaceHeight);
             }
 
@@ -104,6 +112,7 @@ namespace ProjectZ.Android
             view.LayoutParameters = matchParent;
             SetContentView(view, matchParent);
 
+            // Re-apply in case SetContentView reset any flags.
             ApplyFullscreenFlags();
 
             view.Focusable = true;

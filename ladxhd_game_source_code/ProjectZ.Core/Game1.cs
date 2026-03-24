@@ -832,7 +832,25 @@ namespace ProjectZ
 
         #if ANDROID
             if (GraphicsDevice == null) return;
-    
+
+            // The GL surface may initially be sized to the area *excluding*
+            // the navigation bar (e.g. 1280×912 instead of 1280×960).
+            // Once immersive mode takes effect the surface expands, but
+            // MonoGame may not update the back buffer automatically.
+            // Force the back buffer to the real display size so that the
+            // full resolution is used for scale calculation.
+            if (_androidSurfaceWidthHint > 0 && _androidSurfaceHeightHint > 0)
+            {
+                var pp0 = GraphicsDevice.PresentationParameters;
+                if (pp0.BackBufferWidth < _androidSurfaceWidthHint ||
+                    pp0.BackBufferHeight < _androidSurfaceHeightHint)
+                {
+                    Graphics.PreferredBackBufferWidth  = _androidSurfaceWidthHint;
+                    Graphics.PreferredBackBufferHeight = _androidSurfaceHeightHint;
+                    Graphics.ApplyChanges();
+                }
+            }
+
             var pp = GraphicsDevice.PresentationParameters;
             var cb = Window?.ClientBounds;
 
@@ -844,6 +862,15 @@ namespace ProjectZ
             {
                 w = cb?.Width ?? 0;
                 h = cb?.Height ?? 0;
+            }
+
+            // If the back buffer is still smaller than the real display
+            // (e.g. nav bar was visible at GL surface creation), use the
+            // surface hints as the authoritative size.
+            if (_androidSurfaceWidthHint > 0 && _androidSurfaceHeightHint > 0)
+            {
+                if (w < _androidSurfaceWidthHint)  w = _androidSurfaceWidthHint;
+                if (h < _androidSurfaceHeightHint) h = _androidSurfaceHeightHint;
             }
         #else
             w = Window.ClientBounds.Width;
@@ -875,7 +902,13 @@ namespace ProjectZ
             WindowHeight = h;
             ScaleChanged = true;
 
+        #if ANDROID
+            Android.Util.Log.Info("UIScale",
+                $"OnResize: WindowWidth={w}, WindowHeight={h}, " +
+                $"SurfaceHint={_androidSurfaceWidthHint}x{_androidSurfaceHeightHint}");
+        #else
             Console.WriteLine($"[UIScale] OnResize: WindowWidth={w}, WindowHeight={h}");
+        #endif
         }
 
         public void ForceRecalculateScaling()
@@ -885,10 +918,31 @@ namespace ProjectZ
             int w = 0, h = 0;
             if (GraphicsDevice != null)
             {
+                // Force back buffer to the real display size if it's smaller.
+                if (_androidSurfaceWidthHint > 0 && _androidSurfaceHeightHint > 0)
+                {
+                    var pp0 = GraphicsDevice.PresentationParameters;
+                    if (pp0.BackBufferWidth < _androidSurfaceWidthHint ||
+                        pp0.BackBufferHeight < _androidSurfaceHeightHint)
+                    {
+                        Graphics.PreferredBackBufferWidth  = _androidSurfaceWidthHint;
+                        Graphics.PreferredBackBufferHeight = _androidSurfaceHeightHint;
+                        Graphics.ApplyChanges();
+                    }
+                }
+
                 var pp = GraphicsDevice.PresentationParameters;
                 w = pp.BackBufferWidth;
                 h = pp.BackBufferHeight;
             }
+
+            // Use surface hints as fallback / floor.
+            if (_androidSurfaceWidthHint > 0 && _androidSurfaceHeightHint > 0)
+            {
+                if (w < _androidSurfaceWidthHint)  w = _androidSurfaceWidthHint;
+                if (h < _androidSurfaceHeightHint) h = _androidSurfaceHeightHint;
+            }
+
             if (w <= 0 || h <= 0) return;
         #else
             int w = Window.ClientBounds.Width;
@@ -901,7 +955,13 @@ namespace ProjectZ
             WindowWidth = w;
             WindowHeight = h;
 
+        #if ANDROID
+            Android.Util.Log.Info("UIScale",
+                $"ForceRecalculateScaling: w={w}, h={h}, " +
+                $"SurfaceHint={_androidSurfaceWidthHint}x{_androidSurfaceHeightHint}");
+        #else
             Console.WriteLine($"[UIScale] ForceRecalculateScaling: w={w}, h={h}");
+        #endif
 
             // Force rescale to correct the size of render targets. 
             ScaleChanged = true;
@@ -965,9 +1025,16 @@ namespace ProjectZ
             // Scale of the user interface.
             int interfaceScale = MathHelper.Clamp(Math.Min(WindowWidth / Values.MinWidth, WindowHeight / Values.MinHeight), 1, 11);
 
+        #if ANDROID
+            Android.Util.Log.Info("UIScale",
+                $"UpdateScale: WindowWidth={WindowWidth}, WindowHeight={WindowHeight}, " +
+                $"MinWidth={Values.MinWidth}, MinHeight={Values.MinHeight}, " +
+                $"interfaceScale={interfaceScale}, GameSettings.UiScale={GameSettings.UiScale}");
+        #else
             Console.WriteLine($"[UIScale] UpdateScale: WindowWidth={WindowWidth}, WindowHeight={WindowHeight}, " +
                 $"MinWidth={Values.MinWidth}, MinHeight={Values.MinHeight}, " +
                 $"interfaceScale={interfaceScale}, GameSettings.UiScale={GameSettings.UiScale}");
+        #endif
 
             if (GameSettings.UiScale > interfaceScale)
                 UiScale = interfaceScale;
@@ -976,7 +1043,11 @@ namespace ProjectZ
                     ? interfaceScale 
                     : MathHelper.Clamp(GameSettings.UiScale, 1, interfaceScale);
 
+        #if ANDROID
+            Android.Util.Log.Info("UIScale", $"UpdateScale: final UiScale={UiScale}");
+        #else
             Console.WriteLine($"[UIScale] UpdateScale: final UiScale={UiScale}");
+        #endif
 
             // Call all of the "OnResize" methods to recalculate render targets.
             if (_finishedLoading)
