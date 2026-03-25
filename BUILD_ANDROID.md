@@ -12,6 +12,33 @@ The v1.0.0 game assets (Content/Data) are **not** needed for this process. The p
 
 ## Prerequisites
 
+### Install JDK 17
+
+The Android SDK tooling requires a full JDK (not just a JRE). JDK 17 is the recommended version — JDK 21 is **not** supported by the Android SDK bundled with the .NET Android workload.
+
+```bash
+sudo apt install -y openjdk-17-jdk
+```
+
+If you have multiple JDKs installed, set `JAVA_HOME` to point to JDK 17:
+
+```bash
+export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
+```
+
+This auto-detects the JDK path regardless of CPU architecture. Alternatively, set it explicitly (adjust for your architecture):
+
+```bash
+# amd64:
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+# arm64:
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64
+```
+
+> **Tip:** Add the `export` line to your `~/.bashrc` or `~/.profile` to persist across sessions.
+
+> **Common error:** If you see `XA5300: Could not find required file 'jar'` during the build, you have a JRE installed instead of a full JDK. Install `openjdk-17-jdk` (not `openjdk-17-jre`) to fix this.
+
 ### Install the .NET 8.0 SDK with Android Workload
 
 Ubuntu's built-in `dotnet-sdk-8.0` apt package does not include Android workload manifests. Use Microsoft's install script instead:
@@ -45,6 +72,14 @@ dotnet workload list
 ```
 
 You should see `android` in the output.
+
+The Android workload includes `Microsoft.Android.Sdk` which auto-provisions the Android SDK command-line tools on the first build. If the first build fails with `XA5300: The Android SDK directory could not be found`, you can set the path manually:
+
+```bash
+export AndroidSdkDirectory=$HOME/.android/sdk
+```
+
+Or create the directory and let the build auto-download into it.
 
 ### Install zip (if not already present)
 
@@ -104,7 +139,7 @@ The output APK is at:
 ladxhd_game_source_code/ProjectZ.Android/bin/AnyCPU/Release/net8.0-android/publish/com.zelda.ladxhd-Signed.apk
 ```
 
-Build warnings about `CS0420` (volatile fields), `CS8632` (nullable annotations), and `XA0101` (@Content build action) are expected and can be safely ignored.
+Build warnings about `CS0420` (volatile fields) and `CS8632` (nullable annotations) are expected and can be safely ignored.
 
 ### Strip the APK
 
@@ -169,6 +204,10 @@ The `--self-contained true` flag bundles the .NET runtime, so the Windows machin
 All commands from the repository root, in order:
 
 ```bash
+# 0. Install prerequisites (one-time setup)
+sudo apt install -y openjdk-17-jdk zip
+export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
+
 # 1. Install Android workload (one-time setup)
 cd ladxhd_game_source_code
 dotnet workload install android
