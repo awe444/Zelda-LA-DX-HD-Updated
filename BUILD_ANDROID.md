@@ -73,13 +73,34 @@ dotnet workload list
 
 You should see `android` in the output.
 
-The Android workload includes `Microsoft.Android.Sdk` which auto-provisions the Android SDK command-line tools on the first build. If the first build fails with `XA5300: The Android SDK directory could not be found`, you can set the path manually:
+### Install the Android SDK
+
+The .NET Android workload provides build tooling but does **not** include the Android SDK itself (platform tools, build tools, etc.). Without it, builds fail with `XA5300: The Android SDK directory could not be found`.
+
+Install the Android SDK using the built-in MSBuild target:
 
 ```bash
-export AndroidSdkDirectory=$HOME/.android/sdk
+cd ladxhd_game_source_code
+
+dotnet build -t:InstallAndroidDependencies \
+  -f net8.0-android \
+  "-p:AndroidSdkDirectory=$HOME/.android/sdk" \
+  "-p:JavaSdkDirectory=$JAVA_HOME" \
+  -p:AcceptAndroidSDKLicenses=true \
+  ProjectZ.Android/ProjectZ.Android.csproj
 ```
 
-Or create the directory and let the build auto-download into it.
+This downloads and installs the required Android SDK components (platform-tools, build-tools, platform API 34) into `~/.android/sdk/`.
+
+Set the `ANDROID_HOME` environment variable so the build can find the SDK:
+
+```bash
+export ANDROID_HOME=$HOME/.android/sdk
+```
+
+> **Tip:** Add the `export` line to your `~/.bashrc` or `~/.profile` to persist across sessions.
+
+> **Common error:** If `InstallAndroidDependencies` fails with a Java error, ensure `JAVA_HOME` points to JDK 17 (see above) and that you installed the full JDK, not just the JRE.
 
 ### Install zip (if not already present)
 
@@ -208,9 +229,15 @@ All commands from the repository root, in order:
 sudo apt install -y openjdk-17-jdk zip
 export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
 
-# 1. Install Android workload (one-time setup)
+# 1. Install Android workload and SDK (one-time setup)
 cd ladxhd_game_source_code
 dotnet workload install android
+dotnet build -t:InstallAndroidDependencies -f net8.0-android \
+  "-p:AndroidSdkDirectory=$HOME/.android/sdk" \
+  "-p:JavaSdkDirectory=$JAVA_HOME" \
+  -p:AcceptAndroidSDKLicenses=true \
+  ProjectZ.Android/ProjectZ.Android.csproj
+export ANDROID_HOME=$HOME/.android/sdk
 cd ..
 
 # 2. Create Content.mgcb placeholder (if not already present)
