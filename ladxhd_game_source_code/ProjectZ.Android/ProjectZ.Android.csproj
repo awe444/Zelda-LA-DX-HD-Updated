@@ -7,7 +7,7 @@
     <ApplicationVersion>168</ApplicationVersion>
     <ApplicationDisplayVersion>1.6.8</ApplicationDisplayVersion>
     <TargetFramework>net8.0-android</TargetFramework>
-    <RuntimeIdentifiers>android-x86;android-x64;android-arm;android-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
     <SupportedOSPlatformVersion>24.0</SupportedOSPlatformVersion>
     <OutputType>Exe</OutputType>
     <AndroidPackageFormats>apk</AndroidPackageFormats>
@@ -40,7 +40,6 @@
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.Android" Version="3.8.4.1" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.4.1" />
-    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.4.1" />
   </ItemGroup>
 
   <ItemGroup>
