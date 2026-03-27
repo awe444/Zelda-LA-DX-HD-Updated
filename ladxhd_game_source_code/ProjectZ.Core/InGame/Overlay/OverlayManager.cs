@@ -419,7 +419,10 @@ namespace ProjectZ.InGame.Overlay
                     if (!Game1.GameManager.MapManager.CurrentMap.DungeonMode)
                         dungeonOffset = (_margin + _dungeonSize.X) * _scale / 2;
                     else
-                        dungeonOffset = Math.Clamp((_margin + _dungeonSize.X) * _scale / 2, -16, (Game1.WindowWidth - _overlayWidth) / 2 - 8);
+                    {
+                        int maxOffset = Math.Max(-16, (Game1.WindowWidth - _overlayWidth) / 2 - 8);
+                        dungeonOffset = Math.Clamp((_margin + _dungeonSize.X) * _scale / 2, -16, maxOffset);
+                    }
 
                     spriteBatch.Draw(_menuRenderTarget2D, new Rectangle(
                         (int)_menuPosition.X + dungeonOffset, (int)(_menuPosition.Y - menuY), _overlayWidth, _overlayHeight), menuColor);
