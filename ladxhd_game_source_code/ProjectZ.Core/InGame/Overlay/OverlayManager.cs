@@ -420,8 +420,13 @@ namespace ProjectZ.InGame.Overlay
                         dungeonOffset = (_margin + _dungeonSize.X) * _scale / 2;
                     else
                     {
-                        int maxOffset = Math.Max(-16, (Game1.WindowWidth - _overlayWidth) / 2 - 8);
-                        dungeonOffset = Math.Clamp((_margin + _dungeonSize.X) * _scale / 2, -16, maxOffset);
+                        // Use manual min/max instead of Math.Clamp to avoid ArgumentException
+                        // when the overlay is wider than the window (min > max).
+                        int rawOffset = (_margin + _dungeonSize.X) * _scale / 2;
+                        int maxBound = (Game1.WindowWidth - _overlayWidth) / 2 - 8;
+                        dungeonOffset = rawOffset;
+                        if (dungeonOffset > maxBound) dungeonOffset = maxBound;
+                        if (dungeonOffset < -16) dungeonOffset = -16;
                     }
 
                     spriteBatch.Draw(_menuRenderTarget2D, new Rectangle(
