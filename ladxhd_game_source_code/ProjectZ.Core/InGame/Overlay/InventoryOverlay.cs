@@ -62,6 +62,8 @@ namespace ProjectZ.InGame.Overlay
         private Point _equipmentPosition;
         private readonly Rectangle _itemsRectangle = new Rectangle(6, 124, 108, 52);
 
+        private readonly int _baseWidth;
+        private readonly int _baseHeight;
         private int _width;
         private int _height;
 
@@ -71,6 +73,8 @@ namespace ProjectZ.InGame.Overlay
 
         public InventoryOverlay(int width, int height)
         {
+            _baseWidth = width;
+            _baseHeight = height;
             _width = width * Game1.UiScale;
             _height = height * Game1.UiScale;
 
@@ -153,8 +157,8 @@ namespace ProjectZ.InGame.Overlay
 
         public void ResolutionChanged()
         {
-            _width = Game1.WindowWidth;
-            _height = Game1.WindowHeight;
+            _width = _baseWidth * Game1.UiScale;
+            _height = _baseHeight * Game1.UiScale;
             UpdateRenderTarget();
         }
 

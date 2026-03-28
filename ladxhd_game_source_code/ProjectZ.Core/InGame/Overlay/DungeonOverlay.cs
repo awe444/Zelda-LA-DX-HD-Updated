@@ -33,11 +33,15 @@ namespace ProjectZ.InGame.Overlay
         private int _mapTile = 3;
         private int _undiscoveredTile = 4;
 
+        private readonly int _baseWidth;
+        private readonly int _baseHeight;
         private int _width;
         private int _height;
 
         public DungeonOverlay(int width, int height)
         {
+            _baseWidth = width;
+            _baseHeight = height;
             _width = width * Game1.UiScale;
             _height = height * Game1.UiScale;
 
@@ -47,8 +51,8 @@ namespace ProjectZ.InGame.Overlay
 
         public void ResolutionChanged()
         {
-            _width = Game1.WindowWidth;
-            _height = Game1.WindowHeight;
+            _width = _baseWidth * Game1.UiScale;
+            _height = _baseHeight * Game1.UiScale;
             UpdateRenderTarget();
         }
 
