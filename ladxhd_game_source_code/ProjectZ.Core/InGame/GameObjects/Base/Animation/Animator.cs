@@ -99,8 +99,8 @@ namespace ProjectZ.InGame.GameObjects.Base
         public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color)
         {
             // needed so that the objects don't wiggle around while the camera is moving
-            var normX = (int)Math.Round(position.X * MapManager.Camera.Scale) / MapManager.Camera.Scale;
-            var normY = (int)Math.Round(position.Y * MapManager.Camera.Scale) / MapManager.Camera.Scale;
+            var normX = MathF.Round(position.X);
+            var normY = MathF.Round(position.Y);
 
             spriteBatch.Draw(SprTexture, new Vector2(
                 normX + (CurrentAnimation.Offset.X + CurrentFrame.Offset.X),

@@ -21,8 +21,10 @@ namespace ProjectZ.InGame.Map
         private float RoundedShakeY => MathF.Round(ShakeOffsetY);
 
         // This is needed so there is no texture bleeding while rendering the game.
-        public float RoundX => (int)Math.Round(Location.X + RoundedShakeX * Scale, MidpointRounding.AwayFromZero);
-        public float RoundY => (int)Math.Round(Location.Y + RoundedShakeY * Scale, MidpointRounding.AwayFromZero);
+        // Rounding to the nearest game pixel (multiple of Scale) ensures movement
+        // always occurs in game pixel increments rather than display pixel increments.
+        public float RoundX => MathF.Round((Location.X + RoundedShakeX * Scale) / Scale) * Scale;
+        public float RoundY => MathF.Round((Location.Y + RoundedShakeY * Scale) / Scale) * Scale;
 
         private static bool IsFinite(float v) => !(float.IsNaN(v) || float.IsInfinity(v));
 
