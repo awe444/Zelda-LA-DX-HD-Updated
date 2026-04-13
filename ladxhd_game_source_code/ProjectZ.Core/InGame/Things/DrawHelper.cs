@@ -171,8 +171,8 @@ namespace ProjectZ.InGame.Things
             Vector2 position, Rectangle sourceRectangle, Color color, float scale = 1.0f)
         {
             var normalizedPosition = new Vector2(
-                (float)Math.Round(position.X * MapManager.Camera.Scale) / MapManager.Camera.Scale,
-                (float)Math.Round(position.Y * MapManager.Camera.Scale) / MapManager.Camera.Scale);
+                MathF.Round(position.X),
+                MathF.Round(position.Y));
 
             spriteBatch.Draw(texture, normalizedPosition, sourceRectangle, color, 0, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0);
         }
@@ -180,8 +180,8 @@ namespace ProjectZ.InGame.Things
         public static void DrawNormalized(SpriteBatch spriteBatch, DictAtlasEntry sprite, Vector2 position, Color color)
         {
             var normalizedPosition = new Vector2(
-                (float)Math.Round(position.X * MapManager.Camera.Scale) / MapManager.Camera.Scale,
-                (float)Math.Round(position.Y * MapManager.Camera.Scale) / MapManager.Camera.Scale);
+                MathF.Round(position.X),
+                MathF.Round(position.Y));
 
             spriteBatch.Draw(sprite.Texture, normalizedPosition, sprite.ScaledRectangle, color, 0, sprite.Origin, new Vector2(sprite.Scale), SpriteEffects.None, 0);
         }

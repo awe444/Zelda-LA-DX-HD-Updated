@@ -362,8 +362,8 @@ namespace ProjectZ.InGame.Things
             else
             {
                 var normalizedPosition = new Vector2(
-                    (float)Math.Round(position.X * MapManager.Camera.Scale) / MapManager.Camera.Scale,
-                    (float)Math.Round(position.Y * MapManager.Camera.Scale) / MapManager.Camera.Scale);
+                    MathF.Round(position.X),
+                    MathF.Round(position.Y));
 
                 DrawInstrument(spriteBatch, sprite, normalizedPosition);
             }
